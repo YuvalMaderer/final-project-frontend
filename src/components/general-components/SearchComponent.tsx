@@ -167,7 +167,7 @@ function SearchComponent() {
 
   return (
     <div className="flex flex-col justify-center items-center text-[#6A6A6A]">
-      <Carousel opts={{ align: "start" }} className="w-full max-w-[85rem]">
+      <Carousel opts={{ align: "start" }} className="w-full max-w-[75rem]">
         <CarouselContent>
           {filters.map((filter, index) => (
             <CarouselItem
