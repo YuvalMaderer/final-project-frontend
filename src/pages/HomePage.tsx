@@ -1,5 +1,7 @@
+import SearchComponent from "@/components/general-components/SearchComponent";
+
 function HomePage() {
-  return <div>HomePage</div>;
+  return <SearchComponent />;
 }
 
 export default HomePage;
