@@ -124,6 +124,7 @@ function HeaderComponent() {
             </button>
           </div>
         </div>
+        <hr className="my-6" />
       </div>
     </>
   );
