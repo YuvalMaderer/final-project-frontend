@@ -24,9 +24,9 @@ function SearchBar() {
               {" "}
               <Button
                 variant={null}
-                className="flex flex-col self-center text-xs "
+                className="flex flex-col self-center text-xs flex"
               >
-                <div className="text-black font-600 flex">Where</div>
+                <div className="text-black font-600 ">Where</div>
                 <div className="text-gray-500">Search destinations</div>
               </Button>
             </DropdownMenuTrigger>
