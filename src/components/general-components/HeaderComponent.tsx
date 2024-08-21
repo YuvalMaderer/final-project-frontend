@@ -1,6 +1,6 @@
 import { Globe, Menu } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
-import SearchBar from "./searchBar";
+import SearchBar from "./SearchBar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,8 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Modal from "./LoginModalComponent";
+import { useState } from "react";
 
 function HeaderComponent() {
+  const [isModalOpen, setModalOpen] = useState(false);
+
   return (
     <>
       <div>
@@ -60,10 +64,15 @@ function HeaderComponent() {
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="relative right-12 top-4 w-60 flex flex-col gap-2">
-                  <DropdownMenuItem className="font-bold">
+                  <DropdownMenuItem
+                    className="font-bold"
+                    onClick={() => setModalOpen(true)}
+                  >
                     Log in
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Sign up</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setModalOpen(true)}>
+                    Sign up
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Gift cards</DropdownMenuItem>
                   <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
@@ -76,6 +85,8 @@ function HeaderComponent() {
         <SearchBar />
         <hr className="my-6" />
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}></Modal>
     </>
   );
 }

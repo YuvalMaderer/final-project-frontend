@@ -1,7 +1,10 @@
 import SearchComponent from "@/components/general-components/SearchComponent";
-
 function HomePage() {
-  return <SearchComponent />;
+  return (
+    <>
+      <SearchComponent />;
+    </>
+  );
 }
 
 export default HomePage;
