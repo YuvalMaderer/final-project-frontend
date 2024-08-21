@@ -33,14 +33,68 @@ function SearchBar() {
             <DropdownMenuContent className="rounded-xl relative left-12 top-4">
               <DropdownMenuLabel>Search by region</DropdownMenuLabel>
               <div className="flex">
-                <DropdownMenuItem>I'm flexible</DropdownMenuItem>
-                <DropdownMenuItem>Europe</DropdownMenuItem>
-                <DropdownMenuItem>Italy</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div>
+                    <img
+                      src="https://a0.muscache.com/pictures/f9ec8a23-ed44-420b-83e5-10ff1f071a13.jpg?im_w=320"
+                      alt="flexible"
+                      className="w-[122px] h-[122px] rounded-lg border border-gray-200 cursor-pointer hover:border-gray-600 transition duration-150 ease-in-out"
+                    />
+                    <p className="font-500">I'm Flexible</p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div>
+                    <img
+                      src="https://a0.muscache.com/im/pictures/7b5cf816-6c16-49f8-99e5-cbc4adfd97e2.jpg?im_w=320"
+                      alt="Europe"
+                      className="w-[122px] h-[122px] rounded-lg border border-gray-200 cursor-pointer hover:border-gray-600 transition duration-150 ease-in-out"
+                    />
+                    <p className="font-500">Europe</p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div>
+                    <img
+                      src="https://a0.muscache.com/im/pictures/ea5598d7-2b07-4ed7-84da-d1eabd9f2714.jpg?im_w=320"
+                      alt="Italy"
+                      className="w-[122px] h-[122px] rounded-lg border border-gray-200 cursor-pointer hover:border-gray-600 transition duration-150 ease-in-out"
+                    />
+                    <p className="font-500">Italy</p>
+                  </div>
+                </DropdownMenuItem>
               </div>
               <div className="flex">
-                <DropdownMenuItem>United States</DropdownMenuItem>
-                <DropdownMenuItem>Greece</DropdownMenuItem>
-                <DropdownMenuItem>South America</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div>
+                    <img
+                      src="https://a0.muscache.com/im/pictures/4e762891-75a3-4fe1-b73a-cd7e673ba915.jpg?im_w=320"
+                      alt="UnitedState"
+                      className="w-[122px] h-[122px] rounded-lg border border-gray-200 cursor-pointer hover:border-gray-600 transition duration-150 ease-in-out"
+                    />
+                    <p className="font-500">United States</p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div>
+                    <img
+                      src="https://a0.muscache.com/im/pictures/09be1400-6a42-4a4f-90f6-897e50110031.jpg?im_w=320"
+                      alt="Greece"
+                      className="w-[122px] h-[122px] rounded-lg border border-gray-200 cursor-pointer hover:border-gray-600 transition duration-150 ease-in-out"
+                    />
+                    <p className="font-500">Greece</p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div>
+                    <img
+                      src="https://a0.muscache.com/im/pictures/06a30699-aead-492e-ad08-33ec0b383399.jpg?im_w=320"
+                      alt="SouthAmerica"
+                      className="w-[122px] h-[122px] rounded-lg border border-gray-200 cursor-pointer hover:border-gray-600 transition duration-150 ease-in-out"
+                    />
+                    <p className="font-500">South America</p>
+                  </div>
+                </DropdownMenuItem>
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
