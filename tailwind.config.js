@@ -17,6 +17,10 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        airbnb:
+          "linear-gradient(90deg, rgba(255,56,92,1) 0%, rgba(189,30,89,1) 100%)",
+      },
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],
       },
@@ -37,7 +41,7 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: '#F5385D',
+        primary: "#F5385D",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

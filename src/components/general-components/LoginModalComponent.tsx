@@ -1,7 +1,9 @@
 import { X } from "lucide-react";
 import React, { useEffect, useState, useRef } from "react";
 import { Input } from "../ui/input";
-import { Button } from "react-day-picker";
+import { Button } from "../ui/button";
+import { useAuth } from "@/providers/user.context";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [show, setShow] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  const { login, handleGoogleSuccess } = useAuth();
 
   useEffect(() => {
     if (isOpen) {
@@ -25,6 +28,26 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       onClose();
     }
   };
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+
+    const password = formData.get("password") as string | null;
+    const email = formData.get("email") as string | null;
+
+    if (email && password) {
+      try {
+        await login({ email, password });
+        onClose(); // Close the dialog after successful login
+      } catch (error) {
+        console.error("Login failed:", error);
+      }
+    } else {
+      console.error("Email and password are required.");
+    }
+  }
 
   if (!show) return null;
 
@@ -54,10 +77,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <h3 className=" font-semibold">Log in or Sign up</h3>
           <div></div>
         </div>
-        <div className="mt-4 space-y-2">
+        <form className="mt-4 space-y-2 mb-6" onSubmit={handleSubmit}>
           <p className="text-xl font-bold">Welcome to Airbnb</p>
-          <Input type="email" placeholder="Email"></Input>
-          <Input type="password" placeholder="Password"></Input>
+          <Input name="email" type="email" placeholder="Email"></Input>
+          <Input name="password" type="password" placeholder="Password"></Input>
           <p className="text-xs">
             We’ll call or text you to confirm your number. Standard message and
             data rates apply.{" "}
@@ -65,8 +88,38 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               Privacy Policy
             </a>
           </p>
-          <Button>Continue</Button>
+          <Button
+            type="submit"
+            variant="secondary"
+            className="h-12 text-[16px] "
+          >
+            Continue
+          </Button>
+        </form>
+        <div className="flex justify-between items-center gap-4">
+          <hr className="w-[50%] border-t-2 border-gray-200" />
+          <p>or</p>
+          <hr className="w-[50%] border-t-2 border-gray-200" />
         </div>
+        <GoogleLogin
+          onSuccess={async (credentialResponse: CredentialResponse) => {
+            if (credentialResponse.credential) {
+              try {
+                await handleGoogleSuccess({
+                  credential: credentialResponse.credential,
+                });
+                onClose(); // Close the dialog after successful login
+              } catch (error) {
+                console.error("Google login failed:", error);
+              }
+            } else {
+              console.error("Google credential is undefined");
+            }
+          }}
+          onError={() => {
+            console.error("Error working with Google");
+          }}
+        />
       </div>
     </div>
   );
