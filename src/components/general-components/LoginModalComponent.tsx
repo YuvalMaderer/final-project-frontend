@@ -98,28 +98,30 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </form>
         <div className="flex justify-between items-center gap-4">
           <hr className="w-[50%] border-t-2 border-gray-200" />
-          <p>or</p>
+          <p className="text-xs">or</p>
           <hr className="w-[50%] border-t-2 border-gray-200" />
         </div>
-        <GoogleLogin
-          onSuccess={async (credentialResponse: CredentialResponse) => {
-            if (credentialResponse.credential) {
-              try {
-                await handleGoogleSuccess({
-                  credential: credentialResponse.credential,
-                });
-                onClose(); // Close the dialog after successful login
-              } catch (error) {
-                console.error("Google login failed:", error);
+        <div className="w-full flex justify-center pt-4">
+          <GoogleLogin
+            onSuccess={async (credentialResponse: CredentialResponse) => {
+              if (credentialResponse.credential) {
+                try {
+                  await handleGoogleSuccess({
+                    credential: credentialResponse.credential,
+                  });
+                  onClose(); // Close the dialog after successful login
+                } catch (error) {
+                  console.error("Google login failed:", error);
+                }
+              } else {
+                console.error("Google credential is undefined");
               }
-            } else {
-              console.error("Google credential is undefined");
-            }
-          }}
-          onError={() => {
-            console.error("Error working with Google");
-          }}
-        />
+            }}
+            onError={() => {
+              console.error("Error working with Google");
+            }}
+          />
+        </div>
       </div>
     </div>
   );
