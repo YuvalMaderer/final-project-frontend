@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -70,6 +70,25 @@ function Guests() {
       guestCounts.infants > 0 ||
       guestCounts.pets > 0);
 
+  let displayText = "Add guests";
+  const totalGuests = guestCounts.adults + guestCounts.children;
+
+  if (totalGuests > 0) {
+    displayText = `${totalGuests} guest${totalGuests > 1 ? "s" : ""}`;
+
+    if (guestCounts.infants > 0) {
+      displayText += `, ${guestCounts.infants} infant${
+        guestCounts.infants > 1 ? "s" : ""
+      }`;
+    }
+
+    if (guestCounts.pets > 0) {
+      displayText += `, ${guestCounts.pets} pet${
+        guestCounts.pets > 1 ? "s" : ""
+      }`;
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -79,7 +98,7 @@ function Guests() {
             className="mr-14 flex flex-col self-center text-xs"
           >
             <div className="text-black font-600 flex">Who</div>
-            <div className="text-gray-500">Add guests</div>
+            <div className="text-gray-500">{displayText}</div>
           </Button>
           <Button className="text-white font-800 p-3 rounded-full flex items-center justify-center">
             <Search className="w-4 h-4" />
@@ -95,7 +114,7 @@ function Guests() {
               count={guestCounts.adults}
               onIncrement={() => handleIncrement("adults")}
               onDecrement={() => handleDecrement("adults")}
-              isDecrementDisabled={isAdultDecrementDisabled} // Pass the disabled state
+              isDecrementDisabled={isAdultDecrementDisabled}
             />
           </DropdownMenuItem>
           <DropdownMenuSeparator />

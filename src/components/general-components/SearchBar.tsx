@@ -38,7 +38,7 @@ function SearchBar() {
   );
   const [selectedDestination, setSelectedDestination] = useState("");
 
-  const handleSelection = (destination) => {
+  const handleSelection = (destination: string): void => {
     setSelectedDestination(destination);
   };
 
@@ -50,7 +50,7 @@ function SearchBar() {
             <DropdownMenuTrigger>
               <Button
                 variant={null}
-                className="flex flex-col self-start text-xs inline-block text-left"
+                className="flex-col self-start text-xs inline-block text-left"
               >
                 {/* Update the button label based on selectedDestination */}
                 <div className="text-black font-600">Where</div>

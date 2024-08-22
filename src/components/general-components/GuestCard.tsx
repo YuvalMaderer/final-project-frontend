@@ -7,6 +7,7 @@ type CardProps = {
   count: number;
   onIncrement: () => void;
   onDecrement: () => void;
+  isDecrementDisabled?: boolean;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -15,6 +16,7 @@ const Card: React.FC<CardProps> = ({
   count,
   onIncrement,
   onDecrement,
+  isDecrementDisabled = false,
 }) => {
   return (
     <div className="flex items-center justify-between p-4 w-full ">
@@ -28,6 +30,7 @@ const Card: React.FC<CardProps> = ({
             e.stopPropagation();
             onDecrement();
           }}
+          disabled={isDecrementDisabled}
           variant="outline"
           className="mr-2 rounded-full"
         >
