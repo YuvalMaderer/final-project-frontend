@@ -1,14 +1,8 @@
 import api from "@/services/api.service";
 import { IHome, IReview } from "@/types";
 import { useEffect, useState } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { Star } from "lucide-react";
+import HomeCarousel from "./HomeCarousel";
 
 function HomesList() {
   const [homes, setHomes] = useState<IHome[]>([]);
@@ -16,7 +10,7 @@ function HomesList() {
   async function fetchHomes() {
     try {
       const response = await api.get("/homes/24homes");
-      setHomes(response.data); // Adjusted to use response.data
+      setHomes(response.data);
     } catch (err) {
       console.log(err);
     }
@@ -28,8 +22,7 @@ function HomesList() {
 
   const calculateOverallAverageRating = (reviews: IReview[]) => {
     let totalRating = 0;
-    const numCategories = 6; // Number of rating categories
-
+    const numCategories = 6;
     reviews.forEach((review) => {
       totalRating += review.rate.Accuracy;
       totalRating += review.rate["Check-in"];
@@ -38,8 +31,6 @@ function HomesList() {
       totalRating += review.rate.Location;
       totalRating += review.rate.Value;
     });
-
-    // Calculate the overall average rating
     const overallAverage = (
       totalRating /
       (numCategories * reviews.length)
@@ -52,47 +43,7 @@ function HomesList() {
       <div className="grid grid-cols-4 gap-10">
         {homes.map((home) => (
           <div key={home.name} className="w-64 cursor-pointer">
-            <Carousel className="w-72 pb-2">
-              <CarouselContent>
-                <CarouselItem>
-                  <img
-                    src={home.imgUrls[0]}
-                    alt={home.name}
-                    className="w-[270px] h-[270px] rounded-lg"
-                  />
-                </CarouselItem>
-                <CarouselItem>
-                  <img
-                    src={home.imgUrls[1]}
-                    alt={home.name}
-                    className="w-[270px] h-[270px] rounded-lg"
-                  />
-                </CarouselItem>
-                <CarouselItem>
-                  <img
-                    src={home.imgUrls[2]}
-                    alt={home.name}
-                    className="w-[270px] h-[270px] rounded-lg"
-                  />
-                </CarouselItem>
-                <CarouselItem>
-                  <img
-                    src={home.imgUrls[3]}
-                    alt={home.name}
-                    className="w-[270px] h-[270px] rounded-lg"
-                  />
-                </CarouselItem>
-                <CarouselItem>
-                  <img
-                    src={home.imgUrls[4]}
-                    alt={home.name}
-                    className="w-[270px] h-[270px] rounded-lg"
-                  />
-                </CarouselItem>
-              </CarouselContent>
-              <CarouselPrevious className="absolute left-6" />
-              <CarouselNext className="absolute right-8" />
-            </Carousel>
+            <HomeCarousel images={home.imgUrls} name={home.name} />
             <div className="flex justify-between">
               <p className="font-600 text-[14px]">{home.loc.address}</p>
               <div className="flex items-center gap-1">
