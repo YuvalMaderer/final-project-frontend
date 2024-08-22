@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import React, { useEffect, useState, useRef } from "react";
-import CountryCodePhoneInput from "./PhoneInput";
+import { Input } from "../ui/input";
+import { Button } from "react-day-picker";
 
 interface ModalProps {
   isOpen: boolean;
@@ -53,9 +54,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <h3 className=" font-semibold">Log in or Sign up</h3>
           <div></div>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 space-y-2">
           <p className="text-xl font-bold">Welcome to Airbnb</p>
-          <CountryCodePhoneInput />
+          <Input type="email" placeholder="Email"></Input>
+          <Input type="password" placeholder="Password"></Input>
+          <p className="text-xs">
+            We’ll call or text you to confirm your number. Standard message and
+            data rates apply.{" "}
+            <a className="font-bold underline " href="privacy-policy">
+              Privacy Policy
+            </a>
+          </p>
+          <Button>Continue</Button>
         </div>
       </div>
     </div>
