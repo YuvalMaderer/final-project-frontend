@@ -53,7 +53,7 @@ const FilterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <h3 className="font-semibold">Filters</h3>
           <div></div>
         </div>
-        <div>
+        <div className="pb-4">
           <h1 className="font-600 text-xl">Type of place</h1>
           <Tabs defaultValue="anytipe" className="w-[400px]">
             <TabsContent value="anytipe">
@@ -71,6 +71,11 @@ const FilterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               </TabsList>
             </div>
           </Tabs>
+        </div>
+        <hr className="pb-4" />
+        <div>
+          <h1 className="font-600 text-xl pb-2">Price Range</h1>
+          <p className="text-xs">Nightly prices including fees and taxes</p>
         </div>
       </div>
     </div>
