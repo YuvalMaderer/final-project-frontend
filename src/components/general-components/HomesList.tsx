@@ -1,24 +1,14 @@
-import api from "@/services/api.service";
 import { IHome, IReview } from "@/types";
-import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import HomeCarousel from "./HomeCarousel";
+import { fetchHomes } from "@/lib/http";
+import { useQuery } from "@tanstack/react-query";
 
 function HomesList() {
-  const [homes, setHomes] = useState<IHome[]>([]);
-
-  async function fetchHomes() {
-    try {
-      const response = await api.get("/homes/24homes");
-      setHomes(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  useEffect(() => {
-    fetchHomes();
-  }, []);
+  const { data: homes } = useQuery<IHome[]>({
+    queryKey: ["homes"],
+    queryFn: fetchHomes,
+  });
 
   const calculateOverallAverageRating = (reviews: IReview[]) => {
     let totalRating = 0;
@@ -41,7 +31,7 @@ function HomesList() {
   return (
     <div className="w-full flex justify-center items-center">
       <div className="grid grid-cols-4 gap-10">
-        {homes.map((home) => (
+        {homes?.map((home) => (
           <div key={home.name} className="w-64 cursor-pointer">
             <HomeCarousel images={home.imgUrls} name={home.name} />
             <div className="flex justify-between">

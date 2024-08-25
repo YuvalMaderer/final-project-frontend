@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { DayPickerProvider, DayPickerProps } from "react-day-picker";
 import { AuthProvider } from "./providers/user.context.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const dayPickerProps: DayPickerProps = {
   // Add any initial DayPicker props you need here
@@ -22,7 +23,9 @@ createRoot(document.getElementById("root")!).render(
       <DayPickerProvider initialProps={dayPickerProps}>
         <AuthProvider>
           <GoogleOAuthProvider clientId={googleId}>
-            <App />
+            <QueryClientProvider client={new QueryClient()}>
+              <App />
+            </QueryClientProvider>
           </GoogleOAuthProvider>
         </AuthProvider>
       </DayPickerProvider>

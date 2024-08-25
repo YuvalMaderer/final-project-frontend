@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Buttons from "./ButtonsComponent";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
+import { Button } from "../ui/button";
 
 interface ModalProps {
   isOpen: boolean;
@@ -266,6 +267,10 @@ const FilterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <div>
             <h1 className="font-600 text-xl pb-2">Booking options</h1>
           </div>
+        </div>
+        <div>
+          <div></div>
+          <Button>Show X places</Button>
         </div>
       </div>
     </div>
