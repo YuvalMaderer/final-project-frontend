@@ -44,43 +44,49 @@ function HomeDetails() {
       <h1 className="text-2xl font-bold">{home.name}</h1>
 
       {/* Images */}
-      <div className="flex  mt-4">
+      <div className="flex mt-4">
         {/* Large Image */}
-        <div className="w-2/3">
+        <div className="w-1/2 pr-2">
           <img
             src={home.imgUrls[0]}
             alt={`${home.name} - Main Image`}
-            className="w-[80%] h-[80%] rounded-lg"
+            className="w-full h-[300px] object-cover rounded-lg"
           />
         </div>
 
         {/* Small Images */}
-        <div className="w-1/3 grid grid-cols-2 gap-2">
+        <div className="w-1/2 grid grid-cols-2 gap-2 h-[300px]">
           {home.imgUrls.slice(1, 5).map((url, index) => (
             <img
               key={index}
               src={url}
               alt={`${home.name} - Image ${index + 1}`}
-              className="w-full h-auto rounded-lg"
+              className="w-full h-[calc(300px/2-2px)] object-cover rounded-lg"
             />
           ))}
         </div>
       </div>
 
+      {/* Room Type */}
+      <div className="mt-4">
+        <h2 className="text-xl font-semibold">
+          {home.roomType} in {home.loc.address}
+        </h2>
+      </div>
+
       {/* Room Details */}
-      <div className="flex gap-4 mt-4">
-        <p className="font-semibold">
-          {home.capacity} guest{home.capacity > 1 ? "s" : ""}
-        </p>
-        <p className="font-semibold">
-          {home.bedrooms} bedroom{home.bedrooms > 1 ? "s" : ""}
-        </p>
-        <p className="font-semibold">
-          {home.beds} bed{home.beds > 1 ? "s" : ""}
-        </p>
-        <p className="font-semibold">
-          {home.bathrooms} bathroom{home.bathrooms > 1 ? "s" : ""}
-        </p>
+      <div className="flex items-center gap-1">
+        {[
+          `${home.capacity} guest${home.capacity > 1 ? "s" : ""}`,
+          `${home.bedrooms} bedroom${home.bedrooms > 1 ? "s" : ""}`,
+          `${home.beds} bed${home.beds > 1 ? "s" : ""}`,
+          `${home.bathrooms} bath${home.bathrooms > 1 ? "s" : ""}`,
+        ].map((detail, index) => (
+          <>
+            <p className="flex items-center">{detail}</p>
+            {index < 3 && <span className=" text-black">•</span>}
+          </>
+        ))}
       </div>
 
       {/* Rating and Number of Reviews */}

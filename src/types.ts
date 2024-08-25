@@ -47,8 +47,8 @@ export interface IHome {
     host: IHost;
     loc: ILocation;
     reviews: IReview[];
-<<<<<<< HEAD
     likedByUsers: string[];
+    bookingOptions: BookingOptions;
   }
   export type BookingOptions = {
     InstantBook: boolean;
@@ -69,17 +69,8 @@ export interface QueryFilter {
   amenities?: string[];
   capacity?: number;
   accessibility?: boolean | undefined; // Make sure this matches the intended usage
-  bookingOptions: BookingOptions
+  bookingOptions: BookingOptions;
   location?: string;
   startDate?: Date;
   endDate?: Date;
 }
-=======
-    bookingOptions: {
-      InstantBook: boolean;
-      SelfCheckIn: boolean;
-      AllowsPets: boolean;
-    };
-    accessibility: string[];
-  }
->>>>>>> 1419bec7d68ed8d1ebc91e4da8e8e4352b2aa071
