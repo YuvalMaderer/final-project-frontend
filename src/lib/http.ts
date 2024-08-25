@@ -35,3 +35,15 @@ export async function fetchHomeById(id: string): Promise<IHome> {
     throw err; // Optionally rethrow the error to handle it in the caller
   }
 }
+
+export async function fetchHomeCountByFilers(filters: QueryFilter): Promise<number> {
+    try {
+        const params = serializeFilters(filters);
+        const response = await api.get(`/homes/count?${params.toString()}`);
+    
+        return response.data; // Return the data property which should contain the array of homes
+      } catch (err) {
+        console.error(err);
+        throw err; // Optionally rethrow the error to handle it in the caller
+      }
+}

@@ -5,6 +5,8 @@ import Buttons from "./ButtonsComponent";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { QueryFilter } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { fetchHomeCountByFilers } from "@/lib/http";
 
 interface ModalProps {
   isOpen: boolean;
@@ -69,6 +71,10 @@ const FilterModal: React.FC<ModalProps> = ({
     location: undefined,
     startDate: undefined,
     endDate: undefined,
+  });
+  const { data: count } = useQuery<number | string>({
+    queryKey: ["count", filters],
+    queryFn: () => fetchHomeCountByFilers(filters),
   });
 
   const resetFilters = () => {
@@ -560,7 +566,7 @@ const FilterModal: React.FC<ModalProps> = ({
         </div>
         <div>
           <div></div>
-          <Button onClick={handleFilterClick}>Show X places</Button>
+          <Button onClick={handleFilterClick}>Show {count} places</Button>
           <Button onClick={resetFilters}>Reset Filters</Button>
         </div>
       </div>

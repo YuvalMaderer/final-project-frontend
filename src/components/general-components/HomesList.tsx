@@ -26,6 +26,12 @@ function HomesList({ homes }: HomesListProps) {
     return overallAverage;
   };
 
+  console.log(homes);
+
+  if (!homes) {
+    return <p>No homes found.</p>;
+  }
+
   return (
     <div className="w-full flex justify-center items-center">
       <div className="grid grid-cols-4 gap-10">
