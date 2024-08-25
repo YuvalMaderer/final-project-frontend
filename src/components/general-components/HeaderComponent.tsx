@@ -68,14 +68,16 @@ function HeaderComponent() {
                 <DropdownMenuContent className="relative right-12 top-4 w-60 flex flex-col gap-2">
                   {loggedInUser ? (
                     <>
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                      <DropdownMenuItem>Messages</DropdownMenuItem>
                       <DropdownMenuItem>Trips</DropdownMenuItem>
                       <DropdownMenuItem>Wishlists</DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>Gift cards</DropdownMenuItem>
                       <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
-                      <DropdownMenuItem>Help center</DropdownMenuItem>
+                      <DropdownMenuItem>Refer a host</DropdownMenuItem>
+                      <DropdownMenuItem>Account</DropdownMenuItem>
                       <DropdownMenuSeparator />
+                      <DropdownMenuItem>Gift cars</DropdownMenuItem>
+                      <DropdownMenuItem>Help center</DropdownMenuItem>
                       <DropdownMenuItem onClick={logout}>
                         Logout
                       </DropdownMenuItem>
