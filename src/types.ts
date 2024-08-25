@@ -32,18 +32,22 @@ export interface IReview {
   }
   
 export interface IHome {
+    _id: string;
     name: string;
     type: string;
+    capacity: number;
     imgUrls: string[];
     price: number;
-    summery: string;
+    summary: string;
     amenities: string[];
     bathrooms: number;
     bedrooms: number;
+    beds: number;
     roomType: string;
     host: IHost;
     loc: ILocation;
     reviews: IReview[];
+<<<<<<< HEAD
     likedByUsers: string[];
   }
   export type BookingOptions = {
@@ -70,3 +74,12 @@ export interface QueryFilter {
   startDate?: Date;
   endDate?: Date;
 }
+=======
+    bookingOptions: {
+      InstantBook: boolean;
+      SelfCheckIn: boolean;
+      AllowsPets: boolean;
+    };
+    accessibility: string[];
+  }
+>>>>>>> 1419bec7d68ed8d1ebc91e4da8e8e4352b2aa071
