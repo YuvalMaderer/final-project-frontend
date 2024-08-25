@@ -134,8 +134,6 @@ const FilterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     window.history.replaceState(null, "", window.location.pathname);
   };
 
-  console.log(filters);
-
   useEffect(() => {
     if (isOpen) {
       setShow(true);

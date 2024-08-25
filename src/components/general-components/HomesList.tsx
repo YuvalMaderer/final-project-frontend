@@ -4,11 +4,15 @@ import HomeCarousel from "./HomeCarousel";
 import { fetchHomes } from "@/lib/http";
 import { useQuery } from "@tanstack/react-query";
 import { IReview } from "@/types";
+import { useSearchParams } from "react-router-dom";
 
 function HomesList() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filters = Object.fromEntries(searchParams.entries()); // Convert searchParams to an object
+
   const { data: homes } = useQuery<IHome[]>({
-    queryKey: ["homes"],
-    queryFn: fetchHomes,
+    queryKey: ["homes", filters], // Use paramsObject directly in queryKey
+    queryFn: () => fetchHomes(filters), // Pass paramsObject to fetchHomes
   });
 
   const calculateOverallAverageRating = (reviews: IReview[]) => {

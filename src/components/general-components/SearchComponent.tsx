@@ -6,10 +6,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+
 import { useSearchParams } from "react-router-dom";
 
 function SearchComponent() {
-  const filters = [
+  const types = [
     {
       icon: "https://a0.muscache.com/im/pictures/mediaverse/category_icon/original/3e5243c8-4d15-4c6b-97e3-7ba2bb7bb880.png",
       name: "Icons",
@@ -150,45 +151,45 @@ function SearchComponent() {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Set default filter to the first one if no filter is selected
+  // Set default type to the first one if no type is selected
   useEffect(() => {
-    if (!searchParams.has("filter")) {
-      setSearchParams({ filter: filters[0].name });
+    if (!searchParams.has("type")) {
+      setSearchParams({ type: types[0].name });
     }
-  }, [searchParams, setSearchParams, filters]);
+  }, []);
 
-  const handleFilterClick = (filterName: string) => {
-    setSearchParams({ filter: filterName });
+  const handleTypeClick = (typeName: string) => {
+    setSearchParams({ type: typeName });
   };
 
-  const isActiveFilter = (filterName: string) => {
-    return searchParams.get("filter") === filterName;
+  const isActiveType = (typeName: string) => {
+    return searchParams.get("type") === typeName;
   };
 
   return (
     <div className="flex flex-col justify-center items-center text-[#6A6A6A]">
       <Carousel opts={{ align: "start" }} className="w-full max-w-[75rem]">
         <CarouselContent>
-          {filters.map((filter, index) => (
+          {types.map((type, index) => (
             <CarouselItem
               key={index}
-              onClick={() => handleFilterClick(filter.name)}
+              onClick={() => handleTypeClick(type.name)}
               className={`flex flex-col items-center basis-1/13 p-0 mx-6 cursor-pointer transition duration-150 ease-in-out ${
-                isActiveFilter(filter.name)
+                isActiveType(type.name)
                   ? "text-black border-b-2 border-black"
                   : "hover:text-black hover:border-b-2"
               }`}
             >
               <img
-                src={filter.icon}
-                alt={`${filter.name} icon`}
+                src={type.icon}
+                alt={`${type.name} icon`}
                 width="24"
                 height="24"
                 className={`mb-2 grayscale opacity-70 ${
-                  isActiveFilter(filter.name) ? "opacity-100 grayscale-0" : ""
+                  isActiveType(type.name) ? "opacity-100 grayscale-0" : ""
                 }`}
               />
-              <span className="text-xs font-600 mb-2">{filter.name}</span>
+              <span className="text-xs font-600 mb-2">{type.name}</span>
             </CarouselItem>
           ))}
         </CarouselContent>
