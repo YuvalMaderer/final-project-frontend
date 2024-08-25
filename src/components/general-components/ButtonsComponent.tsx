@@ -34,11 +34,12 @@ const Buttons: React.FC<ButtonsProps> = ({ setFilters, filterType }) => {
   const [chosenButton, setChosenButton] = useState<string>(buttons[0]);
 
   const handleClick = (value: string): void => {
+    const newValue = value === "Any" ? "" : value; // If "Any" is clicked, set to an empty string
     setChosenButton(value);
 
     setFilters((prevFilters: QueryFilter) => ({
       ...prevFilters,
-      [filterType]: value, // Update the filter with the chosen value
+      [filterType]: newValue, // Update the filter with the chosen value or reset if "Any"
     }));
   };
 

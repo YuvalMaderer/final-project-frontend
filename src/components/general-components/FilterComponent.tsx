@@ -4,36 +4,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Buttons from "./ButtonsComponent";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { BookingOptions, QueryFilter } from "@/types";
+import { QueryFilter } from "@/types";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  setSearchParams: (param: Record<string, string>) => void;
+  initialFilters: QueryFilter;
 }
 
-const initialFilters: QueryFilter = {
-  type: undefined,
-  roomType: undefined,
-  minPrice: undefined,
-  maxPrice: undefined,
-  bedrooms: undefined,
-  beds: undefined,
-  bathrooms: undefined,
-  hostLanguage: undefined,
-  amenities: undefined,
-  capacity: undefined,
-  accessibility: undefined,
-  bookingOptions: {
-    InstantBook: false,
-    SelfCheckIn: false,
-    AllowsPets: false,
-  },
-  location: undefined,
-  startDate: undefined,
-  endDate: undefined,
-};
-
-const FilterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const FilterModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  setSearchParams,
+  initialFilters,
+}) => {
   const [show, setShow] = useState(false);
   const [checkedState, setCheckedState] = useState({
     Wifi: false,
@@ -86,52 +71,51 @@ const FilterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     endDate: undefined,
   });
 
-  const setFiltersToParams = () => {
-    const params = new URLSearchParams();
-
-    // Helper function to append filter values to params
-    const appendFilter = (
-      key: string,
-      value:
-        | string
-        | number
-        | boolean
-        | string[]
-        | QueryFilter
-        | undefined
-        | BookingOptions
-        | Date
-    ) => {
-      if (value !== undefined && value !== null) {
-        params.append(key, JSON.stringify(value));
-      }
-    };
-
-    // Convert each filter to a query parameter
-    appendFilter("type", filters.type);
-    appendFilter("roomType", filters.roomType);
-    appendFilter("minPrice", filters.minPrice);
-    appendFilter("maxPrice", filters.maxPrice);
-    appendFilter("bedrooms", filters.bedrooms);
-    appendFilter("beds", filters.beds);
-    appendFilter("bathrooms", filters.bathrooms);
-    appendFilter("hostLanguage", filters.hostLanguage);
-    appendFilter("amenities", filters.amenities);
-    appendFilter("capacity", filters.capacity);
-    appendFilter("accessibility", filters.accessibility);
-    appendFilter("bookingOptions", filters.bookingOptions);
-    appendFilter("location", filters.location);
-    appendFilter("startDate", filters.startDate);
-    appendFilter("endDate", filters.endDate);
-
-    // Update the URL with the new query parameters
-    window.history.replaceState(null, "", `?${params.toString()}`);
-  };
-
   const resetFilters = () => {
     setFilters(initialFilters);
     // Optionally, update the URL to remove the query parameters
     window.history.replaceState(null, "", window.location.pathname);
+  };
+
+  const handleFilterClick = () => {
+    // Create a new object to hold the query parameters
+    const params: Record<string, string> = {};
+
+    // Only add the parameters if they exist (not undefined or null)
+    if (filters.type) params.type = filters.type;
+    if (filters.roomType) params.roomType = filters.roomType;
+    if (filters.minPrice) params.minPrice = filters.minPrice.toString();
+    if (filters.maxPrice) params.maxPrice = filters.maxPrice.toString();
+    if (filters.bedrooms) params.bedrooms = filters.bedrooms.toString();
+    if (filters.beds) params.beds = filters.beds.toString();
+    if (filters.bathrooms) params.bathrooms = filters.bathrooms.toString();
+    if (filters.hostLanguage) params.hostLanguage = filters.hostLanguage;
+    if (filters.capacity) params.capacity = filters.capacity.toString();
+    if (filters.accessibility)
+      params.accessibility = filters.accessibility.toString();
+    if (filters.location) params.location = filters.location;
+    if (filters.startDate) params.startDate = filters.startDate.toISOString(); // Ensure ISO format for dates
+    if (filters.endDate) params.endDate = filters.endDate.toISOString();
+
+    // Handle amenities as a comma-separated string, only if it's not empty
+    if (filters.amenities && filters.amenities.length > 0) {
+      params.amenities = filters.amenities.join(",");
+    }
+
+    // Handle booking options, only add if true
+    if (filters.bookingOptions.InstantBook) {
+      params.InstantBook = "true";
+    }
+    if (filters.bookingOptions.SelfCheckIn) {
+      params.SelfCheckIn = "true";
+    }
+    if (filters.bookingOptions.AllowsPets) {
+      params.AllowsPets = "true";
+    }
+
+    // Update the URL with the new query parameters
+    setSearchParams(params);
+    onClose();
   };
 
   useEffect(() => {
@@ -350,7 +334,7 @@ const FilterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="Laptop friendly workspace"
+                      id="Dedicated workspace"
                       checked={checkedState["Dedicated workspace"]}
                       onChange={handleCheckboxChange}
                     />
@@ -576,7 +560,7 @@ const FilterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </div>
         <div>
           <div></div>
-          <Button onClick={setFiltersToParams}>Show X places</Button>
+          <Button onClick={handleFilterClick}>Show X places</Button>
           <Button onClick={resetFilters}>Reset Filters</Button>
         </div>
       </div>

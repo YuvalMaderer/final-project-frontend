@@ -6,9 +6,15 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import { useSearchParams } from "react-router-dom";
+type SearchComponentProps = {
+  searchParams: URLSearchParams;
+  setSearchParams: (param: Record<string, string>) => void;
+};
 
-function SearchComponent() {
+function SearchComponent({
+  searchParams,
+  setSearchParams,
+}: SearchComponentProps) {
   const types = [
     {
       icon: "https://a0.muscache.com/im/pictures/mediaverse/category_icon/original/3e5243c8-4d15-4c6b-97e3-7ba2bb7bb880.png",
@@ -147,8 +153,6 @@ function SearchComponent() {
       name: "Vineyards",
     },
   ];
-
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleTypeClick = (typeName: string) => {
     setSearchParams({ type: typeName });

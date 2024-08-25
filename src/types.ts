@@ -69,13 +69,8 @@ export interface QueryFilter {
   hostLanguage?: string;
   amenities?: string[];
   capacity?: number;
-<<<<<<< HEAD
   accessibility?: boolean | undefined;
   bookingOptions: BookingOptions
-=======
-  accessibility?: boolean | undefined; // Make sure this matches the intended usage
-  bookingOptions: BookingOptions;
->>>>>>> 20f7390633886f1edb8f53c031d258c8a4a8e412
   location?: string;
   startDate?: Date;
   endDate?: Date;
