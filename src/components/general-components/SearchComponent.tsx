@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -150,13 +149,6 @@ function SearchComponent() {
   ];
 
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // Set default type to the first one if no type is selected
-  useEffect(() => {
-    if (!searchParams.has("type")) {
-      setSearchParams({ type: types[0].name });
-    }
-  }, []);
 
   const handleTypeClick = (typeName: string) => {
     setSearchParams({ type: typeName });
