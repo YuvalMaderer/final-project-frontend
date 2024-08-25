@@ -46,3 +46,27 @@ export interface IHome {
     reviews: IReview[];
     likedByUsers: string[];
   }
+  export type BookingOptions = {
+    InstantBook: boolean;
+    SelfCheckIn: boolean;
+    AllowsPets: boolean;
+  };
+
+// src/types.ts
+export interface QueryFilter {
+  type?: string;
+  roomType?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  bedrooms?: string;
+  beds?: string;
+  bathrooms?: string;
+  hostLanguage?: string;
+  amenities?: string[];
+  capacity?: number;
+  accessibility?: boolean | undefined; // Make sure this matches the intended usage
+  bookingOptions: BookingOptions
+  location?: string;
+  startDate?: Date;
+  endDate?: Date;
+}

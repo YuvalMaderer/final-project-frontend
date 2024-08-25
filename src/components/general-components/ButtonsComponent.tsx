@@ -1,13 +1,45 @@
 import React, { useState } from "react";
 
-const Buttons: React.FC = () => {
+// Use your existing QueryFilter type
+interface QueryFilter {
+  type?: string;
+  roomType?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  bedrooms?: string;
+  beds?: string;
+  bathrooms?: string;
+  hostLanguage?: string;
+  amenities?: string[];
+  capacity?: number;
+  accessibility?: boolean;
+  bookingOptions: {
+    InstantBook: boolean;
+    SelfCheckIn: boolean;
+    AllowsPets: boolean;
+  };
+  location?: string;
+  startDate?: Date;
+  endDate?: Date;
+}
+
+interface ButtonsProps {
+  setFilters: React.Dispatch<React.SetStateAction<QueryFilter>>;
+  filterType: keyof QueryFilter; // Using keyof QueryFilter ensures type safety for filterType
+}
+
+const Buttons: React.FC<ButtonsProps> = ({ setFilters, filterType }) => {
   const buttons: string[] = ["Any", "1", "2", "3", "4", "5", "6", "7", "8+"];
 
-  // Set the default state to the first button ("Any")
   const [chosenButton, setChosenButton] = useState<string>(buttons[0]);
 
   const handleClick = (value: string): void => {
     setChosenButton(value);
+
+    setFilters((prevFilters: QueryFilter) => ({
+      ...prevFilters,
+      [filterType]: value, // Update the filter with the chosen value
+    }));
   };
 
   return (
@@ -15,6 +47,7 @@ const Buttons: React.FC = () => {
       {buttons.map((button, index) => (
         <button
           key={index}
+          aria-pressed={chosenButton === button}
           className={`px-4 py-2 rounded-full w-14 transition duration-150 ease-in-out text-xs ${
             chosenButton === button
               ? "bg-black text-white"
