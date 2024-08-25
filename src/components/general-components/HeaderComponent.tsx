@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Modal from "./LoginModalComponent";
 import { useState } from "react";
+import { useAuth } from "@/providers/user.context";
 
 function HeaderComponent() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const { loggedInUser, logout } = useAuth(); // Assuming useAuth returns the user object directly.
 
   return (
     <>
@@ -22,10 +24,10 @@ function HeaderComponent() {
             <img
               src="src/assets/airbnb-logo.webp"
               alt="logo"
-              className="w-[105px] h-[60px]  "
+              className="w-[105px] h-[60px]"
             />
           </Link>
-          <div className="flex gap-6 ml-40 ">
+          <div className="flex gap-6 ml-40">
             <NavLink
               to="/"
               className={({ isActive }) => (isActive ? "font-bold" : "")}
@@ -46,9 +48,9 @@ function HeaderComponent() {
             <Globe className="w-4 h-4" />
             <div className="flex items-center border border-grey-300 rounded-full p-3 gap-4 hover:shadow-lg">
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex gap-2 ">
+                <DropdownMenuTrigger className="flex gap-2">
                   <Menu className="w-4 h-4 self-center" />
-                  <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden ">
+                  <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -64,19 +66,37 @@ function HeaderComponent() {
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="relative right-12 top-4 w-60 flex flex-col gap-2">
-                  <DropdownMenuItem
-                    className="font-bold"
-                    onClick={() => setModalOpen(true)}
-                  >
-                    Log in
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setModalOpen(true)}>
-                    Sign up
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Gift cards</DropdownMenuItem>
-                  <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
-                  <DropdownMenuItem>Help center</DropdownMenuItem>
+                  {loggedInUser ? (
+                    <>
+                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                      <DropdownMenuItem>Trips</DropdownMenuItem>
+                      <DropdownMenuItem>Wishlists</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>Gift cards</DropdownMenuItem>
+                      <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
+                      <DropdownMenuItem>Help center</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={logout}>
+                        Logout
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    <>
+                      <DropdownMenuItem
+                        className="font-bold"
+                        onClick={() => setModalOpen(true)}
+                      >
+                        Log in
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setModalOpen(true)}>
+                        Sign up
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>Gift cards</DropdownMenuItem>
+                      <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
+                      <DropdownMenuItem>Help center</DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -86,7 +106,7 @@ function HeaderComponent() {
         <hr className="my-6" />
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}></Modal>
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
     </>
   );
 }
