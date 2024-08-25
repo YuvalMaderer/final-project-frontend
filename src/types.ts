@@ -32,17 +32,25 @@ export interface IReview {
   }
   
 export interface IHome {
+    _id: string;
     name: string;
     type: string;
+    capacity: number;
     imgUrls: string[];
     price: number;
-    summery: string;
+    summary: string;
     amenities: string[];
     bathrooms: number;
     bedrooms: number;
+    beds: number;
     roomType: string;
     host: IHost;
     loc: ILocation;
     reviews: IReview[];
-    likedByUsers: string[];
+    bookingOptions: {
+      InstantBook: boolean;
+      SelfCheckIn: boolean;
+      AllowsPets: boolean;
+    };
+    accessibility: string[];
   }

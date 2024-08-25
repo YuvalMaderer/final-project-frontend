@@ -1,8 +1,9 @@
-import { IHome, IReview } from "@/types";
+import { IHome } from "@/types";
 import { Star } from "lucide-react";
 import HomeCarousel from "./HomeCarousel";
 import { fetchHomes } from "@/lib/http";
 import { useQuery } from "@tanstack/react-query";
+import { IReview } from "@/types";
 
 function HomesList() {
   const { data: homes } = useQuery<IHome[]>({
@@ -32,8 +33,12 @@ function HomesList() {
     <div className="w-full flex justify-center items-center">
       <div className="grid grid-cols-4 gap-10">
         {homes?.map((home) => (
-          <div key={home.name} className="w-64 cursor-pointer">
-            <HomeCarousel images={home.imgUrls} name={home.name} />
+          <div key={home._id} className="w-64">
+            <HomeCarousel
+              images={home.imgUrls}
+              name={home.name}
+              homeId={home._id}
+            />
             <div className="flex justify-between">
               <p className="font-600 text-[14px]">{home.loc.address}</p>
               <div className="flex items-center gap-1">

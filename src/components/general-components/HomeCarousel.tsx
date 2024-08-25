@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import {
   Carousel,
@@ -11,11 +12,12 @@ import { UseEmblaCarouselType } from "embla-carousel-react";
 interface HomeCarouselProps {
   images: string[];
   name: string;
+  homeId: string; // Home ID passed as a prop
 }
 
 type EmblaCarouselApi = UseEmblaCarouselType[1];
 
-function HomeCarousel({ images, name }: HomeCarouselProps) {
+function HomeCarousel({ images, name, homeId }: HomeCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [emblaApi, setEmblaApi] = useState<EmblaCarouselApi | null>(null);
 
@@ -52,11 +54,13 @@ function HomeCarousel({ images, name }: HomeCarouselProps) {
         <CarouselContent>
           {images.map((img, index) => (
             <CarouselItem key={index}>
-              <img
-                src={img}
-                alt={`${name} - Image ${index + 1}`}
-                className="w-[270px] h-[270px] rounded-lg"
-              />
+              <Link to={`/homes/${homeId}`}>
+                <img
+                  src={img}
+                  alt={`${name} - Image ${index + 1}`}
+                  className="w-[270px] h-[270px] rounded-lg cursor-pointer"
+                />
+              </Link>
             </CarouselItem>
           ))}
         </CarouselContent>
