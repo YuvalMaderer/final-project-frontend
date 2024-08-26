@@ -29,6 +29,7 @@
     "@tanstack/react-query": "^5.52.1",
     "@types/google.maps": "^3.55.12",
     "@uidotdev/usehooks": "^2.4.1",
+    "@vis.gl/react-google-maps": "^1.1.0",
     "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

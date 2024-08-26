@@ -1,7 +1,7 @@
 import FilterModal from "@/components/general-components/FilterComponent";
 import HomesList from "@/components/general-components/HomesList";
-import GoogleMap from "@/components/general-components/MapComponent";
 import SearchComponent from "@/components/general-components/SearchComponent";
+import GoogleMap from "@/components/googleMaps/GoogleMap";
 import { fetchHomes } from "@/lib/http";
 import { IHome, QueryFilter } from "@/types"; // Ensure QueryFilter is imported
 import { useQuery } from "@tanstack/react-query";
@@ -80,7 +80,7 @@ function HomePage() {
         initialFilters={defaultFilters}
       />
       <HomesList homes={homes} />
-      <GoogleMap />
+      <GoogleMap homes={homes} />
     </>
   );
 }
