@@ -9,7 +9,8 @@ import {
 import HomesOnMap from "./PointsOnMap";
 import { IHome } from "@/types";
 
-const googleApiKey: string = import.meta.env.VITE_GOOGLE_API_KEY;
+const googleApiKey: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+console.log(googleApiKey);
 
 interface GoogleMapProps {
   homes: IHome[] | undefined;
@@ -40,6 +41,7 @@ export default function GoogleMap({ homes }: GoogleMapProps) {
   }, []);
 
   if (!position) {
+    // Optionally, you can return a loading indicator while the location is being fetched
     return <div>Loading...</div>;
   }
 

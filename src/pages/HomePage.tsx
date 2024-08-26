@@ -59,8 +59,6 @@ function HomePage() {
     ...Object.fromEntries(searchParams.entries()),
   };
 
-  console.log(filters);
-
   const { data: homes } = useQuery<IHome[]>({
     queryKey: ["homes", filters],
     queryFn: () => fetchHomes(filters),
