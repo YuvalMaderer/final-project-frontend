@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   APIProvider,
   Map,
@@ -10,7 +10,6 @@ import HomesOnMap from "./PointsOnMap";
 import { IHome } from "@/types";
 
 const googleApiKey: string = import.meta.env.VITE_GOOGLE_API_KEY;
-console.log(googleApiKey);
 
 interface GoogleMapProps {
   homes: IHome[] | undefined;
@@ -23,8 +22,24 @@ export default function GoogleMap({ homes }: GoogleMapProps) {
   } | null>(null);
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    // Get the user's current location
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setPosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.error("Error getting location: ", error);
+        // Fallback to a default location if geolocation fails
+        setPosition({ lat: 32.109333, lng: 34.855499 });
+      }
+    );
+  }, []);
+
   if (!position) {
-    // Optionally, you can return a loading indicator while the location is being fetched
     return <div>Loading...</div>;
   }
 

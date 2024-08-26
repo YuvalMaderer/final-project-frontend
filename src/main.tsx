@@ -8,6 +8,13 @@ import { AuthProvider } from "./providers/user.context.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const script = document.createElement("script");
+script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+script.async = true;
+script.defer = true;
+document.head.appendChild(script);
+
 const dayPickerProps: DayPickerProps = {
   // Add any initial DayPicker props you need here
 };
