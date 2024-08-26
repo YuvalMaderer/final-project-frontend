@@ -1,88 +1,70 @@
-import { IReview } from "@/types";
 import React from "react";
+import { IReview } from "@/types";
 import { Button } from "../ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-const Star: React.FC<{ fill: string; width: string }> = ({ fill }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="10px"
-    height="10px"
-    fill={fill}
-  >
-    <path d="M12 17.27L18.18 21 16.54 14.83 22 9.24 15.81 8.63 12 2 8.19 8.63 2 9.24 7.46 14.83 5.82 21z" />
-  </svg>
-);
-
-const calculateAverageRating = (rates: IReview["rate"]): number => {
-  const total = Object.values(rates).reduce((acc, rate) => acc + rate, 0);
-  return total / Object.keys(rates).length;
-};
-
-const renderStars = (rating: number) => {
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 !== 0;
-  const totalStars = 5;
-
-  return [...Array(totalStars)].map((_, index) => {
-    if (index < fullStars) {
-      return <Star key={index} fill="black" width="24px" />;
-    } else if (index === fullStars && halfStar) {
-      return <Star key={index} fill="gray" width="24px" />;
-    } else {
-      return <Star key={index} fill="gray" width="24px" />;
-    }
-  });
-};
-const getRandomNumber = (min: number, max: number): number => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Search, Star } from "lucide-react";
+import ReviewList from "./ReviewList"; // Import the new component
 
 const ReviewsSection: React.FC<{ reviews: IReview[] }> = ({ reviews }) => {
   const limitedReviews = reviews.slice(0, 6);
   const totalReviews = reviews.length;
+
+  // Define rating categories
+  const ratingCategories: { [key: string]: string } = {
+    Cleanliness: "Cleanliness",
+    Accuracy: "Accuracy",
+    "Check-in": "Check-in",
+    Communication: "Communication",
+    Location: "Location",
+    Value: "Value",
+  };
+
+  // Initialize ratings
+  const initialRatings = {
+    Cleanliness: 0,
+    Accuracy: 0,
+    "Check-in": 0,
+    Communication: 0,
+    Location: 0,
+    Value: 0,
+  };
+
+  const totalRatings = { ...initialRatings };
+  let reviewCount = 0;
+
+  // Calculate total ratings
+  reviews.forEach((review) => {
+    reviewCount++;
+    Object.keys(totalRatings).forEach((key) => {
+      totalRatings[key as keyof typeof totalRatings] +=
+        review.rate[key as keyof typeof totalRatings];
+    });
+  });
+
+  // Calculate average ratings
+  const averageRatings = Object.keys(totalRatings).reduce(
+    (acc, key) => {
+      acc[key as keyof typeof acc] = reviewCount
+        ? totalRatings[key as keyof typeof totalRatings] / reviewCount
+        : 0;
+      return acc;
+    },
+    { ...initialRatings }
+  );
+
+  // Calculate overall average rating
+  const calculateOverallAverageRating = () => {
+    return (
+      Object.values(totalRatings).reduce((acc, rating) => acc + rating, 0) /
+      (reviewCount * Object.keys(initialRatings).length)
+    );
+  };
+
   return (
     <div className="mt-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t">
-        {limitedReviews.map((review, index) => {
-          const averageRating = calculateAverageRating(review.rate);
-          const reviewDate = new Date(review.at);
-          const month = reviewDate.toLocaleString("default", { month: "long" });
-          const year = reviewDate.getFullYear();
-          const randomYears = getRandomNumber(1, 20);
+      {/* Display reviews outside the dialog */}
+      <ReviewList reviews={limitedReviews} />
 
-          return (
-            <div key={index} className="mt-4 p-4 ">
-              <div className="flex gap-4 mb-2 items-center">
-                <img
-                  src={review.by.imgUrl}
-                  alt={review.by.fullname}
-                  className="w-16 h-16 rounded-full"
-                />
-                <div className="flex-1">
-                  <p className="font-semibold">{review.by.fullname}</p>
-                  <p className="text-sm">{`${randomYears} years on Airbnb`}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 mb-2">
-                <div className="flex items-center gap-1">
-                  {renderStars(averageRating)}
-                </div>
-                <p className=" text-sm font-500">{`${month} ${year}`}</p>
-              </div>
-              <p className="text-sm font-500 max-w-96">{review.txt}</p>
-            </div>
-          );
-        })}
-      </div>
       {totalReviews > 6 && (
         <div className="mt-4">
           <Dialog>
@@ -95,11 +77,92 @@ const ReviewsSection: React.FC<{ reviews: IReview[] }> = ({ reviews }) => {
                 Show all {totalReviews} reviews
               </Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Reviews!</DialogTitle>
-                <DialogDescription>r r r r r r</DialogDescription>
-              </DialogHeader>
+            <DialogContent className="max-w-4xl mb-10 overflow-y-auto px-12">
+              <div className="flex">
+                <div className="flex lg:w-1/3 gap-10">
+                  {/* First Card - Rating Breakdown */}
+                  <div className="mt-10 bg-red-50">
+                    <div className="flex items-center gap-1 mt-2">
+                      <div className="flex items-center gap-2 mb-10">
+                        <Star fill="black" className="w-8 h-8" />
+                        <p className="text-4xl font-semibold">
+                          {Number(calculateOverallAverageRating()).toFixed(1)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex flex-col gap-6">
+                        <div className="text-sm font-500 mr-6">
+                          Overall rating
+                        </div>
+                        {Object.entries(ratingCategories).map(
+                          ([key, label]) => (
+                            <div
+                              key={key}
+                              className="flex items-center px-4 mr-2 gap-4 w-72"
+                            >
+                              {/* SVG for each category */}
+                              <svg
+                                className=""
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 32 32"
+                                aria-hidden="true"
+                                role="presentation"
+                                focusable="false"
+                                style={{
+                                  display: "block",
+                                  height: "24px",
+                                  width: "24px",
+                                  fill: "currentColor",
+                                }}
+                              >
+                                {/* Replace paths based on category */}
+                                {/* SVG Paths Here */}
+                              </svg>
+                              <p className="text-sm font-500 flex-1">{label}</p>
+                              <p className="text-xs font-semibold">
+                                {averageRatings[
+                                  key as keyof typeof averageRatings
+                                ].toFixed(1)}
+                              </p>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-6 ">
+                    <div className="flex  lg:w-2/3">
+                      <div className="mt-[3rem] flex justify-between w-full ">
+                        <p className="text-xl font-semibold">
+                          {reviews.length} review
+                          {reviews.length > 1 ? "s" : ""}
+                        </p>
+                        <Button
+                          variant={"outline"}
+                          className="rounded-3xl py-1 px-2"
+                        >
+                          Most recent
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex items-center border rounded-3xl p-2 shadow-sm w-[27rem] focus-within:border-black">
+                      <Search className="w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="Search reviews"
+                        className="ml-2 outline-none border-none bg-transparent flex-grow text-sm"
+                      />
+                    </div>
+                    {/* Display reviews inside the dialog */}
+                    <div className="h-32 ">
+                      <ReviewList reviews={reviews} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </DialogContent>
           </Dialog>
         </div>
