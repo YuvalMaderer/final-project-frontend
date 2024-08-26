@@ -96,9 +96,12 @@ function Guests({ checkDates, selectedDestination }: GuestProps) {
     }
   }
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const handleSearchClick = (
     ev: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+    ev.preventDefault();
     ev.stopPropagation();
 
     // Create a new object to hold the query parameters
@@ -132,72 +135,72 @@ function Guests({ checkDates, selectedDestination }: GuestProps) {
     updateSearchParams(params, searchParams, setSearchParams);
   };
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <div className="flex p-2 px-4 flex-1 text-left hover:bg-gray-200 rounded-full">
-          <Button
-            variant={null}
-            className="mr-14 flex flex-col self-center text-xs"
-          >
-            <div className="text-black font-600 flex">Who</div>
-            <div className="text-gray-500">{displayText}</div>
-          </Button>
-          <Button
-            className="text-white font-800 p-3 rounded-full flex items-center justify-center"
-            onClick={(ev) => handleSearchClick(ev)}
-          >
-            <Search className="w-4 h-4" />
-          </Button>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="rounded-3xl w-96 relative top-2 right-20">
-        <ScrollArea className="h-72">
-          <DropdownMenuItem>
-            <Card
-              title="Adults"
-              paragraph="Ages 13 or above"
-              count={guestCounts.adults}
-              onIncrement={() => handleIncrement("adults")}
-              onDecrement={() => handleDecrement("adults")}
-              isDecrementDisabled={isAdultDecrementDisabled}
-            />
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Card
-              title="Children"
-              paragraph="Ages 2-12"
-              count={guestCounts.children}
-              onIncrement={() => handleIncrement("children")}
-              onDecrement={() => handleDecrement("children")}
-            />
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Card
-              title="Infants"
-              paragraph="Under 2"
-              count={guestCounts.infants}
-              onIncrement={() => handleIncrement("infants")}
-              onDecrement={() => handleDecrement("infants")}
-            />
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Card
-              title="Pets"
-              paragraph="Bringing a service animal?"
-              count={guestCounts.pets}
-              onIncrement={() => handleIncrement("pets")}
-              onDecrement={() => handleDecrement("pets")}
-            />
-          </DropdownMenuItem>
-        </ScrollArea>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center hover:bg-gray-200 rounded-full">
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <div className="flex p-2 px-4 flex-1 text-left hover:bg-gray-200 rounded-full">
+            <Button
+              variant={null}
+              className="mr-14 text-xs flex flex-col justify-center items-start"
+            >
+              <div className="text-black font-600 flex self-left">Who</div>
+              <div className="text-gray-500">{displayText}</div>
+            </Button>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="rounded-3xl w-96 relative top-2 right-20">
+          <ScrollArea className="h-72">
+            <DropdownMenuItem>
+              <Card
+                title="Adults"
+                paragraph="Ages 13 or above"
+                count={guestCounts.adults}
+                onIncrement={() => handleIncrement("adults")}
+                onDecrement={() => handleDecrement("adults")}
+                isDecrementDisabled={isAdultDecrementDisabled}
+              />
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Card
+                title="Children"
+                paragraph="Ages 2-12"
+                count={guestCounts.children}
+                onIncrement={() => handleIncrement("children")}
+                onDecrement={() => handleDecrement("children")}
+              />
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Card
+                title="Infants"
+                paragraph="Under 2"
+                count={guestCounts.infants}
+                onIncrement={() => handleIncrement("infants")}
+                onDecrement={() => handleDecrement("infants")}
+              />
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Card
+                title="Pets"
+                paragraph="Bringing a service animal?"
+                count={guestCounts.pets}
+                onIncrement={() => handleIncrement("pets")}
+                onDecrement={() => handleDecrement("pets")}
+              />
+            </DropdownMenuItem>
+          </ScrollArea>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Button
+        className="text-white font-800 p-3 rounded-full flex items-center justify-center mr-2"
+        onClick={(ev) => handleSearchClick(ev)}
+      >
+        <Search className="w-4 h-4" />
+      </Button>
+    </div>
   );
 }
 

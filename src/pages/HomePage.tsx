@@ -46,10 +46,15 @@ function HomePage() {
 
   console.log(filters);
 
-  const { data: homes } = useQuery<IHome[]>({
+  const { data: homes = [] } = useQuery<IHome[]>({
     queryKey: ["homes", filters],
     queryFn: () => fetchHomes(filters),
   });
+
+  const position = homes.length > 0 && {
+    lat: homes[0].loc.lat,
+    lng: homes[0].loc.lan,
+  };
 
   return (
     <>
@@ -94,7 +99,7 @@ function HomePage() {
         />
       </div>
       <HomesList homes={homes} />
-      <GoogleMap homes={homes} />
+      {position && <GoogleMap homes={homes} position={position} />}
     </>
   );
 }

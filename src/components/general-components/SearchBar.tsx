@@ -40,7 +40,7 @@ function SearchBar() {
 
   return (
     <div className="flex flex-col items-center text-xs ">
-      <div className="flex gap-2 border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500 w-[50%]">
+      <div className="flex border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500 w-[50%]">
         <div className="p-1 px-4 flex-1 text-left hover:bg-gray-200 rounded-full">
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -139,12 +139,12 @@ function SearchBar() {
             <Button
               variant={null}
               className={cn(
-                " flex gap-8 font-normal self-center text-xs ",
+                " flex font-normal self-center text-xs",
                 !checkDates && "text-muted-foreground"
               )}
             >
-              <div className="hover:bg-gray-200 rounded-full">
-                <div className="text-black font-600  ">Check in</div>
+              <div className="hover:bg-gray-200 rounded-full p-3 pr-10 flex justify-center text-left flex-col">
+                <div className="text-black font-600  text-xs">Check in</div>
 
                 <div className="text-gray-500 font-500">
                   {checkDates && checkDates.from
@@ -154,7 +154,7 @@ function SearchBar() {
                     : "Add dates"}
                 </div>
               </div>
-              <div className="hover:bg-gray-200 rounded-full">
+              <div className="hover:bg-gray-200 rounded-full p-3 pr-10 flex justify-center text-left flex-col">
                 <div className="text-black font-600">Check out</div>
                 <div className="text-gray-500  font-500">
                   {checkDates && checkDates.to
