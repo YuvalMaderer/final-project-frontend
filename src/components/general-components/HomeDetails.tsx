@@ -276,7 +276,7 @@ function HomeDetails() {
                 </Button>
               </DialogTrigger>
 
-              <DialogContent className="max-w-3xl mt-10 mb-10 h-screen overflow-y-auto">
+              <DialogContent className="max-w-3xl mb-10 max-h-[40rem] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="text-xl font-semibold mt-8">
                     What this place offers

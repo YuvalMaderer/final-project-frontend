@@ -1,5 +1,6 @@
 import FilterModal from "@/components/general-components/FilterComponent";
 import HomesList from "@/components/general-components/HomesList";
+import GoogleMap from "@/components/general-components/MapComponent";
 import SearchComponent from "@/components/general-components/SearchComponent";
 import { fetchHomes } from "@/lib/http";
 import { IHome, QueryFilter } from "@/types"; // Ensure QueryFilter is imported
@@ -58,6 +59,8 @@ function HomePage() {
     ...Object.fromEntries(searchParams.entries()),
   };
 
+  console.log(filters);
+
   const { data: homes } = useQuery<IHome[]>({
     queryKey: ["homes", filters],
     queryFn: () => fetchHomes(filters),
@@ -77,6 +80,7 @@ function HomePage() {
         initialFilters={defaultFilters}
       />
       <HomesList homes={homes} />
+      <GoogleMap />
     </>
   );
 }

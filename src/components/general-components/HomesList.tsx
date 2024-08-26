@@ -26,8 +26,6 @@ function HomesList({ homes }: HomesListProps) {
     return overallAverage;
   };
 
-  console.log(homes);
-
   if (!homes) {
     return <p>No homes found.</p>;
   }

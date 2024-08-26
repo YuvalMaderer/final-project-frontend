@@ -202,8 +202,8 @@ const FilterModal: React.FC<ModalProps> = ({
         <div className="">
           <div className="pb-4">
             <h1 className="font-600 text-xl">Type of place</h1>
-            <Tabs defaultValue="anytipe" className="w-[400px]">
-              <TabsContent value="anytipe">
+            <Tabs defaultValue="anytype" className="w-[400px]">
+              <TabsContent value="anytype">
                 Search rooms, entire homes, or any type of place
               </TabsContent>
               <TabsContent value="room">
