@@ -10,7 +10,6 @@ import HomesOnMap from "./PointsOnMap";
 import { IHome } from "@/types";
 
 const googleApiKey: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-console.log(googleApiKey);
 
 interface GoogleMapProps {
   homes: IHome[] | undefined;
