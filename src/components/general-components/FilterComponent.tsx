@@ -4,20 +4,67 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Buttons from "./ButtonsComponent";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { QueryFilter } from "@/types";
+import { BookingOptions, QueryFilter } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHomeCountByFilers } from "@/lib/http";
+import { Switch } from "../ui/switch";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
+import { updateSearchParams } from "@/lib/utils";
+import { SetURLSearchParams } from "react-router-dom";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  setSearchParams: (param: Record<string, string>) => void;
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
   initialFilters: QueryFilter;
 }
+
+const languages: string[] = [
+  "Chinese",
+  "English",
+  "French",
+  "German",
+  "Italian",
+  "Japanese",
+  "Korean",
+  "Portuguese",
+  "Russian",
+  "Spanish",
+  "Arabic",
+  "Croatian",
+  "Czech",
+  "Danish",
+  "Dutch",
+  "Greek",
+  "Hebrew",
+  "Norwegian",
+  "Polish",
+  "Swedish",
+  "Turkish",
+  "Azerbaijani",
+  "Bosnian",
+  "Bulgarian",
+  "Macedonian",
+  "Persian",
+  "Romanian",
+  "Serbian",
+  "Ukrainian",
+];
+
+type LanguageCheck = {
+  [key: string]: boolean;
+};
 
 const FilterModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
+  searchParams,
   setSearchParams,
   initialFilters,
 }) => {
@@ -49,6 +96,13 @@ const FilterModal: React.FC<ModalProps> = ({
     "Smoke alarm": false,
     "Carbon monoxide alarm": false,
   });
+  const [languageCheck, setLanguageCheck] = useState<LanguageCheck>(
+    languages.reduce((acc, language) => {
+      acc[language] = false;
+      return acc;
+    }, {} as LanguageCheck)
+  );
+
   const modalRef = useRef<HTMLDivElement>(null);
   const [showMore, setShowMore] = useState(false);
   const [filters, setFilters] = useState<QueryFilter>({
@@ -63,15 +117,21 @@ const FilterModal: React.FC<ModalProps> = ({
     amenities: undefined,
     capacity: undefined,
     accessibility: undefined,
-    bookingOptions: {
-      InstantBook: false,
-      SelfCheckIn: false,
-      AllowsPets: false,
-    },
+    InstantBook: undefined,
+    SelfCheckIn: undefined,
+    AllowsPets: undefined,
     location: undefined,
     startDate: undefined,
     endDate: undefined,
   });
+
+  const [bookingOptionsCheck, setBookingOptionsCheck] =
+    useState<BookingOptions>({
+      InstantBook: false,
+      SelfCheckIn: false,
+      AllowsPets: false,
+    });
+
   const { data: count } = useQuery<number | string>({
     queryKey: ["count", filters],
     queryFn: () => fetchHomeCountByFilers(filters),
@@ -95,7 +155,11 @@ const FilterModal: React.FC<ModalProps> = ({
     if (filters.bedrooms) params.bedrooms = filters.bedrooms.toString();
     if (filters.beds) params.beds = filters.beds.toString();
     if (filters.bathrooms) params.bathrooms = filters.bathrooms.toString();
-    if (filters.hostLanguage) params.hostLanguage = filters.hostLanguage;
+    if (Array.isArray(filters.hostLanguage)) {
+      params.hostLanguage = filters.hostLanguage.join(",");
+    } else if (filters.hostLanguage) {
+      params.hostLanguage = filters.hostLanguage;
+    }
     if (filters.capacity) params.capacity = filters.capacity.toString();
     if (filters.accessibility)
       params.accessibility = filters.accessibility.toString();
@@ -109,18 +173,18 @@ const FilterModal: React.FC<ModalProps> = ({
     }
 
     // Handle booking options, only add if true
-    if (filters.bookingOptions.InstantBook) {
+    if (filters.InstantBook) {
       params.InstantBook = "true";
     }
-    if (filters.bookingOptions.SelfCheckIn) {
+    if (filters.SelfCheckIn) {
       params.SelfCheckIn = "true";
     }
-    if (filters.bookingOptions.AllowsPets) {
+    if (filters.AllowsPets) {
       params.AllowsPets = "true";
     }
 
     // Update the URL with the new query parameters
-    setSearchParams(params);
+    updateSearchParams(params, searchParams, setSearchParams);
     onClose();
   };
 
@@ -171,6 +235,40 @@ const FilterModal: React.FC<ModalProps> = ({
     }));
   };
 
+  const handleLanguageChange = (language: string) => {
+    setLanguageCheck((prevState) => ({
+      ...prevState,
+      [language]: !prevState[language],
+    }));
+
+    setFilters((prevFilters) => {
+      const updatedLanguages = prevFilters.hostLanguage
+        ? prevFilters.hostLanguage.includes(language)
+          ? prevFilters.hostLanguage.filter((lang) => lang !== language) // Remove the language if it exists
+          : [...prevFilters.hostLanguage, language] // Add the language if it doesn't exist
+        : [language]; // Initialize with the new language if `hostLanguage` is undefined
+
+      return {
+        ...prevFilters,
+        hostLanguage: updatedLanguages,
+      };
+    });
+  };
+
+  const handleSwitchClick = (state: keyof QueryFilter) => {
+    setBookingOptionsCheck((prevState) => {
+      return {
+        ...prevState,
+        [state]: !prevState[state],
+      };
+    });
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [state]: !prevFilters[state] === false ? undefined : true,
+    }));
+  };
+
   if (!show) return null;
 
   return (
@@ -199,7 +297,7 @@ const FilterModal: React.FC<ModalProps> = ({
           <h3 className="font-semibold">Filters</h3>
           <div></div>
         </div>
-        <div className="">
+        <div>
           <div className="pb-4">
             <h1 className="font-600 text-xl">Type of place</h1>
             <Tabs defaultValue="anytype" className="w-[400px]">
@@ -560,9 +658,102 @@ const FilterModal: React.FC<ModalProps> = ({
             </button>
           </div>
           <hr className="pb-4" />
-          <div>
+          <div className="flex flex-col gap-4 pb-4">
             <h1 className="font-600 text-xl pb-2">Booking options</h1>
+            <div className="flex justify-between items-center">
+              <div className="flex flex-col">
+                <Label htmlFor="instant-book" className="text-[16px]">
+                  Instant Book
+                </Label>
+                <Label
+                  htmlFor="instant-book"
+                  className="text-[14px] text-gray-500"
+                >
+                  Listings you can book without waiting for Host approval
+                </Label>
+              </div>
+              <Switch
+                id="instant-book"
+                checked={bookingOptionsCheck.InstantBook}
+                onCheckedChange={() => handleSwitchClick("InstantBook")}
+              />
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="flex flex-col">
+                <Label htmlFor="self-check-in" className="text-[16px]">
+                  Self check-in
+                </Label>
+                <Label
+                  htmlFor="self-check-in"
+                  className="text-[14px] text-gray-500"
+                >
+                  Easy access to the property once you arrive
+                </Label>
+              </div>
+              <Switch
+                id="self-check-in"
+                checked={bookingOptionsCheck.SelfCheckIn}
+                onCheckedChange={() => handleSwitchClick("SelfCheckIn")}
+              />
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="flex flex-col">
+                <Label htmlFor="pets" className="text-[16px]">
+                  Allows pets
+                </Label>
+                <Label
+                  htmlFor="pets"
+                  className="text-[14px] text-gray-500 underline font-bold"
+                >
+                  Bringing a service animal?
+                </Label>
+              </div>
+              <Switch
+                id="pets"
+                checked={bookingOptionsCheck.AllowsPets}
+                onCheckedChange={() => handleSwitchClick("AllowsPets")}
+              />
+            </div>
           </div>
+        </div>
+        <hr className="pb-4" />
+        <div>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Accessibility features</AccordionTrigger>
+              <AccordionContent>
+                Yes. It comes with default styles that matches the other
+                components&apos; aesthetic.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger className="text-[22px] font-bold">
+                Host language
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="grid grid-cols-2 gap-5 pb-4">
+                  {languages.map((language) => {
+                    return (
+                      <div key={language}>
+                        <input
+                          type="checkbox"
+                          id={language}
+                          checked={languageCheck.language}
+                          onChange={() => handleLanguageChange(language)}
+                        />
+                        <label
+                          htmlFor={language}
+                          className="ml-3 text-[16px] font-500"
+                        >
+                          {language}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
         <div>
           <div></div>

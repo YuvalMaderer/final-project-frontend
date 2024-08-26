@@ -5,10 +5,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { updateSearchParams } from "@/lib/utils";
+import { SetURLSearchParams } from "react-router-dom";
 
 type SearchComponentProps = {
   searchParams: URLSearchParams;
-  setSearchParams: (param: Record<string, string>) => void;
+  setSearchParams: SetURLSearchParams;
 };
 
 function SearchComponent({
@@ -155,7 +157,7 @@ function SearchComponent({
   ];
 
   const handleTypeClick = (typeName: string) => {
-    setSearchParams({ type: typeName });
+    updateSearchParams({ type: typeName }, searchParams, setSearchParams);
   };
 
   const isActiveType = (typeName: string) => {

@@ -10,10 +10,17 @@ import { Button } from "../ui/button";
 import { Search } from "lucide-react";
 import Card from "./GuestCard";
 import { ScrollArea } from "../ui/scroll-area";
+import { DateRange } from "@/types";
+import { updateSearchParams } from "@/lib/utils";
+import { useSearchParams } from "react-router-dom";
 
 type GuestType = "adults" | "children" | "infants" | "pets";
+interface GuestProps {
+  checkDates: DateRange | undefined;
+  selectedDestination: string;
+}
 
-function Guests() {
+function Guests({ checkDates, selectedDestination }: GuestProps) {
   const [guestCounts, setGuestCounts] = useState({
     adults: 0,
     children: 0,
@@ -89,6 +96,44 @@ function Guests() {
     }
   }
 
+  const handleSearchClick = (
+    ev: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    ev.stopPropagation();
+
+    // Create a new object to hold the query parameters
+    const params: Record<string, string> = {};
+
+    // Handle date range updates
+    if (checkDates?.from) {
+      params.checkIn = checkDates.from.toISOString();
+    }
+    if (checkDates?.to) {
+      params.checkOut = checkDates.to.toISOString();
+    }
+
+    // Set destination
+    if (selectedDestination) {
+      params.location = selectedDestination;
+    }
+
+    // Calculate total guests and set the parameter
+    const totalGuests =
+      guestCounts.adults +
+      guestCounts.children +
+      guestCounts.infants +
+      guestCounts.pets;
+
+    if (totalGuests > 0) {
+      params.guests = totalGuests.toString();
+    }
+
+    // Update the URL with new search parameters
+    updateSearchParams(params, searchParams, setSearchParams);
+  };
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -100,7 +145,10 @@ function Guests() {
             <div className="text-black font-600 flex">Who</div>
             <div className="text-gray-500">{displayText}</div>
           </Button>
-          <Button className="text-white font-800 p-3 rounded-full flex items-center justify-center">
+          <Button
+            className="text-white font-800 p-3 rounded-full flex items-center justify-center"
+            onClick={(ev) => handleSearchClick(ev)}
+          >
             <Search className="w-4 h-4" />
           </Button>
         </div>

@@ -11,11 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Guests from "./Guests";
-
-type DateRange = {
-  from: Date | undefined;
-  to: Date | undefined;
-};
+import { DateRange } from "@/types";
 
 const monthNames = [
   "Jan",
@@ -177,11 +173,15 @@ function SearchBar() {
               onSelect={(ev) => {
                 setCheckDates(ev as DateRange | undefined);
               }}
+              numberOfMonths={2}
               initialFocus
             />
           </PopoverContent>
         </Popover>
-        <Guests />
+        <Guests
+          checkDates={checkDates}
+          selectedDestination={selectedDestination}
+        />
       </div>
     </div>
   );

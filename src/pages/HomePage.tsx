@@ -3,9 +3,9 @@ import HomesList from "@/components/general-components/HomesList";
 import SearchComponent from "@/components/general-components/SearchComponent";
 import GoogleMap from "@/components/googleMaps/GoogleMap";
 import { fetchHomes } from "@/lib/http";
-import { IHome, QueryFilter } from "@/types"; // Ensure QueryFilter is imported
+import { IHome, QueryFilter } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-day-picker";
 import { useSearchParams } from "react-router-dom";
 
@@ -16,11 +16,9 @@ function HomePage() {
   const defaultFilters: QueryFilter = {
     type: undefined,
     roomType: undefined,
-    bookingOptions: {
-      InstantBook: false,
-      SelfCheckIn: false,
-      AllowsPets: false,
-    },
+    InstantBook: undefined,
+    SelfCheckIn: undefined,
+    AllowsPets: undefined,
     minPrice: undefined,
     maxPrice: undefined,
     bedrooms: undefined,
@@ -35,30 +33,18 @@ function HomePage() {
     endDate: undefined,
   };
 
-  // Merge function for setting searchParams
-  const updateSearchParams = (
-    newParams: Record<string, string | undefined>
-  ) => {
-    const currentParams = Object.fromEntries(searchParams.entries());
-    const mergedParams = { ...currentParams, ...newParams };
+  const [filters, setFilters] = useState<QueryFilter>(defaultFilters);
 
-    // Remove any keys with undefined values (optional)
-    Object.keys(mergedParams).forEach(
-      (key) => mergedParams[key] === undefined && delete mergedParams[key]
-    );
+  // Effect to update filters when searchParams change
+  useEffect(() => {
+    const newFilters = {
+      ...defaultFilters,
+      ...Object.fromEntries(searchParams.entries()),
+    };
+    setFilters(newFilters);
+  }, [searchParams]);
 
-    // Convert mergedParams back to URLSearchParams
-    const searchParamsObject = new URLSearchParams(
-      mergedParams as Record<string, string>
-    );
-
-    setSearchParams(searchParamsObject);
-  };
-
-  const filters: QueryFilter = {
-    ...defaultFilters,
-    ...Object.fromEntries(searchParams.entries()),
-  };
+  console.log(filters);
 
   const { data: homes } = useQuery<IHome[]>({
     queryKey: ["homes", filters],
@@ -70,7 +56,7 @@ function HomePage() {
       <div className="flex justify-center items-center gap-16 pb-10">
         <SearchComponent
           searchParams={searchParams}
-          setSearchParams={updateSearchParams} // Use the new merging function
+          setSearchParams={setSearchParams}
         />
         <Button
           onClick={() => setModalOpen(true)}
@@ -102,7 +88,8 @@ function HomePage() {
         <FilterModal
           isOpen={isModalOpen}
           onClose={() => setModalOpen(false)}
-          setSearchParams={updateSearchParams} // Use the new merging function
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
           initialFilters={defaultFilters}
         />
       </div>

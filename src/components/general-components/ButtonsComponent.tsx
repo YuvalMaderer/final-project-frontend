@@ -1,31 +1,9 @@
+import { QueryFilter } from "@/types";
 import React, { useState } from "react";
-
-// Use your existing QueryFilter type
-interface QueryFilter {
-  type?: string;
-  roomType?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  bedrooms?: string;
-  beds?: string;
-  bathrooms?: string;
-  hostLanguage?: string;
-  amenities?: string[];
-  capacity?: number;
-  accessibility?: boolean;
-  bookingOptions: {
-    InstantBook: boolean;
-    SelfCheckIn: boolean;
-    AllowsPets: boolean;
-  };
-  location?: string;
-  startDate?: Date;
-  endDate?: Date;
-}
 
 interface ButtonsProps {
   setFilters: React.Dispatch<React.SetStateAction<QueryFilter>>;
-  filterType: keyof QueryFilter; // Using keyof QueryFilter ensures type safety for filterType
+  filterType: keyof QueryFilter;
 }
 
 const Buttons: React.FC<ButtonsProps> = ({ setFilters, filterType }) => {

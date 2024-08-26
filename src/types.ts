@@ -55,6 +55,7 @@ export interface IHome {
     InstantBook: boolean;
     SelfCheckIn: boolean;
     AllowsPets: boolean;
+    [key: string]: boolean;
   };
 
 // src/types.ts
@@ -66,12 +67,19 @@ export interface QueryFilter {
   bedrooms?: string;
   beds?: string;
   bathrooms?: string;
-  hostLanguage?: string;
+  hostLanguage?: string[]; // This should be an array of strings
   amenities?: string[];
   capacity?: number;
-  accessibility?: boolean | undefined;
-  bookingOptions: BookingOptions
+  accessibility?: boolean;
+  InstantBook?: boolean,
+  SelfCheckIn?: boolean,
+  AllowsPets?: boolean,
   location?: string;
   startDate?: Date;
   endDate?: Date;
 }
+
+export type DateRange = {
+  from: Date | undefined;
+  to: Date | undefined;
+};
