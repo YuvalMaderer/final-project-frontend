@@ -2,14 +2,14 @@ import { IHome } from "@/types";
 import { AdvancedMarker, InfoWindow, Pin } from "@vis.gl/react-google-maps";
 import { useState } from "react";
 
-export type Props = { points: IHome[] };
+export type Props = { points: IHome[] | undefined };
 
 function HomesOnMap({ points }: Props) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
     <>
-      {points.map((point) => {
+      {points?.map((point) => {
         const position = {
           lat: point.loc.lat,
           lng: point.loc.lan,

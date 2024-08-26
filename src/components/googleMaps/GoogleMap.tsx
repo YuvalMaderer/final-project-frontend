@@ -13,7 +13,7 @@ const googleApiKey: string = import.meta.env.VITE_GOOGLE_API_KEY;
 console.log(googleApiKey);
 
 interface GoogleMapProps {
-  homes: IHome[];
+  homes: IHome[] | undefined;
 }
 
 export default function GoogleMap({ homes }: GoogleMapProps) {
