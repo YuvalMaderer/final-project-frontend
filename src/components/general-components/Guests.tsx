@@ -13,16 +13,33 @@ import { ScrollArea } from "../ui/scroll-area";
 import { DateRange } from "@/types";
 import { updateSearchParams } from "@/lib/utils";
 import { useSearchParams } from "react-router-dom";
+import cn from "classnames";
 
 type GuestType = "adults" | "children" | "infants" | "pets";
+
 interface GuestProps {
   checkDates: DateRange | undefined;
-  selectedDestination: string;
+  selectedDestination?: string;
+  className?: string; // Prop for custom styles on the container
+  dropdownClassName?: string; // Prop for custom styles on the dropdown content
+  showSearchButton?: boolean; // Prop to control whether the search button is shown
+  label?: string; // Prop for customizable label text
+  labelClassName?: string; // Prop for custom styles on the label text
+  initializeWithOneAdult?: boolean; // Prop to initialize with one adult and control decrement behavior
 }
 
-function Guests({ checkDates, selectedDestination }: GuestProps) {
+function Guests({
+  checkDates,
+  selectedDestination,
+  className,
+  dropdownClassName,
+  showSearchButton = true,
+  label = "Who",
+  labelClassName = "text-black font-600",
+  initializeWithOneAdult = false,
+}: GuestProps) {
   const [guestCounts, setGuestCounts] = useState({
-    adults: 0,
+    adults: initializeWithOneAdult ? 1 : 0,
     children: 0,
     infants: 0,
     pets: 0,
@@ -49,18 +66,30 @@ function Guests({ checkDates, selectedDestination }: GuestProps) {
     setGuestCounts((prevCounts) => {
       if (key === "adults") {
         const { children, infants, pets } = prevCounts;
-        if (children === 0 && infants === 0 && pets === 0) {
-          return {
-            ...prevCounts,
-            adults: prevCounts.adults > 0 ? prevCounts.adults - 1 : 0,
-          };
-        } else if (prevCounts.adults > 1) {
+        if (
+          initializeWithOneAdult &&
+          prevCounts.adults === 1 &&
+          children === 0 &&
+          infants === 0 &&
+          pets === 0
+        ) {
+          return prevCounts; // Prevent decrement if it's the only adult and no other guests
+        } else if (prevCounts.adults > 0) {
+          // Check if other guest types are greater than 0
+          if (
+            prevCounts.adults === 1 &&
+            (prevCounts.children > 0 ||
+              prevCounts.infants > 0 ||
+              prevCounts.pets > 0)
+          ) {
+            return prevCounts; // Prevent decrement to 0 if there are other guests
+          }
           return {
             ...prevCounts,
             adults: prevCounts.adults - 1,
           };
         } else {
-          return prevCounts; // Prevent decrement to 0 if other counts are non-zero
+          return prevCounts; // Prevent decrement below zero
         }
       } else {
         return {
@@ -72,6 +101,7 @@ function Guests({ checkDates, selectedDestination }: GuestProps) {
   };
 
   const isAdultDecrementDisabled =
+    initializeWithOneAdult &&
     guestCounts.adults === 1 &&
     (guestCounts.children > 0 ||
       guestCounts.infants > 0 ||
@@ -104,10 +134,8 @@ function Guests({ checkDates, selectedDestination }: GuestProps) {
     ev.preventDefault();
     ev.stopPropagation();
 
-    // Create a new object to hold the query parameters
     const params: Record<string, string> = {};
 
-    // Handle date range updates
     if (checkDates?.from) {
       params.checkIn = checkDates.from.toISOString();
     }
@@ -115,12 +143,10 @@ function Guests({ checkDates, selectedDestination }: GuestProps) {
       params.checkOut = checkDates.to.toISOString();
     }
 
-    // Set destination
     if (selectedDestination) {
       params.location = selectedDestination;
     }
 
-    // Calculate total guests and set the parameter
     const totalGuests =
       guestCounts.adults +
       guestCounts.children +
@@ -131,25 +157,31 @@ function Guests({ checkDates, selectedDestination }: GuestProps) {
       params.guests = totalGuests.toString();
     }
 
-    // Update the URL with new search parameters
     updateSearchParams(params, searchParams, setSearchParams);
   };
 
   return (
-    <div className="flex items-center hover:bg-gray-200 rounded-full">
+    <div
+      className={cn(
+        "flex items-center hover:bg-gray-200 rounded-full",
+        className
+      )}
+    >
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <div className="flex p-2 px-4 flex-1 text-left hover:bg-gray-200 rounded-full">
+          <div className="flex p-2 px-4 flex-1 text-left rounded-full">
             <Button
               variant={null}
               className="mr-14 text-xs flex flex-col justify-center items-start"
             >
-              <div className="text-black font-600 flex self-left">Who</div>
+              <div className={labelClassName}>{label}</div>
               <div className="text-gray-500">{displayText}</div>
             </Button>
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="rounded-3xl w-96 relative top-2 right-20">
+        <DropdownMenuContent
+          className={cn("w-96 rounded-lg", dropdownClassName)}
+        >
           <ScrollArea className="h-72">
             <DropdownMenuItem>
               <Card
@@ -194,12 +226,14 @@ function Guests({ checkDates, selectedDestination }: GuestProps) {
           </ScrollArea>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Button
-        className="text-white font-800 p-3 rounded-full flex items-center justify-center mr-2"
-        onClick={(ev) => handleSearchClick(ev)}
-      >
-        <Search className="w-4 h-4" />
-      </Button>
+      {showSearchButton && (
+        <Button
+          className="text-white font-800 p-3 rounded-full flex items-center justify-center mr-2"
+          onClick={(ev) => handleSearchClick(ev)}
+        >
+          <Search className="w-4 h-4" />
+        </Button>
+      )}
     </div>
   );
 }
