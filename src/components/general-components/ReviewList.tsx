@@ -6,15 +6,21 @@ import { IReview } from "@/types";
 interface ReviewListProps {
   reviews: IReview[];
   limit?: number;
+  singleColumn?: boolean;
+  searchTerm?: string;
+  isFilterApplied?: boolean;
 }
 
-const ReviewList: React.FC<ReviewListProps> = ({ reviews, limit }) => {
+const ReviewList: React.FC<ReviewListProps> = ({
+  reviews,
+  limit,
+  singleColumn,
+  searchTerm,
+  isFilterApplied,
+}) => {
   const displayedReviews = limit ? reviews.slice(0, limit) : reviews;
 
   // Utility functions
-  const getRandomNumber = (min: number, max: number) =>
-    Math.floor(Math.random() * (max - min + 1)) + min;
-
   const calculateAverageRating = (ratings: { [key: string]: number }) => {
     const total = Object.values(ratings).reduce(
       (acc, rating) => acc + rating,
@@ -34,9 +40,9 @@ const ReviewList: React.FC<ReviewListProps> = ({ reviews, limit }) => {
         {Array(fullStars)
           .fill(null)
           .map((_, index) => (
-            <StarIcon key={`full-${index}`} className="w-4 h-4 " />
+            <StarIcon key={`full-${index}`} className="w-4 h-4" />
           ))}
-        {hasHalfStar && <StarIcon key="half" className="w-4 h-4 " />}
+        {hasHalfStar && <StarIcon key="half" className="w-4 h-4" />}
         {Array(emptyStars)
           .fill(null)
           .map((_, index) => (
@@ -49,17 +55,38 @@ const ReviewList: React.FC<ReviewListProps> = ({ reviews, limit }) => {
     );
   };
 
+  const highlightText = (text: string) => {
+    if (!isFilterApplied || !searchTerm) return text;
+
+    // Create a regex pattern to match the search term, case-insensitive
+    const pattern = new RegExp(`(${searchTerm})`, "gi");
+    const parts = text.split(pattern);
+
+    return parts.map((part, index) =>
+      part.toLowerCase() === searchTerm.toLowerCase() ? (
+        <mark key={index} className="bg-orange-300">
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t">
+    <div
+      className={`grid ${
+        singleColumn ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"
+      } gap-4 `}
+    >
       {displayedReviews.map((review, index) => {
         const averageRating = calculateAverageRating(review.rate);
         const reviewDate = new Date(review.at);
         const month = reviewDate.toLocaleString("default", { month: "long" });
         const year = reviewDate.getFullYear();
-        const randomYears = getRandomNumber(1, 20);
 
         return (
-          <div key={index} className="mt-4 p-4">
+          <div key={index} className=" p-4">
             <div className="flex gap-4 mb-2 items-center">
               <img
                 src={review.by.imgUrl}
@@ -68,7 +95,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ reviews, limit }) => {
               />
               <div className="flex-1">
                 <p className="font-semibold">{review.by.fullname}</p>
-                <p className="text-sm">{`${randomYears} years on Airbnb`}</p>
+                <p className="text-xs">{`Airbnb member`}</p>
               </div>
             </div>
             <div className="flex items-center gap-4 mb-2">
@@ -77,7 +104,9 @@ const ReviewList: React.FC<ReviewListProps> = ({ reviews, limit }) => {
               </div>
               <p className="text-sm font-500">{`${month} ${year}`}</p>
             </div>
-            <p className="text-sm font-500 max-w-96">{review.txt}</p>
+            <p className="text-sm font-500 max-w-96">
+              {highlightText(review.txt)}
+            </p>
           </div>
         );
       })}
