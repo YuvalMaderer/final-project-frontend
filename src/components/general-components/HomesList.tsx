@@ -1,31 +1,13 @@
 import { IHome } from "@/types";
 import { Star } from "lucide-react";
 import HomeCarousel from "./HomeCarousel";
-import { IReview } from "@/types";
+import { calculateOverallAverageRating } from "@/lib/utils";
 
 type HomesListProps = {
   homes: IHome[] | undefined; // Define homes as an array of IHome objects
 };
 
 function HomesList({ homes }: HomesListProps) {
-  const calculateOverallAverageRating = (reviews: IReview[]) => {
-    let totalRating = 0;
-    const numCategories = 6;
-    reviews.forEach((review) => {
-      totalRating += review.rate.Accuracy;
-      totalRating += review.rate["Check-in"];
-      totalRating += review.rate.Cleanliness;
-      totalRating += review.rate.Communication;
-      totalRating += review.rate.Location;
-      totalRating += review.rate.Value;
-    });
-    const overallAverage = (
-      totalRating /
-      (numCategories * reviews.length)
-    ).toFixed(1);
-    return overallAverage;
-  };
-
   if (!homes) {
     return <p>No homes found.</p>;
   }
