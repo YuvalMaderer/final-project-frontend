@@ -57,7 +57,27 @@ const languages: string[] = [
   "Ukrainian",
 ];
 
+const accessibilityFeatures: string[] = [
+  "Step-free guest entrance",
+  "Guest entrance wider than 32 inches",
+  "Accessible parking spot",
+  "Step-free path to the guest entrance",
+  "Step-free bedroom access",
+  "Bedroom entrance wider than 32 inches",
+  "Step-free bathroom access",
+  "Bathroom entrance wider than 32 inches",
+  "Toilet grab bar",
+  "Shower grab bar",
+  "Step-free shower",
+  "Shower or bath chair",
+  "Ceiling or mobile hoist",
+];
+
 type LanguageCheck = {
+  [key: string]: boolean;
+};
+
+type AccessibilityCheck = {
   [key: string]: boolean;
 };
 
@@ -102,6 +122,14 @@ const FilterModal: React.FC<ModalProps> = ({
       return acc;
     }, {} as LanguageCheck)
   );
+
+  const [accessibilityCheck, setAccessibilityCheck] =
+    useState<AccessibilityCheck>(
+      accessibilityFeatures.reduce((acc, feature) => {
+        acc[feature] = false;
+        return acc;
+      }, {} as AccessibilityCheck)
+    );
 
   const modalRef = useRef<HTMLDivElement>(null);
   const [showMore, setShowMore] = useState(false);
@@ -267,6 +295,26 @@ const FilterModal: React.FC<ModalProps> = ({
       ...prevFilters,
       [state]: !prevFilters[state] === false ? undefined : true,
     }));
+  };
+
+  const handleAccessibilityChange = (access: string) => {
+    setAccessibilityCheck((prevState) => ({
+      ...prevState,
+      [access]: !prevState[access],
+    }));
+
+    setFilters((prevFilters) => {
+      const updatesAccessibility = prevFilters.accessibility
+        ? prevFilters.accessibility.includes(access)
+          ? prevFilters.accessibility.filter((acc) => acc !== access)
+          : [...prevFilters.accessibility, access]
+        : [access];
+
+      return {
+        ...prevFilters,
+        accessibility: updatesAccessibility,
+      };
+    });
   };
 
   if (!show) return null;
@@ -720,10 +768,32 @@ const FilterModal: React.FC<ModalProps> = ({
         <div>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-2">
-              <AccordionTrigger>Accessibility features</AccordionTrigger>
+              <AccordionTrigger className="text-[22px] font-bold">
+                Accessibility features
+              </AccordionTrigger>
               <AccordionContent>
-                Yes. It comes with default styles that matches the other
-                components&apos; aesthetic.
+                <div className="grid grid-cols-2 gap-5 pb-4">
+                  {accessibilityFeatures.map((accessibility) => {
+                    return (
+                      <div key={accessibility}>
+                        <input
+                          type="checkbox"
+                          id={accessibility}
+                          checked={accessibilityCheck.accessibility}
+                          onChange={() =>
+                            handleAccessibilityChange(accessibility)
+                          }
+                        />
+                        <label
+                          htmlFor={accessibility}
+                          className="ml-3 text-[16px] font-500"
+                        >
+                          {accessibility}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">

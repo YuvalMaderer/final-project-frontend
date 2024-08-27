@@ -70,7 +70,7 @@ export interface QueryFilter {
   hostLanguage?: string[]; // This should be an array of strings
   amenities?: string[];
   capacity?: number;
-  accessibility?: boolean;
+  accessibility?: string[];
   InstantBook?: boolean,
   SelfCheckIn?: boolean,
   AllowsPets?: boolean,
