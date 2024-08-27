@@ -1,10 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import HeaderComponent from "./components/general-components/HeaderComponent";
 import HomePage from "./pages/HomePage";
 import HomeDetailsPage from "./pages/HomeDetailsPage";
-import BecomeAhostLayout from "./layouts/becomeAhostLayout";
 import MainLayout from "./layouts/MainLayout";
 import StepOnePage from "./pages/becomeAhostPages/StepOnePage";
+import BecomeAhostLayout from "./layouts/BecomeAhostLayout";
 
 function App() {
   return (

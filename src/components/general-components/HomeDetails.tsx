@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHomeById } from "@/lib/http";
-import { IHome } from "@/types";
+import { DateRange, IHome } from "@/types";
 import { RiShare2Line } from "react-icons/ri";
 import { IReview } from "@/types";
 import { Heart, Star } from "lucide-react";
@@ -16,9 +16,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import RatingBreakdown from "./RatingBreackdown";
+import { Calendar } from "../ui/calendar";
+import { useState } from "react";
 
 function HomeDetails() {
   const { id } = useParams<{ id: string }>();
+  const [checkDates, setCheckDates] = useState<DateRange | undefined>(
+    undefined
+  );
 
   const {
     data: home,
@@ -301,12 +306,44 @@ function HomeDetails() {
             </Dialog>
           )}
         </div>
+        <hr className="mt-10" />
+
+        {/* dates */}
+
+        <div className="mt-10 flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xl font-600">Select check-in date</p>
+            <p className="text-xs text-gray-600 font-500">
+              Minimum stay: 1 nights
+            </p>
+          </div>
+          <Calendar
+            classNames={{
+              months:
+                "flex w-full flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 flex-1",
+              month: "space-y-4 w-full flex flex-col",
+              table: "w-full h-full border-collapse space-y-1",
+              head_row: "",
+              row: "w-full mt-2",
+            }}
+            mode="range"
+            selected={checkDates}
+            onSelect={(ev) => {
+              setCheckDates(ev as DateRange | undefined);
+            }}
+            fromDate={new Date()}
+            numberOfMonths={2}
+            initialFocus
+          />
+        </div>
       </div>
       <hr className="mt-10" />
 
       {/* Rating Breakdown */}
 
       <RatingBreakdown reviews={home.reviews} />
+
+      <hr className="mt-10" />
 
       {/* Reviews */}
       <ReviewsSection reviews={home.reviews} />

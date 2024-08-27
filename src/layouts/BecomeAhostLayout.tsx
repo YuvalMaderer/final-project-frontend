@@ -1,6 +1,6 @@
 import BecomeAhostFooter from "@/components/becomeAhostComponents/BecomeAhostFooter";
-import BecomeAhostHeader from "@/components/becomeAhostComponents/becomeAhostHeader";
-import React from "react";
+import BecomeAhostHeader from "@/components/becomeAhostComponents/BecomeAhostHeader";
+
 import { Outlet } from "react-router-dom";
 
 function BecomeAhostLayout() {
