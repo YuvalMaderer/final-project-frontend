@@ -9,7 +9,7 @@ function MainLayout() {
   return (
     <>
       <HeaderComponent />
-      <Outlet />
+<Outlet/>
     </>
   );
 }
