@@ -169,7 +169,7 @@ function Guests({
     >
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <div className="flex p-2 px-4 flex-1 text-left rounded-full">
+          <div className="flex p-2 flex-1 text-left rounded-full ">
             <Button
               variant={null}
               className="mr-14 text-xs flex flex-col justify-center items-start"
