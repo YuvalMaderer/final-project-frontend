@@ -6,21 +6,4 @@ declare module "@reach/combobox" {
   export const ComboboxOption: React.FC<any>;
 }
 
-declare module 'react-select-country-list' {
-  interface CountryListOption {
-    label: string;
-    value: string;
-  }
 
-  interface CountryList {
-    getData(): CountryListOption[];
-    getLabels(): string[];
-    getValues(): string[];
-    getLabel(value: string): string;
-    getValue(label: string): string;
-  }
-
-  const countryList: () => CountryList;
-
-  export default countryList;
-}
