@@ -46,7 +46,7 @@ function HomePage() {
 
   console.log(filters);
 
-  const { data: homes = [] } = useQuery<IHome[]>({
+  const { data: homes = [], isLoading } = useQuery<IHome[]>({
     queryKey: ["homes", filters],
     queryFn: () => fetchHomes(filters),
   });
@@ -98,7 +98,7 @@ function HomePage() {
           initialFilters={defaultFilters}
         />
       </div>
-      <HomesList homes={homes} />
+      <HomesList homes={homes} isLoading={isLoading} />
       {position && <GoogleMap homes={homes} position={position} />}
     </>
   );

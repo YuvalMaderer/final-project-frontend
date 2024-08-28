@@ -775,7 +775,7 @@ const FilterModal: React.FC<ModalProps> = ({
                 <div className="grid grid-cols-2 gap-5 pb-4">
                   {accessibilityFeatures.map((accessibility) => {
                     return (
-                      <div key={accessibility}>
+                      <div key={accessibility} className="flex items-center">
                         <input
                           type="checkbox"
                           id={accessibility}
@@ -783,6 +783,12 @@ const FilterModal: React.FC<ModalProps> = ({
                           onChange={() =>
                             handleAccessibilityChange(accessibility)
                           }
+                          className="w-5 h-5 border-[1px] border-gray-300 rounded-sm checked:bg-black checked:text-white checked:hover:bg-black hover:bg-gray-200"
+                          style={{
+                            WebkitAppearance: "none",
+                            MozAppearance: "none",
+                            appearance: "none",
+                          }}
                         />
                         <label
                           htmlFor={accessibility}
