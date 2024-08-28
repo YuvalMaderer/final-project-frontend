@@ -7,6 +7,9 @@ import StepOnePage from "./pages/becomeAhostPages/StepOnePage";
 import SelectTypePage from "./pages/becomeAhostPages/SelectTypePage";
 import SelectRoomTypePage from "./pages/becomeAhostPages/SelectRoomTypePage";
 import BecomeAhostLayout from "./layouts/BecomeAhostLayout";
+import LocationMap from "./components/becomeAhostComponents/LocationMap";
+import SelectLocationPage from "./pages/becomeAhostPages/SelectLocationPage";
+import FloorPlan from "./pages/becomeAhostPages/FloorPlan";
 
 function App() {
   return (
@@ -21,6 +24,8 @@ function App() {
           <Route index element={<StepOnePage />} />
           <Route path="selectType" element={<SelectTypePage />} />
           <Route path="selectRoomType" element={<SelectRoomTypePage />} />
+          <Route path="selectLocation" element={<SelectLocationPage />} />
+          <Route path="floorPlan" element={<FloorPlan />} />
         </Route>
       </Routes>
     </>
