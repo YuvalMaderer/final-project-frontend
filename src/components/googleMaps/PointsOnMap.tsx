@@ -1,8 +1,9 @@
 import { calculateOverallAverageRating } from "@/lib/utils";
 import { IHome } from "@/types";
-import { AdvancedMarker, InfoWindow, Pin } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
 import { Star } from "lucide-react";
 import { useState } from "react";
+import HomeCarousel from "../general-components/HomeCarousel";
 
 export type Props = { points: IHome[] | undefined };
 
@@ -23,18 +24,26 @@ function HomesOnMap({ points }: Props) {
               position={position}
               onClick={() => setOpenId(point._id)}
             >
-              <Pin />
+              <div
+                className={` p-2 rounded-full shadow-sm text-[16px] shadow-black font-montserrat font-600 transition-transform transform hover:scale-105 ${
+                  openId === point._id
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
+                }`}
+              >
+                ${point.price}
+              </div>
             </AdvancedMarker>
             {openId === point._id && (
               <InfoWindow
                 position={position}
                 onCloseClick={() => setOpenId(null)}
               >
-                <div className="rounded-lg font-montserrat">
-                  <img
-                    src={point.imgUrls[0]}
-                    alt="image"
-                    className="w-[327px] h-[212px] pb-2"
+                <div className="font-montserrat">
+                  <HomeCarousel
+                    images={point.imgUrls}
+                    name={point.name}
+                    homeId={point._id}
                   />
                   <div className="flex justify-between items-center">
                     <p className="font-500">{point.loc.address}</p>
