@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { IReview } from "@/types";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Search, Star } from "lucide-react";
 import ReviewList from "./ReviewList";
 import { ScrollArea } from "../ui/scroll-area";
@@ -13,7 +13,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const ReviewsSection: React.FC<{ reviews: IReview[] }> = ({ reviews }) => {
+interface ReviewsSectionProps {
+  reviews: IReview[];
+  isDialogOpen: boolean;
+  onDialogOpenChange: (open: boolean) => void;
+}
+
+const ReviewsSection: React.FC<ReviewsSectionProps> = ({
+  reviews,
+  isDialogOpen,
+  onDialogOpenChange,
+}) => {
   const [sortingOption, setSortingOption] = useState<string>("Most recent");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredReviews, setFilteredReviews] = useState<IReview[]>(reviews);
@@ -146,16 +156,7 @@ const ReviewsSection: React.FC<{ reviews: IReview[] }> = ({ reviews }) => {
 
       {totalReviews > 6 && (
         <div className="mt-4">
-          <Dialog>
-            <DialogTrigger>
-              <Button
-                variant={"outline"}
-                className="mt-8 hover:bg-gray-50 p-6 border-black text-sm font-semibold"
-                aria-label={`Show all ${totalReviews} reviews`}
-              >
-                Show all {totalReviews} reviews
-              </Button>
-            </DialogTrigger>
+          <Dialog open={isDialogOpen} onOpenChange={onDialogOpenChange}>
             <DialogContent className="max-w-5xl mb-10 overflow-y-auto px-12 ">
               <div className="flex">
                 <div className="flex lg:w-1/3 gap-10">
@@ -333,6 +334,14 @@ const ReviewsSection: React.FC<{ reviews: IReview[] }> = ({ reviews }) => {
               </div>
             </DialogContent>
           </Dialog>
+          <Button
+            variant={"outline"}
+            className="mt-8 hover:bg-gray-50 p-6 border-black text-sm font-semibold"
+            aria-label={`Show all ${totalReviews} reviews`}
+            onClick={() => onDialogOpenChange(true)}
+          >
+            Show all {totalReviews} reviews
+          </Button>
         </div>
       )}
       <hr className="mt-10 mb-10" />

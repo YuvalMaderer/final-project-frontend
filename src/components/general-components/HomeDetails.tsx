@@ -46,6 +46,7 @@ const monthNames = [
 
 function HomeDetails() {
   const { id } = useParams<{ id: string }>();
+  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const [checkDates, setCheckDates] = useState<DateRange | undefined>(
     undefined
   );
@@ -62,6 +63,10 @@ function HomeDetails() {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading home details</div>;
   if (!home) return <div>No home details available.</div>;
+
+  const handleReviewDialogChange = (open: boolean) => {
+    setIsReviewDialogOpen(open);
+  };
 
   const calculateNights = (checkDates: DateRange | undefined) => {
     if (!checkDates || !checkDates.from || !checkDates.to) return 0;
@@ -149,15 +154,20 @@ function HomeDetails() {
             {[
               `${home.capacity} guest${home.capacity > 1 ? "s" : ""}`,
               `${home.bedrooms} bedroom${home.bedrooms > 1 ? "s" : ""}`,
-              `${home.beds} bed${home.beds > 1 ? "s" : ""}`,
+              home.beds ? `${home.beds} bed${home.beds > 1 ? "s" : ""}` : "",
               `${home.bathrooms} bath${home.bathrooms > 1 ? "s" : ""}`,
-            ].map((detail, index) => (
-              <>
-                <p className="flex items-center">{detail}</p>
-                {index < 3 && <span className=" text-black">•</span>}
-              </>
-            ))}
+            ]
+              .filter((detail) => detail)
+              .map((detail, index, array) => (
+                <>
+                  <p className="flex items-center">{detail}</p>
+                  {index < array.length - 1 && (
+                    <span className="text-black">•</span>
+                  )}
+                </>
+              ))}
           </div>
+
           {/* Rating and Number of Reviews */}
           <div className="flex items-center gap-2 mt-2">
             <div className="flex items-center gap-1">
@@ -167,9 +177,13 @@ function HomeDetails() {
               </p>
             </div>
             <span className=" text-black">•</span>
-            <p className="text-sm underline font-600">
+            <Button
+              variant={null}
+              className="text-sm px-0 underline font-semibold"
+              onClick={() => setIsReviewDialogOpen(true)}
+            >
               {home.reviews.length} review{home.reviews.length > 1 ? "s" : ""}
-            </p>
+            </Button>
           </div>
           <hr className="mt-6" />
           {/* Host Details */}
@@ -371,7 +385,7 @@ function HomeDetails() {
           <Card className="w-[23rem] shadow-xl">
             <CardHeader>
               <CardTitle className="font-400 text-xl">
-                {checkDates ? `₪${home.price} night` : "Add dates for prices"}
+                {checkDates ? `$${home.price} night` : "Add dates for prices"}
               </CardTitle>
             </CardHeader>
 
@@ -458,27 +472,27 @@ function HomeDetails() {
                   </p>
                   <div className="flex justify-between">
                     <p className="underline">
-                      ₪{home.price} x {calculateNights(checkDates)} nights
+                      ${home.price} x {calculateNights(checkDates)} nights
                     </p>
-                    <p>₪{home.price * calculateNights(checkDates)}</p>
+                    <p>${home.price * calculateNights(checkDates)}</p>
                   </div>
                   <div className="flex justify-between">
                     <p className="underline">Cleaning fee</p>
-                    <p>₪{CleaningFee}</p>
+                    <p>${CleaningFee}</p>
                   </div>
                   <div className="flex justify-between">
                     <p className="underline">Airbnb service fee</p>
-                    <p>₪{AirbnbServiceFee}</p>
+                    <p>${AirbnbServiceFee}</p>
                   </div>
                   <div className="flex justify-between">
                     <p className="underline">Taxes</p>
-                    <p>₪{Texas}</p>
+                    <p>${Texas}</p>
                   </div>
                   <hr className="mt-2" />
                   <div className="flex justify-between font-semibold mt-2">
                     <p>Total</p>
                     <p>
-                      ₪
+                      $
                       {home.price * calculateNights(checkDates) +
                         CleaningFee +
                         AirbnbServiceFee +
@@ -500,7 +514,11 @@ function HomeDetails() {
       <hr className="mt-10" />
 
       {/* Reviews */}
-      <ReviewsSection reviews={home.reviews} />
+      <ReviewsSection
+        reviews={home.reviews}
+        isDialogOpen={isReviewDialogOpen}
+        onDialogOpenChange={handleReviewDialogChange}
+      />
     </div>
   );
 }
