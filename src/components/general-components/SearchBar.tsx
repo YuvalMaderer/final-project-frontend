@@ -174,6 +174,7 @@ function SearchBar() {
                 setCheckDates(ev as DateRange | undefined);
               }}
               numberOfMonths={2}
+              fromDate={new Date()}
               initialFocus
             />
           </PopoverContent>

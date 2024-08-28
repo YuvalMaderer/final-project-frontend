@@ -1,7 +1,10 @@
+
 import HomeType from "@/components/becomeAhostComponents/HomeType";
 import React, { useState } from "react";
 
-const types: { icon: string; name: section }[] = [
+
+const types = [
+
   {
     icon: "https://a0.muscache.com/pictures/f60700bc-8ab5-424c-912b-6ef17abc479a.jpg",
     name: "Barn",

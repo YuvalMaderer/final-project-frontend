@@ -1,5 +1,3 @@
-import React from "react";
-
 import homeVideo from "../../assets/add-listing-video-2.mp4";
 
 function StepTwoPage() {

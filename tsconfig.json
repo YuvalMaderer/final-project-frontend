@@ -9,6 +9,7 @@
     }
   ],
   "compilerOptions": {
+    "types": ["react-scroll"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
