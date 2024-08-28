@@ -6,13 +6,13 @@ import StepOnePage from "./pages/becomeAhostPages/StepOnePage";
 
 import SelectTypePage from "./pages/becomeAhostPages/SelectTypePage";
 import SelectRoomTypePage from "./pages/becomeAhostPages/SelectRoomTypePage";
-import BecomeAhostLayout from "./layouts/BecomeAhostLayout";
-import LocationMap from "./components/becomeAhostComponents/LocationMap";
+
 import SelectLocationPage from "./pages/becomeAhostPages/SelectLocationPage";
 import FloorPlan from "./pages/becomeAhostPages/FloorPlan";
 
 import BecomeAhostLayout from "./layouts/BecomeAhostLayout";
 import ReservationPage from "./pages/ReservationPage";
+import StepTwoPage from "./pages/becomeAhostPages/StepTwoPage";
 
 function App() {
   return (
@@ -30,6 +30,7 @@ function App() {
           <Route path="selectRoomType" element={<SelectRoomTypePage />} />
           <Route path="selectLocation" element={<SelectLocationPage />} />
           <Route path="floorPlan" element={<FloorPlan />} />
+          <Route path="stepTwo" element={<StepTwoPage />} />
         </Route>
       </Routes>
     </>

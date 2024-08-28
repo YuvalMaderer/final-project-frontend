@@ -1,16 +1,17 @@
 import { section } from "@/pages/becomeAhostPages/SelectTypePage";
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 interface HomeTypeProps {
   icon: string;
   name: section;
   setSelected: React.Dispatch<React.SetStateAction<section>>;
   selected: section;
-  
 }
 
 function HomeType({ icon, name, selected, setSelected }: HomeTypeProps) {
   const [isClicked, setIsClicked] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleClick = () => {
     setIsClicked(true);
@@ -18,6 +19,7 @@ function HomeType({ icon, name, selected, setSelected }: HomeTypeProps) {
     setTimeout(() => {
       setIsClicked(false);
     }, 150); // Briefly scale down
+    setSearchParams({ step: "selectType" });
   };
 
   return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -7,6 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from "../ui/select";
+import { useSearchParams } from "react-router-dom";
 
 // List of countries and their codes
 const countries = [
@@ -225,6 +226,16 @@ function LocationForm({
   address,
   setAddress,
 }: LocationFormProp) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (city !== "" && street !== "" && address !== "") {
+      setSearchParams({ step: "selectLocation" });
+    } else {
+      setSearchParams({ step: "" });
+    }
+  }, [city, street, address]);
+
   return (
     <div className="">
       <h3 className="text-3xl font-[500] mb-2">Confirm your address</h3>

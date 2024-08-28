@@ -1,6 +1,7 @@
 import RoomType from "@/components/becomeAhostComponents/RoomType";
 import { DoorOpen, House, HousePlus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 interface RoomType {
   icon: JSX.Element;
@@ -15,7 +16,7 @@ const roomType: RoomType[] = [
     description: "Guests have the whole place to themselves",
   },
   {
-    icon: <DoorOpen size={"40px"}/>,
+    icon: <DoorOpen size={"40px"} />,
     name: "A room",
     description:
       "Guests have their own room in a home, plus access to shared spaces",
@@ -37,6 +38,8 @@ export type selection =
 
 function SelectRoomTypePage() {
   const [selected, setSelected] = useState<selection>(undefined);
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => setSearchParams({ step: "" }), []);
   return (
     <div className="flex justify-center h-screen pt-40">
       <div className="space-y-10">

@@ -4,6 +4,7 @@ import BecomeAhostHeader from "@/components/becomeAhostComponents/BecomeAhostHea
 import { Outlet } from "react-router-dom";
 
 function BecomeAhostLayout() {
+ 
   return (
     <div>
       <BecomeAhostHeader />
