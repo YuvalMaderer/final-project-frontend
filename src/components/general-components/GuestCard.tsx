@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
+import { Minus, Plus } from "lucide-react";
 
 type CardProps = {
   title: string;
@@ -21,10 +22,10 @@ const Card: React.FC<CardProps> = ({
   return (
     <div className="flex items-center justify-between p-4 w-full ">
       <div className="">
-        <h3 className="font-600 text-lg">{title}</h3>
+        <h3 className="font-500 text-lg">{title}</h3>
         <p className="text-gray-600 text-sm">{paragraph}</p>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center justify-between gap-4">
         <Button
           onClick={(e) => {
             e.stopPropagation();
@@ -32,20 +33,20 @@ const Card: React.FC<CardProps> = ({
           }}
           disabled={isDecrementDisabled}
           variant="outline"
-          className="mr-2 rounded-full"
+          className=" rounded-full text-xl px-[11px]"
         >
-          -
+          <Minus size={"17px"} />
         </Button>
-        <span className="text-lg font-bold">{count}</span>
+        <span className="text-lg font-[500]">{count}</span>
         <Button
           onClick={(e) => {
             e.stopPropagation();
             onIncrement();
           }}
           variant="outline"
-          className="ml-2  rounded-full"
+          className=" px-[11px]  rounded-full"
         >
-          +
+          <Plus size={"17px"} />
         </Button>
       </div>
     </div>

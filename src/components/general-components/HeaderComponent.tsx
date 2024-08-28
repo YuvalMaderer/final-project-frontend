@@ -42,7 +42,7 @@ function HeaderComponent() {
             </NavLink>
           </div>
           <div className="flex items-center gap-6">
-            <Link to="/airbnb-your-home" className="font-600 text-sm">
+            <Link to="/becomeAhost" className="font-600 text-sm">
               Airbnb your home
             </Link>
             <Globe className="w-4 h-4" />

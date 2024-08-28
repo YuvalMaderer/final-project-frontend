@@ -1,5 +1,6 @@
 import { selection } from "@/pages/becomeAhostPages/SelectRoomTypePage";
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 interface RoomTypeProps {
   selected: selection;
@@ -17,9 +18,11 @@ function RoomType({
   description,
 }: RoomTypeProps) {
   const [isClicked, setIsClicked] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleClick = () => {
     setSelected(name);
+    setSearchParams({ step: "selectRoomType" });
   };
 
   return (
