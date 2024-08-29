@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +13,7 @@ import { DateRange } from "@/types";
 import { updateSearchParams } from "@/lib/utils";
 import { useSearchParams } from "react-router-dom";
 import cn from "classnames";
+import { useGuestContext } from "@/providers/Guest-Context";
 
 type GuestType = "adults" | "children" | "infants" | "pets";
 
@@ -38,12 +38,7 @@ function Guests({
   labelClassName = "text-black font-600",
   initializeWithOneAdult = false,
 }: GuestProps) {
-  const [guestCounts, setGuestCounts] = useState({
-    adults: initializeWithOneAdult ? 1 : 0,
-    children: 0,
-    infants: 0,
-    pets: 0,
-  });
+  const { guestCounts, setGuestCounts } = useGuestContext();
 
   const handleIncrement = (key: GuestType) => {
     setGuestCounts((prevCounts) => {

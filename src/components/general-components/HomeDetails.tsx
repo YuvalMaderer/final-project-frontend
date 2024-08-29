@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHomeById } from "@/lib/http";
 import { DateRange, IHome } from "@/types";
@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { iconMap, AmenityKey } from "./AmenityIconMap";
 import ReviewsSection from "./Reviews";
 import { NavLink } from "react-router-dom";
+
 import {
   Dialog,
   DialogContent,
@@ -26,10 +27,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, updateSearchParams } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import Guests from "./Guests";
 import { Link as ScrollLink } from "react-scroll";
+import { useGuestContext } from "@/providers/Guest-Context";
 const monthNames = [
   "Jan",
   "Feb",
@@ -46,6 +48,7 @@ const monthNames = [
 ];
 
 function HomeDetails() {
+  const { guestCounts } = useGuestContext();
   const { id } = useParams<{ id: string }>();
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const [isStickyHeaderVisible, setIsStickyHeaderVisible] = useState(false);
@@ -55,6 +58,7 @@ function HomeDetails() {
     undefined
   );
   const priceCardRef = useRef<HTMLDivElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const {
     data: home,
@@ -64,6 +68,38 @@ function HomeDetails() {
     queryKey: ["home", id],
     queryFn: () => fetchHomeById(id as string),
   });
+
+  const adjustDateForLocalTimeZone = (date: Date): Date => {
+    const offset = date.getTimezoneOffset() * 60000; // Offset in milliseconds
+    return new Date(date.getTime() - offset);
+  };
+
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    if (checkDates?.from) {
+      const localCheckInDate = adjustDateForLocalTimeZone(checkDates.from);
+      params.checkIn = localCheckInDate.toISOString();
+    }
+    if (checkDates?.to) {
+      const localCheckOutDate = adjustDateForLocalTimeZone(checkDates.to);
+      params.checkOut = localCheckOutDate.toISOString();
+    }
+
+    const totalGuests =
+      guestCounts.adults +
+      guestCounts.children +
+      guestCounts.infants +
+      guestCounts.pets;
+
+    if (totalGuests > 0) {
+      params.guests = totalGuests.toString();
+    }
+    updateSearchParams(params, searchParams, setSearchParams);
+  }, [checkDates, guestCounts, searchParams, setSearchParams]);
+
+  const handleDateChange = (newDates: DateRange | undefined) => {
+    setCheckDates(newDates);
+  };
 
   useEffect(() => {
     const currentRef = priceCardRef.current;
@@ -236,7 +272,19 @@ function HomeDetails() {
                       </p>
                     </div>
 
-                    <NavLink to={`/reservation/${home._id}`}>
+                    <NavLink
+                      to={`/reservation/${
+                        home._id
+                      }/?guests=${guestCounts}/&&checkIn=${
+                        checkDates?.from
+                          ? encodeURIComponent(checkDates.from.toISOString())
+                          : ""
+                      }/&checkOut=${
+                        checkDates?.to
+                          ? encodeURIComponent(checkDates.to.toISOString())
+                          : ""
+                      }`}
+                    >
                       <Button
                         variant={"secondary"}
                         className="text-white p-6 px-10 rounded-lg text-md mr-8"
@@ -526,7 +574,7 @@ function HomeDetails() {
                 mode="range"
                 selected={checkDates}
                 onSelect={(ev) => {
-                  setCheckDates(ev as DateRange | undefined);
+                  handleDateChange(ev as DateRange | undefined);
                 }}
                 fromDate={new Date()}
                 numberOfMonths={2}
@@ -597,7 +645,7 @@ function HomeDetails() {
                           mode="range"
                           selected={checkDates}
                           onSelect={(ev) => {
-                            setCheckDates(ev as DateRange | undefined);
+                            handleDateChange(ev as DateRange | undefined);
                           }}
                           numberOfMonths={2}
                           fromDate={new Date()}
