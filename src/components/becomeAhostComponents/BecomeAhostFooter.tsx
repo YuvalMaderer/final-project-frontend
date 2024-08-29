@@ -25,6 +25,8 @@ function BecomeAhostFooter() {
       navigate("floorPlan");
     } else if (step === "floorPlan") {
       navigate("stepTwo");
+    } else if (step === "stepTwo") {
+      navigate("amenities");
     }
   }
 
@@ -41,6 +43,8 @@ function BecomeAhostFooter() {
       navigate("selectLocation");
     } else if (lastSegment === "stepTwo") {
       navigate("floorPlan");
+    } else if (lastSegment === "amenities") {
+      navigate("stepTwo");
     }
   }
 
