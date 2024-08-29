@@ -206,7 +206,10 @@ function HomeDetails() {
                       smooth={true}
                       duration={500}
                     >
-                      <Button className="text-white p-6 px-5 rounded-lg text-md mr-8">
+                      <Button
+                        variant={"secondary"}
+                        className="text-white p-6 px-1 rounded-lg text-md mr-8"
+                      >
                         Check availability
                       </Button>
                     </ScrollLink>
@@ -233,8 +236,11 @@ function HomeDetails() {
                       </p>
                     </div>
 
-                    <NavLink to="/homes/reservation">
-                      <Button className="text-white p-6 px-10 rounded-lg text-md mr-8">
+                    <NavLink to={`/reservation/${home._id}`}>
+                      <Button
+                        variant={"secondary"}
+                        className="text-white p-6 px-10 rounded-lg text-md mr-8"
+                      >
                         Reserve
                       </Button>
                     </NavLink>
@@ -615,9 +621,12 @@ function HomeDetails() {
                 </CardContent>
 
                 <CardFooter ref={priceCardRef} className="flex flex-col gap-3">
-                  <Button className="w-full text-white text-md py-6">
+                  <Button
+                    variant={"secondary"}
+                    className="w-full text-white text-md py-6"
+                  >
                     {checkDates ? (
-                      <NavLink to="/homes/reservation">Reserve</NavLink>
+                      <NavLink to={`/reservation/${home._id}`}>Reserve</NavLink>
                     ) : (
                       "Check availability"
                     )}

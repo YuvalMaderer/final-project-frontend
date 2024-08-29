@@ -25,7 +25,8 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/homes/:id" element={<HomeDetailsPage />} />
         </Route>
-        <Route path="/homes/reservation" element={<ReservationPage />} />
+
+        <Route path="/reservation/:id" element={<ReservationPage />} />
 
         <Route path="becomeAhost" element={<BecomeAhostLayout />}>
           <Route index element={<StepOnePage />} />
