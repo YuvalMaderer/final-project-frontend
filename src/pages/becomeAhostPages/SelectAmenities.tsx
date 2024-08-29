@@ -201,7 +201,7 @@ function SelectAmenities() {
     AmenityName[]
   >([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => setSearchParams({ step: "" }), []);
+  useEffect(() => setSearchParams({ step: "amenities" }), []);
 
   return (
     <div className="flex justify-center p-5 ">

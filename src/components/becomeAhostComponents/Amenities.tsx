@@ -11,7 +11,6 @@ interface HomeTypeProps {
 
 function Amenities({ icon, name, selected, setSelected }: HomeTypeProps) {
   const [isClicked, setIsClicked] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleClick = () => {
     setIsClicked(true);
@@ -27,8 +26,6 @@ function Amenities({ icon, name, selected, setSelected }: HomeTypeProps) {
     setTimeout(() => {
       setIsClicked(false);
     }, 150); // Briefly scale down
-
-    setSearchParams({ step: "amenities" });
   };
 
   return (

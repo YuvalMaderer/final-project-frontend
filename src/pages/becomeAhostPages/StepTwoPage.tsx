@@ -1,6 +1,10 @@
+import { useSearchParams } from "react-router-dom";
 import homeVideo from "../../assets/add-listing-video-2.mp4";
+import { useEffect } from "react";
 
 function StepTwoPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => setSearchParams({ step: "stepTwo" }), []);
   return (
     <main className="h-screen  px-20 items-center justify-center">
       <div className="flex items-center justify-center mx-auto mt-20">

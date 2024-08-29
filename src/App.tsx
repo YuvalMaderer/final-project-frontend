@@ -32,7 +32,7 @@ function App() {
           <Route path="selectLocation" element={<SelectLocationPage />} />
           <Route path="floorPlan" element={<FloorPlan />} />
           <Route path="stepTwo" element={<StepTwoPage />} />
-          <Route path="Amenities" element={<SelectAmenities />} />
+          <Route path="amenities" element={<SelectAmenities />} />
         </Route>
       </Routes>
     </>
