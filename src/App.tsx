@@ -13,6 +13,7 @@ import FloorPlan from "./pages/becomeAhostPages/FloorPlan";
 import BecomeAhostLayout from "./layouts/BecomeAhostLayout";
 import ReservationPage from "./pages/ReservationPage";
 import StepTwoPage from "./pages/becomeAhostPages/StepTwoPage";
+import SelectAmenities from "./pages/becomeAhostPages/SelectAmenities";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="selectLocation" element={<SelectLocationPage />} />
           <Route path="floorPlan" element={<FloorPlan />} />
           <Route path="stepTwo" element={<StepTwoPage />} />
+          <Route path="Amenities" element={<SelectAmenities />} />
         </Route>
       </Routes>
     </>
