@@ -29,8 +29,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import Guests from "./Guests";
-import { Link } from "react-scroll";
-
+import { Link as ScrollLink } from "react-scroll";
 const monthNames = [
   "Jan",
   "Feb",
@@ -149,38 +148,38 @@ function HomeDetails() {
         <div className="sticky top-0 bg-white border-b z-50 h-20 ">
           <div className="p-4 px-16 flex justify-between items-center self-center h-full">
             <div>
-              <Link
+              <ScrollLink
                 to="photos"
                 smooth={true}
                 duration={500}
                 className="text-[0.85rem] font-semibold px-3 cursor-pointer"
               >
                 Photos
-              </Link>
-              <Link
+              </ScrollLink>
+              <ScrollLink
                 to="amenities"
                 smooth={true}
                 duration={500}
                 className="text-[0.85rem] font-semibold px-3 cursor-pointer"
               >
                 Amenities
-              </Link>
-              <Link
+              </ScrollLink>
+              <ScrollLink
                 to="reviews"
                 smooth={true}
                 duration={500}
                 className="text-[0.85rem] font-semibold px-3 cursor-pointer"
               >
                 Reviews
-              </Link>
-              <Link
+              </ScrollLink>
+              <ScrollLink
                 to="location"
                 smooth={true}
                 duration={500}
                 className="text-[0.85rem] font-semibold px-3 cursor-pointer"
               >
                 Location
-              </Link>
+              </ScrollLink>
             </div>
             <div>
               {!isPriceCardButtonVisible &&
@@ -202,11 +201,15 @@ function HomeDetails() {
                         </div>
                       </p>
                     </div>
-                    <Link to="amenitiesButton" smooth={true} duration={500}>
+                    <ScrollLink
+                      to="amenitiesButton"
+                      smooth={true}
+                      duration={500}
+                    >
                       <Button className="text-white p-6 px-5 rounded-lg text-md mr-8">
                         Check availability
                       </Button>
-                    </Link>
+                    </ScrollLink>
                   </div>
                 ) : (
                   <div className="flex gap-4 items-center">

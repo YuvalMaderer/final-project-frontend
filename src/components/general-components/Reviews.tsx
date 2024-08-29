@@ -154,7 +154,7 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
       {/* Display reviews outside the dialog */}
       <ReviewList reviews={limitedReviews} />
 
-      {totalReviews > 6 && (
+      {totalReviews && (
         <div className="mt-4">
           <Dialog open={isDialogOpen} onOpenChange={onDialogOpenChange}>
             <DialogContent className="max-w-5xl mb-10 overflow-y-auto px-12 ">
