@@ -14,6 +14,8 @@ import BecomeAhostLayout from "./layouts/BecomeAhostLayout";
 import ReservationPage from "./pages/ReservationPage";
 import StepTwoPage from "./pages/becomeAhostPages/StepTwoPage";
 import SelectAmenities from "./pages/becomeAhostPages/SelectAmenities";
+import AddTitlePage from "./pages/becomeAhostPages/AddTitlePage";
+import AddDescriptionPage from "./pages/becomeAhostPages/AddDescriptionPage";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="floorPlan" element={<FloorPlan />} />
           <Route path="stepTwo" element={<StepTwoPage />} />
           <Route path="amenities" element={<SelectAmenities />} />
+          <Route path="addTitle" element={<AddTitlePage />} />
+          <Route path="addDescription" element={<AddDescriptionPage />} />
         </Route>
       </Routes>
     </>
