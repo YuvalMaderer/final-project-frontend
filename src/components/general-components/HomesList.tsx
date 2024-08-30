@@ -1,23 +1,37 @@
 import { IHome } from "@/types";
 import { Star } from "lucide-react";
 import HomeCarousel from "./HomeCarousel";
-import { calculateOverallAverageRating } from "@/lib/utils";
+import { calculateOverallAverageRating, updateSearchParams } from "@/lib/utils";
 import { Skeleton } from "../ui/skeleton";
+import Pagination from "./Pagination";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 type HomesListProps = {
   homes: IHome[] | undefined; // Define homes as an array of IHome objects
   isLoading: boolean;
+  totalHomes: number | undefined;
 };
 
-function HomesList({ homes, isLoading }: HomesListProps) {
+function HomesList({ homes, isLoading, totalHomes }: HomesListProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const homesPerPage = 18;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const paginate = (pageNumber: number) => {
+    const params: Record<string, string> = {};
+    params.page = String(pageNumber);
+    updateSearchParams(params, searchParams, setSearchParams);
+    setCurrentPage(pageNumber);
+  };
+
   if (!homes) {
     return <p>No homes found.</p>;
   }
 
   if (isLoading) {
     return (
-      <div className="w-full flex justify-center items-center min-h-screen">
-        <div className="grid grid-cols-4 gap-4">
+      <div className="w-full flex justify-between min-h-screen">
+        <div className="grid grid-cols-3 gap-4 ml-16">
           {Array.from({ length: 18 }, (_, index) => (
             <div key={index}>
               <Skeleton className="h-[270px] w-[270px] rounded-xl mb-2" />
@@ -30,13 +44,14 @@ function HomesList({ homes, isLoading }: HomesListProps) {
             </div>
           ))}
         </div>
+        <Skeleton className="w-[37%] h-[80vh] sticky top-40" />
       </div>
     );
   }
 
   return (
-    <div className="w-full flex justify-center items-center">
-      <div className="grid grid-cols-4 gap-10">
+    <div className="w-full flex flex-col justify-center items-center">
+      <div className="grid grid-cols-3 gap-10">
         {homes?.map((home) => (
           <div key={home._id} className="w-64">
             <HomeCarousel
@@ -60,6 +75,13 @@ function HomesList({ homes, isLoading }: HomesListProps) {
           </div>
         ))}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalHomes={totalHomes}
+        homesPerPage={homesPerPage}
+        paginate={paginate}
+      />
     </div>
   );
 }

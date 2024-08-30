@@ -13,25 +13,24 @@ interface GoogleMapProps {
 export default function GoogleMap({ homes, position }: GoogleMapProps) {
   const [open, setOpen] = useState(false);
 
-  if (!position) {
-    // Optionally, you can return a loading indicator while the location is being fetched
-    return <div>Loading...</div>;
-  }
-
   if (!googleApiKey) return;
 
   return (
     <APIProvider apiKey={googleApiKey}>
-      <div style={{ height: "80vh", width: "80%" }}>
+      <div
+        style={{
+          height: "80vh",
+          width: "60%",
+          position: "sticky",
+          top: "230px",
+        }}
+      >
         <Map
-          defaultZoom={13}
+          defaultZoom={11}
           defaultCenter={position}
           mapId={"aa21e74a7cd52a60"}
           fullscreenControl={false}
         >
-          {/* <AdvancedMarker position={position} onClick={() => setOpen(true)}>
-            <Pin />
-          </AdvancedMarker> */}
           {open && (
             <InfoWindow
               position={position}

@@ -20,6 +20,18 @@ export const updateSearchParams = (
     (key) => mergedParams[key] === undefined && delete mergedParams[key]
   );
 
+  // Compare the current and merged parameters excluding the "page" key
+  const currentParamsWithoutPage = (({ page, ...rest }) => rest)(currentParams);
+  const mergedParamsWithoutPage = (({ page, ...rest }) => rest)(mergedParams);
+
+  // Check if the "page" parameter is present and skip if so
+  if (
+    Number(mergedParams.page) > 1 &&
+    JSON.stringify(currentParamsWithoutPage) !== JSON.stringify(mergedParamsWithoutPage)
+  ) {
+    mergedParams.page = "1";
+  }
+
   // Convert mergedParams back to URLSearchParams
   const searchParamsObject = new URLSearchParams(
     mergedParams as Record<string, string>
@@ -27,6 +39,10 @@ export const updateSearchParams = (
 
   setSearchParams(searchParamsObject);
 };
+
+
+
+
 
 export const calculateOverallAverageRating = (reviews: IReview[]) => {
   let totalRating = 0;

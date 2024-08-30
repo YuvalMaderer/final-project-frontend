@@ -18,7 +18,7 @@ function HeaderComponent() {
 
   return (
     <>
-      <div>
+      <div className="sticky top-0 bg-white z-50">
         <nav className="flex justify-between items-center p-3 px-20">
           <Link to="/">
             <img

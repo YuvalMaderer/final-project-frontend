@@ -328,13 +328,13 @@ const FilterModal: React.FC<ModalProps> = ({
     >
       <div
         ref={modalRef}
-        className={`bg-white rounded-lg shadow-lg p-6 w-[45rem] max-h-[37rem] overflow-auto transform transition-all duration-500 ease-out ${
+        className={`bg-white rounded-lg shadow-lg p-6 pt-0 pb-0 w-[45rem] max-h-[37rem] overflow-auto transform transition-all duration-500 ease-out ${
           isOpen
             ? "translate-y-0 scale-100 opacity-100"
             : "translate-y-10 opacity-0"
         }`}
       >
-        <div className="flex justify-between items-center border-b pb-2 sticky">
+        <div className="flex justify-between items-center border-b pb-2 sticky top-0 bg-white h-20">
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-800"
@@ -346,54 +346,58 @@ const FilterModal: React.FC<ModalProps> = ({
           <div></div>
         </div>
         <div>
-          <div className="pb-4">
+          <div className="pb-4 ">
             <h1 className="font-600 text-xl">Type of place</h1>
-            <Tabs defaultValue="anytype" className="w-[400px]">
-              <TabsContent value="anytype">
-                Search rooms, entire homes, or any type of place
-              </TabsContent>
-              <TabsContent value="room">
-                A room in a home, plus access to shared spaces.
-              </TabsContent>
-              <TabsContent value="entire">A home all to yourself.</TabsContent>
-              <div className="flex flex-col justify-center items-center">
-                <TabsList>
-                  <TabsTrigger
-                    value="anytype"
-                    onClick={() =>
-                      setFilters((prevFilters) => ({
-                        ...prevFilters,
-                        roomType: undefined,
-                      }))
-                    }
-                  >
-                    Any Type
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="room"
-                    onClick={() =>
-                      setFilters((prevFilters) => ({
-                        ...prevFilters,
-                        roomType: "Private room",
-                      }))
-                    }
-                  >
-                    Room
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="entire"
-                    onClick={() =>
-                      setFilters((prevFilters) => ({
-                        ...prevFilters,
-                        roomType: "Entire home/apt",
-                      }))
-                    }
-                  >
-                    Entire Home
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-            </Tabs>
+            <div className="w-full flex justify-center items-center">
+              <Tabs defaultValue="anytype" className="w-[400px]">
+                <TabsContent value="anytype">
+                  Search rooms, entire homes, or any type of place
+                </TabsContent>
+                <TabsContent value="room">
+                  A room in a home, plus access to shared spaces.
+                </TabsContent>
+                <TabsContent value="entire">
+                  A home all to yourself.
+                </TabsContent>
+                <div className="flex flex-col justify-center items-center">
+                  <TabsList>
+                    <TabsTrigger
+                      value="anytype"
+                      onClick={() =>
+                        setFilters((prevFilters) => ({
+                          ...prevFilters,
+                          roomType: undefined,
+                        }))
+                      }
+                    >
+                      Any Type
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="room"
+                      onClick={() =>
+                        setFilters((prevFilters) => ({
+                          ...prevFilters,
+                          roomType: "Private room",
+                        }))
+                      }
+                    >
+                      Room
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="entire"
+                      onClick={() =>
+                        setFilters((prevFilters) => ({
+                          ...prevFilters,
+                          roomType: "Entire home/apt",
+                        }))
+                      }
+                    >
+                      Entire Home
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              </Tabs>
+            </div>
           </div>
           <hr className="pb-4" />
           <div className="space-y-2 pb-4">
@@ -831,8 +835,7 @@ const FilterModal: React.FC<ModalProps> = ({
             </AccordionItem>
           </Accordion>
         </div>
-        <div>
-          <div></div>
+        <div className="sticky bottom-0 bg-white flex items-center justify-between h-20">
           <Button onClick={handleFilterClick}>Show {count} places</Button>
           <Button onClick={resetFilters}>Reset Filters</Button>
         </div>

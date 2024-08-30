@@ -2,7 +2,7 @@ import FilterModal from "@/components/general-components/FilterComponent";
 import HomesList from "@/components/general-components/HomesList";
 import SearchComponent from "@/components/general-components/SearchComponent";
 import GoogleMap from "@/components/googleMaps/GoogleMap";
-import { fetchHomes } from "@/lib/http";
+import { fetchHomeCountByFilers, fetchHomes } from "@/lib/http";
 import { IHome, QueryFilter } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -51,6 +51,11 @@ function HomePage() {
     queryFn: () => fetchHomes(filters),
   });
 
+  const { data: totalHomes } = useQuery<number | undefined>({
+    queryKey: ["totalHomes", filters],
+    queryFn: () => fetchHomeCountByFilers(filters),
+  });
+
   const position = homes.length > 0 && {
     lat: homes[0].loc.lat,
     lng: homes[0].loc.lan,
@@ -58,7 +63,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex justify-center items-center gap-16 pb-10">
+      <div className="flex justify-center items-center gap-16 bg-white sticky top-40 z-50">
         <SearchComponent
           searchParams={searchParams}
           setSearchParams={setSearchParams}
@@ -98,8 +103,14 @@ function HomePage() {
           initialFilters={defaultFilters}
         />
       </div>
-      <HomesList homes={homes} isLoading={isLoading} />
-      {position && <GoogleMap homes={homes} position={position} />}
+      <div className="flex">
+        <HomesList
+          homes={homes}
+          isLoading={isLoading}
+          totalHomes={totalHomes}
+        />
+        {position && <GoogleMap homes={homes} position={position} />}
+      </div>
     </>
   );
 }
