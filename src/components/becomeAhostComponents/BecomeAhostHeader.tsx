@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 
 function BecomeAhostHeader() {
+  const navigate = useNavigate();
   return (
     <>
       <header className="flex justify-between px-14 pt-9 sticky top-0 z-20 bg-white pb-7">
@@ -25,8 +27,11 @@ function BecomeAhostHeader() {
             Questions?
           </Button>
 
-          <Button className="bg-white border-[1.5px] border-gray-300 rounded-full hover:border-black hover:bg-white">
-            Save & exit
+          <Button
+            onClick={() => navigate("/")}
+            className="bg-white border-[1.5px] border-gray-300 rounded-full hover:border-black hover:bg-white"
+          >
+            exit
           </Button>
         </div>
       </header>

@@ -16,6 +16,8 @@ import StepTwoPage from "./pages/becomeAhostPages/StepTwoPage";
 import SelectAmenities from "./pages/becomeAhostPages/SelectAmenities";
 import AddTitlePage from "./pages/becomeAhostPages/AddTitlePage";
 import AddDescriptionPage from "./pages/becomeAhostPages/AddDescriptionPage";
+import AddPhotosPage from "./pages/becomeAhostPages/AddPhotosPage";
+import StepThreePage from "./pages/becomeAhostPages/StepThreePage";
 
 function App() {
   return (
@@ -36,8 +38,10 @@ function App() {
           <Route path="floorPlan" element={<FloorPlan />} />
           <Route path="stepTwo" element={<StepTwoPage />} />
           <Route path="amenities" element={<SelectAmenities />} />
+          <Route path="addPhotos" element={<AddPhotosPage />} />
           <Route path="addTitle" element={<AddTitlePage />} />
           <Route path="addDescription" element={<AddDescriptionPage />} />
+          <Route path="stepThree" element={<StepThreePage />} />
         </Route>
       </Routes>
     </>
