@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import homeVideo from "../../assets/add-listing-video-3.mp4";
+import { useSearchParams } from "react-router-dom";
 
 function StepThreePage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => setSearchParams({ step: "stepThree" }), []);
   return (
     <main className="h-screen  px-20 items-center justify-center">
       <div className="flex items-center justify-center mx-auto mt-20">

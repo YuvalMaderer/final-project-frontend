@@ -4,6 +4,10 @@ import { Progress } from "../ui/progress";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 function BecomeAhostFooter() {
+  const [progressOneValue, setProgressOneValue] = useState(0);
+  const [progressTowValue, setProgressTowValue] = useState(0);
+  const [progressThreeValue, setProgressThreeValue] = useState(0);
+
   const [searchParams] = useSearchParams();
   const [step, setStep] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -27,6 +31,14 @@ function BecomeAhostFooter() {
       navigate("stepTwo");
     } else if (step === "stepTwo") {
       navigate("amenities");
+    } else if (step === "amenities") {
+      navigate("addPhotos");
+    } else if (step === "addPhotos") {
+      navigate("addTitle");
+    } else if (step === "addTitle") {
+      navigate("addDescription");
+    } else if (step === "addDescription") {
+      navigate("stepThree");
     }
   }
 
@@ -45,15 +57,32 @@ function BecomeAhostFooter() {
       navigate("floorPlan");
     } else if (lastSegment === "amenities") {
       navigate("stepTwo");
+    } else if (lastSegment === "addPhotos") {
+      navigate("amenities");
+    } else if (lastSegment === "addTitle") {
+      navigate("addPhotos");
+    } else if (lastSegment === "addDescription") {
+      navigate("addTitle");
+    } else if (lastSegment === "stepThree") {
+      navigate("addDescription");
     }
   }
 
   return (
     <footer className="sticky bottom-0 left-0 w-full bg-white">
       <div className="flex space-x-1">
-        <Progress value={0} className="rounded-none h-[0.4rem] bg-[#DDDDDD]" />
-        <Progress value={0} className="rounded-none h-[0.4rem] bg-[#DDDDDD]" />
-        <Progress value={0} className="rounded-none h-[0.4rem] bg-[#DDDDDD]" />
+        <Progress
+          value={progressOneValue}
+          className="rounded-none h-[0.4rem] bg-[#DDDDDD]"
+        />
+        <Progress
+          value={progressTowValue}
+          className="rounded-none h-[0.4rem] bg-[#DDDDDD]"
+        />
+        <Progress
+          value={progressThreeValue}
+          className="rounded-none h-[0.4rem] bg-[#DDDDDD]"
+        />
       </div>
       <div className="flex justify-between px-14 py-6">
         <Button
