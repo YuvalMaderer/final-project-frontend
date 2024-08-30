@@ -1,8 +1,11 @@
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function AddDescriptionPage() {
   const [text, setText] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => setSearchParams({ step: "addDescription" }), []);
 
   return (
     <div className="h-screen flex justify-center mt-40">

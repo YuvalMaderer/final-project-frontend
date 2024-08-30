@@ -1,8 +1,11 @@
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function AddTitlePage() {
   const [text, setText] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => setSearchParams({ step: "addTitle" }), []);
 
   return (
     <div className="h-screen flex justify-center mt-40">
@@ -20,12 +23,9 @@ function AddTitlePage() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           maxLength={32}
-      
           className="w-full"
         />
-        <div className=" text-sm text-gray-500 font-600">
-          {text.length}/32 
-        </div>
+        <div className=" text-sm text-gray-500 font-600">{text.length}/32</div>
       </div>
     </div>
   );
