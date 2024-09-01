@@ -300,6 +300,7 @@ function HomeDetails() {
           </div>
         </div>
       )}
+
       <div className="px-20">
         <div className="flex justify-between items-center">
           {/* Name */}
