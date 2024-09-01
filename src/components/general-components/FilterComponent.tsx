@@ -16,6 +16,8 @@ import {
 } from "../ui/accordion";
 import { updateSearchParams } from "@/lib/utils";
 import { SetURLSearchParams } from "react-router-dom";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 interface ModalProps {
   isOpen: boolean;
@@ -403,6 +405,22 @@ const FilterModal: React.FC<ModalProps> = ({
           <div className="space-y-2 pb-4">
             <h1 className="font-600 text-xl pb-2">Price Range</h1>
             <p className="text-xs">Nightly prices including fees and taxes</p>
+            <Slider
+              range
+              min={0}
+              max={1500}
+              step={10}
+              defaultValue={[
+                Number(searchParams.get("minPrice")) || 0,
+                Number(searchParams.get("maxPrice")) || 1500,
+              ]}
+              trackStyle={[{ backgroundColor: "skyblue" }]}
+              handleStyle={[
+                { borderColor: "skyblue" },
+                { borderColor: "skyblue" },
+              ]}
+              railStyle={{ backgroundColor: "lightgray" }}
+            />
           </div>
           <hr className="pb-4" />
           <div className="space-y-4 pb-4">
