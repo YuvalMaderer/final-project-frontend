@@ -24,6 +24,7 @@ import WishlistPage from "./pages/WishlistPage";
 import FooterLayout from "./layouts/FooterLayout";
 import WishlistLayout from "./pages/WishlistLayout";
 import WishlistDetailPage from "./pages/WishlistDetailPage";
+import ReceiptPage from "./pages/becomeAhostPages/ReceiptPage";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
             <Route path="stepThree" element={<StepThreePage />} />
             <Route path="bookType" element={<SelectBookType />} />
             <Route path="addPrice" element={<AddPricePage />} />
+            <Route path="receipt" element={<ReceiptPage />} />
           </Route>
         </Route>
       </Routes>

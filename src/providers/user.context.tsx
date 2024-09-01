@@ -10,9 +10,22 @@ import {
   FC,
 } from "react";
 
+interface IWhishlist {
+  title: string;
+  list: string[];
+}
+
 interface User {
-  fullName: string;
+  _id:string
   email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  birthday: Date;
+  reviews: string[];
+  wishlists: IWhishlist[];
+  picture?: string;
+  phoneNumber?: string;
 }
 
 interface AuthContextType {

@@ -239,6 +239,7 @@ function LocationForm({
     } else {
       setSearchParams({ step: "" });
     }
+
     const selectedCountry = countries.find((c) => c.code === country);
 
     if (selectedCountry) {
@@ -253,7 +254,9 @@ function LocationForm({
   }, [city, street, country]);
 
   // Function to handle location updates
-  function handleLocationUpdate(updatedFields: Partial<Home["loc"]>) {
+  function handleLocationUpdate(
+    updatedFields: Partial<Home["loc"] & { hostLocation?: string }>
+  ) {
     const localStorageHome = localStorage.getItem("newHome");
 
     const homeObject: Home = localStorageHome
@@ -266,7 +269,12 @@ function LocationForm({
         ...homeObject.loc, // Preserve existing loc fields
         ...updatedFields, // Update with new fields
       },
+      host: {
+        ...homeObject.host,
+        location: updatedFields.hostLocation || homeObject.host.location, // Update the host location
+      },
     };
+
     setNewHome(updatedHome);
     localStorage.setItem("newHome", JSON.stringify(updatedHome));
   }

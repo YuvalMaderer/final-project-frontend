@@ -24,6 +24,10 @@ function AddTitlePage() {
     const updatedHome = {
       ...homeObject,
       name: text,
+      host: {
+        ...homeObject.host, // Preserve other properties in the host object
+        about: text, // Update the about field in the host object
+      },
     };
 
     // Update the state and localStorage

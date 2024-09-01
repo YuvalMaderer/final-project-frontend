@@ -17,13 +17,15 @@ import {
   useOutletContext,
   useSearchParams,
 } from "react-router-dom";
+import axios from "axios";
 import { Home } from "@/layouts/BecomeAhostLayout";
+import api from "@/services/api.service";
 
 function AddPhotosPage() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -34,36 +36,34 @@ function AddPhotosPage() {
     } else {
       setSearchParams({ step: "" });
     }
+    // Handle new home update after images are uploaded
     handleNewHomeUpdate();
   }, [selectedImages]);
 
-  function handleNewHomeUpdate() {
+  async function handleNewHomeUpdate() {
+    // Fetch existing home object from local storage
     const localStorageHome = localStorage.getItem("newHome");
-
-    // Check if localStorageHome exists and parse it to an object
     const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
 
-    // Update the homeObject with the new roomType
+    // Update the newHome state with image URLs
     const updatedHome = {
       ...homeObject,
-
-      imgUrls: selectedImages,
+      imgUrls: selectedImages.map((image) => URL.createObjectURL(image)), // Storing URLs temporarily
     };
 
-    // Update the state and localStorage
     setNewHome(updatedHome);
     localStorage.setItem("newHome", JSON.stringify(updatedHome));
+    console.log(newHome);
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const newImages = Array.from(files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setSelectedImages((prevImages) => [...prevImages, ...newImages]);
+      const newFiles = Array.from(files);
+      setSelectedImages((prevImages) => [...prevImages, ...newFiles]);
     }
-    e.target.value = "";
+    e.target.value = ""; // Clear the file input
+    console.log(selectedImages);
   };
 
   const handleDeleteImage = (index: number) => {
@@ -73,6 +73,47 @@ function AddPhotosPage() {
   const handleCancel = () => {
     setSelectedImages([]);
     setIsDialogOpen(false);
+  };
+
+  const handleUpload = async () => {
+    if (selectedImages.length === 0) {
+      return;
+    }
+
+    const formData = new FormData();
+    selectedImages.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    try {
+      const response = await api.post("/images/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data.success) {
+        const imageUrls = response.data.imageUrls;
+        const localStorageHome = localStorage.getItem("newHome");
+        const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+        const updatedHome = {
+          ...homeObject,
+          imgUrls: imageUrls, // Store the URLs from the server
+        };
+
+        setNewHome(updatedHome);
+        localStorage.setItem("newHome", JSON.stringify(updatedHome));
+        setSelectedImages([]); // Clear selected images after upload
+        navigate("/becomeAhost/addTitle"); // Redirect after successful upload
+      } else {
+        console.error("Upload failed");
+      }
+    } catch (error) {
+      console.error("An error occurred while uploading:", error);
+    } finally {
+      setIsDialogOpen(false);
+    }
   };
 
   return (
@@ -152,26 +193,29 @@ function AddPhotosPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   {/* Display selected images with delete button */}
-                  {selectedImages.map((image, index) => (
-                    <div key={index} className="relative">
-                      <img
-                        src={image}
-                        alt={`Selected ${index}`}
-                        className="w-full h-auto object-cover rounded-md"
-                      />
-                      <button
-                        onClick={() => handleDeleteImage(index)}
-                        className="absolute top-1 right-1 bg-black rounded-full p-2 shadow-lg"
-                      >
-                        <Trash2 size={20} color="white" />
-                      </button>
-                      {index === 0 && (
-                        <Button className="absolute top-1 left-1 rounded-full bg-white opacity-90 hover:bg-white">
-                          Cover photo
-                        </Button>
-                      )}
-                    </div>
-                  ))}
+                  {selectedImages.map((image, index) => {
+                    const imageUrl = URL.createObjectURL(image); // Create a URL for each file
+                    return (
+                      <div key={index} className="relative">
+                        <img
+                          src={imageUrl}
+                          alt={`Selected ${index}`}
+                          className="w-full h-auto object-cover rounded-md"
+                        />
+                        <button
+                          onClick={() => handleDeleteImage(index)}
+                          className="absolute top-1 right-1 bg-black rounded-full p-2 shadow-lg"
+                        >
+                          <Trash2 size={20} color="white" />
+                        </button>
+                        {index === 0 && (
+                          <Button className="absolute top-1 left-1 rounded-full bg-white opacity-90 hover:bg-white">
+                            Cover photo
+                          </Button>
+                        )}
+                      </div>
+                    );
+                  })}
 
                   {/* Hidden file input */}
                   <input
@@ -197,11 +241,7 @@ function AddPhotosPage() {
                   </Button>
                   <Button
                     className="text-white bg-gray-800 hover:bg-black cursor-pointer p-6 text-md"
-                    onClick={() => {
-                      if (searchParams.get("step") === "addPhotos") {
-                        navigate("/becomeAhost/addTitle");
-                      }
-                    }}
+                    onClick={handleUpload}
                   >
                     Upload
                   </Button>

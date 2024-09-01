@@ -2,6 +2,8 @@ import { Home } from "@/layouts/BecomeAhostLayout";
 import { section } from "@/pages/becomeAhostPages/SelectTypePage";
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useAuth } from "@/providers/user.context"; // Assuming you have a user context
+import { log } from "console";
 
 interface HomeTypeProps {
   icon: string;
@@ -22,22 +24,44 @@ function HomeType({
 }: HomeTypeProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { loggedInUser } = useAuth(); // Access loggedInUser from context
 
   const handleClick = () => {
     setIsClicked(true);
     setSelected(name);
-    if (name) {
-      const updatedHome = { ...newHome, type: name };
-      setNewHome(updatedHome);
-      localStorage.setItem("newHome", JSON.stringify(updatedHome));
+
+    // Assuming loggedInUser has the structure { user: { ... } }
+    const user = loggedInUser?.user;
+
+    if (name && user) {
+        const updatedHome = {
+            ...newHome,
+            type: name,
+            host: {
+                _id: user._id,
+                fullname: `${user.firstName} ${user.lastName}`,
+                imgUrl: user.picture || "", // Adjust based on your actual user object structure
+                location: user.location || "", // Assuming you have this field in user object
+                about: user.about || "", // Assuming you have this field in user object
+                thumbnailUrl: user.thumbnailUrl || "", // Assuming you have this field in user object
+                isSuperhost: user.isSuperhost || false, // Assuming you have this field in user object
+            },
+        };
+        console.log("Updated Home:", updatedHome); // Check the updated home object
+        setNewHome(updatedHome);
+        localStorage.setItem("newHome", JSON.stringify(updatedHome));
+    } else {
+        console.error("User or name is missing. Cannot update newHome.");
     }
+
     setTimeout(() => {
-      setIsClicked(false);
+        setIsClicked(false);
     }, 150); // Briefly scale down
     setSearchParams({ step: "selectType" });
 
     console.log(newHome);
-  };
+};
+
 
   return (
     <div
