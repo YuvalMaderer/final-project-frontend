@@ -854,8 +854,12 @@ const FilterModal: React.FC<ModalProps> = ({
           </Accordion>
         </div>
         <div className="sticky bottom-0 bg-white flex items-center justify-between h-20">
-          <Button onClick={handleFilterClick}>Show {count} places</Button>
-          <Button onClick={resetFilters}>Reset Filters</Button>
+          <Button variant="new" onClick={handleFilterClick}>
+            Show {count} places
+          </Button>
+          <Button variant="new" onClick={resetFilters}>
+            Reset Filters
+          </Button>
         </div>
       </div>
     </div>

@@ -139,7 +139,13 @@ function Guests({
     }
 
     if (selectedDestination) {
-      params.location = selectedDestination;
+      if (selectedDestination === "United States") {
+        params.location = "USA";
+      } else if (selectedDestination === "I'm flexible") {
+        params.location = "";
+      } else {
+        params.location = selectedDestination;
+      }
     }
 
     const totalGuests =
@@ -149,7 +155,7 @@ function Guests({
       guestCounts.pets;
 
     if (totalGuests > 0) {
-      params.guests = totalGuests.toString();
+      params.capacity = totalGuests.toString();
     }
 
     updateSearchParams(params, searchParams, setSearchParams);

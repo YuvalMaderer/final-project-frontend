@@ -12,9 +12,12 @@ const Buttons: React.FC<ButtonsProps> = ({ setFilters, filterType }) => {
   const [chosenButton, setChosenButton] = useState<string>(buttons[0]);
 
   const handleClick = (value: string): void => {
-    const newValue = value === "Any" ? undefined : value;
+    let newValue = value === "Any" ? undefined : value;
     setChosenButton(value);
 
+    if (newValue === "8+") {
+      newValue = "8";
+    }
     setFilters((prevFilters: QueryFilter) => ({
       ...prevFilters,
       [filterType]: newValue,
