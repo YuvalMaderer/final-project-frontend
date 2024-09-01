@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -7,7 +7,8 @@ import {
   SelectItem,
   SelectTrigger,
 } from "../ui/select";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
+import { Home } from "@/layouts/BecomeAhostLayout";
 
 // List of countries and their codes
 const countries = [
@@ -223,18 +224,52 @@ function LocationForm({
   setStreet,
   country,
   setCountry,
-  address,
+
   setAddress,
 }: LocationFormProp) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [countryCode, setCountryCode] = useState("");
+
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
   useEffect(() => {
-    if (city !== "" && street !== "" && address !== "") {
+    if (city !== "" && street !== "" && country !== "") {
       setSearchParams({ step: "selectLocation" });
     } else {
       setSearchParams({ step: "" });
     }
-  }, [city, street, address]);
+    const selectedCountry = countries.find((c) => c.code === country);
+
+    if (selectedCountry) {
+      handleLocationUpdate({
+        country: selectedCountry.name, // Set the country name
+        countryCode: selectedCountry.code, // Set the country code
+      });
+    }
+
+    handleLocationUpdate({ address: street });
+    handleLocationUpdate({ city: city });
+  }, [city, street, country]);
+
+  // Function to handle location updates
+  function handleLocationUpdate(updatedFields: Partial<Home["loc"]>) {
+    const localStorageHome = localStorage.getItem("newHome");
+
+    const homeObject: Home = localStorageHome
+      ? JSON.parse(localStorageHome)
+      : {};
+
+    const updatedHome = {
+      ...homeObject,
+      loc: {
+        ...homeObject.loc, // Preserve existing loc fields
+        ...updatedFields, // Update with new fields
+      },
+    };
+    setNewHome(updatedHome);
+    localStorage.setItem("newHome", JSON.stringify(updatedHome));
+  }
 
   return (
     <div className="">
@@ -248,7 +283,14 @@ function LocationForm({
           <label className="block text-sm font-medium text-gray-700">
             Country/Region
           </label>
-          <Select value={country} onValueChange={setCountry}>
+          <Select
+            value={country}
+            onValueChange={(value) => {
+              setCountry(value);
+              const selectedCountry = countries.find((c) => c.name === value);
+              selectedCountry && setCountryCode(selectedCountry.code);
+            }}
+          >
             <SelectTrigger className="">
               {country && (
                 <span>{countries.find((c) => c.code === country)?.name}</span>

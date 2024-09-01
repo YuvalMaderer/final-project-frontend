@@ -1,7 +1,8 @@
 import RoomType from "@/components/becomeAhostComponents/RoomType";
+import { Home } from "@/layouts/BecomeAhostLayout";
 import { DoorOpen, House, HousePlus } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 interface RoomType {
   icon: JSX.Element;
@@ -37,6 +38,8 @@ export type selection =
   | undefined;
 
 function SelectRoomTypePage() {
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [selected, setSelected] = useState<selection>(undefined);
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => setSearchParams({ step: "" }), []);
@@ -55,6 +58,8 @@ function SelectRoomTypePage() {
               icon={type.icon}
               name={type.name}
               description={type.description}
+              setNewHome={setNewHome}
+              newHome={newHome}
             />
           ))}
         </section>

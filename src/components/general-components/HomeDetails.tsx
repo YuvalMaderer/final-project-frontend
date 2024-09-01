@@ -218,7 +218,7 @@ function HomeDetails() {
             </div>
             <div>
               {!isPriceCardButtonVisible &&
-                (checkDates === undefined ? (
+                (checkDates === undefined || guestCounts.adults === 0 ? (
                   <div className="flex gap-4 items-center">
                     <div className="flex flex-col">
                       <p>Add dates for prices</p>
@@ -672,7 +672,7 @@ function HomeDetails() {
                     variant={"secondary"}
                     className="w-full text-white text-md py-6"
                   >
-                    {checkDates ? (
+                    {checkDates && guestCounts.adults > 0 ? (
                       <NavLink to={`/reservation/${home._id}`}>Reserve</NavLink>
                     ) : (
                       "Check availability"

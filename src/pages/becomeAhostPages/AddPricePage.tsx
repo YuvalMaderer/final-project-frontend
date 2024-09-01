@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { DollarSign, Pencil } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -8,12 +8,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Home } from "@/layouts/BecomeAhostLayout";
+import { useOutletContext } from "react-router-dom";
 
 function AddPricePage() {
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [price, setPrice] = useState("0");
   const [isFocused, setIsFocused] = useState(false);
   const [guestPriceOpen, setGuestPriceOpen] = useState(true);
   const [youEarmOpen, setYouEarmOpen] = useState(false);
+
+  useEffect(() => handleNewHomeUpdate(), [price]);
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/[^0-9]/g, ""); // Remove any non-numeric characters
@@ -27,8 +33,24 @@ function AddPricePage() {
     setPrice(formattedValue);
   };
 
+  function handleNewHomeUpdate() {
+    const localStorageHome = localStorage.getItem("newHome");
+
+    // Check if localStorageHome exists and parse it to an object
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+    // Update the homeObject with the new roomType
+    const updatedHome = {
+      ...homeObject,
+      price: price,
+    };
+
+    // Update the state and localStorage
+    setNewHome(updatedHome);
+    localStorage.setItem("newHome", JSON.stringify(updatedHome));
+  }
+
   // Determine text size based on the length of the price
- 
 
   return (
     <div className="h-screen overflow-hidden flex flex-col items-center pt-10 ">

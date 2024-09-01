@@ -1,3 +1,4 @@
+import { Home } from "@/layouts/BecomeAhostLayout";
 import { selection } from "@/pages/becomeAhostPages/SelectRoomTypePage";
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -8,6 +9,8 @@ interface RoomTypeProps {
   icon: JSX.Element;
   name: selection;
   description: string;
+  setNewHome: React.Dispatch<React.SetStateAction<Home>>;
+  newHome: Home;
 }
 
 function RoomType({
@@ -16,6 +19,8 @@ function RoomType({
   icon,
   name,
   description,
+  setNewHome,
+  newHome,
 }: RoomTypeProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,6 +28,21 @@ function RoomType({
   const handleClick = () => {
     setSelected(name);
     setSearchParams({ step: "selectRoomType" });
+
+    if (name) {
+      const localStorageHome = localStorage.getItem("newHome");
+
+      // Check if localStorageHome exists and parse it to an object
+      const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+      // Update the homeObject with the new roomType
+      const updatedHome = { ...homeObject, roomType: name };
+
+      // Update the state and localStorage
+      setNewHome(updatedHome);
+      localStorage.setItem("newHome", JSON.stringify(updatedHome));
+    }
+    console.log(newHome);
   };
 
   return (

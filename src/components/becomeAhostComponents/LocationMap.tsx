@@ -13,6 +13,8 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 import { googleApi } from "@/lib/googleApiKey";
+import { useOutletContext } from "react-router-dom";
+import { Home } from "@/layouts/BecomeAhostLayout";
 
 interface LatLng {
   lat: number;
@@ -46,6 +48,8 @@ export default function LocationMap({
 }
 
 function Map({ setSelected, selected, setLocationData }: LocationMapProps) {
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [center, setCenter] = useState<LatLng>({ lat: 43.45, lng: -80.49 });
 
   const handleSelectLocation = useCallback(
@@ -54,6 +58,25 @@ function Map({ setSelected, selected, setLocationData }: LocationMapProps) {
         setSelected(location);
         setCenter(location);
 
+        const localStorageHome = localStorage.getItem("newHome");
+
+        const homeObject: Home = localStorageHome
+          ? JSON.parse(localStorageHome)
+          : {};
+
+        const updatedHome = {
+          ...homeObject,
+          loc: {
+            country: "",
+            countryCode: "",
+            city: "",
+            address: "",
+            lat: location.lat,
+            lan: location.lng,
+          },
+        };
+        setNewHome(updatedHome);
+        localStorage.setItem("newHome", JSON.stringify(updatedHome));
         // Get additional location data (like address components)
         const results = await getGeocode({ location });
         const locationData = results[0].address_components;

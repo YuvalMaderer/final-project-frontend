@@ -1,12 +1,35 @@
 import { Textarea } from "@/components/ui/textarea";
+import { Home } from "@/layouts/BecomeAhostLayout";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function AddDescriptionPage() {
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
+
   const [text, setText] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => setSearchParams({ step: "addDescription" }), []);
+  useEffect(() => {
+    setSearchParams({ step: "addDescription" });
+    handleNewHomeUpdate();
+  }, [text]);
 
+  function handleNewHomeUpdate() {
+    const localStorageHome = localStorage.getItem("newHome");
+
+    // Check if localStorageHome exists and parse it to an object
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+    // Update the homeObject with the new roomType
+    const updatedHome = {
+      ...homeObject,
+      summary: text,
+    };
+
+    // Update the state and localStorage
+    setNewHome(updatedHome);
+    localStorage.setItem("newHome", JSON.stringify(updatedHome));
+  }
   return (
     <div className="h-screen flex justify-center mt-40">
       <div className="max-w-[700px] w-full space-y-6">

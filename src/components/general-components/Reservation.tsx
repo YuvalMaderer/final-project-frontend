@@ -15,20 +15,30 @@ import { calculateOverallAverageRating } from "@/lib/utils";
 import { useGuestContext } from "@/providers/Guest-Context";
 import { Button } from "../ui/button";
 import { useAuth } from "@/providers/user.context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./LoginModalComponent";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Calendar } from "../ui/calendar";
+import { Card as GuestCard } from "./GuestCard";
+type GuestType = "adults" | "children" | "infants" | "pets";
 
 function Reservation() {
   const { id } = useParams<{ id: string }>();
   const { checkDates, setCheckDates } = useDate();
   const [tempDates, setTempDates] = useState<DateRange | undefined>(checkDates);
   const { guestCounts, setGuestCounts } = useGuestContext();
-  const { loggedInUser, logout } = useAuth();
+  const [tempGuestCounts, setTempGuestCounts] = useState(guestCounts);
+  const { loggedInUser } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpenGuest, setIsDialogOpenGuest] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isDialogOpenGuest) {
+      setTempGuestCounts(guestCounts);
+    }
+  }, [isDialogOpenGuest, guestCounts]);
 
   const {
     data: home,
@@ -75,6 +85,69 @@ function Reservation() {
     const toDay = checkDates.to.getDate();
 
     return `${fromMonth} ${fromDay} - ${toDay}`;
+  };
+
+  const handleTempIncrement = (key: GuestType) => {
+    setTempGuestCounts((prevCounts) => {
+      if (key !== "adults" && prevCounts.adults === 0) {
+        return {
+          ...prevCounts,
+          adults: 1,
+          [key]: prevCounts[key] + 1,
+        };
+      } else {
+        return {
+          ...prevCounts,
+          [key]: prevCounts[key] + 1,
+        };
+      }
+    });
+  };
+
+  const handleTempDecrement = (key: GuestType) => {
+    setTempGuestCounts((prevCounts) => {
+      if (key === "adults") {
+        const { children, infants, pets } = prevCounts;
+        if (
+          prevCounts.adults === 1 &&
+          children === 0 &&
+          infants === 0 &&
+          pets === 0
+        ) {
+          return prevCounts; // Prevent decrement if it's the only adult and no other guests
+        } else if (prevCounts.adults > 0) {
+          // Check if other guest types are greater than 0
+          if (
+            prevCounts.adults === 1 &&
+            (prevCounts.children > 0 ||
+              prevCounts.infants > 0 ||
+              prevCounts.pets > 0)
+          ) {
+            return prevCounts; // Prevent decrement to 0 if there are other guests
+          }
+          return {
+            ...prevCounts,
+            adults: prevCounts.adults - 1,
+          };
+        } else {
+          return prevCounts; // Prevent decrement below zero
+        }
+      } else {
+        return {
+          ...prevCounts,
+          [key]: prevCounts[key] > 0 ? prevCounts[key] - 1 : 0,
+        };
+      }
+    });
+  };
+
+  const handleGuestSave = () => {
+    setGuestCounts(tempGuestCounts);
+    setIsDialogOpenGuest(false);
+  };
+
+  const handleCancle = () => {
+    setIsDialogOpenGuest(false);
   };
 
   const handleSave = () => {
@@ -182,7 +255,7 @@ function Reservation() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between ">
                 <div className="flex flex-col gap-1">
                   <p className="font-semibold">Guests</p>
                   <p className="">
@@ -207,7 +280,66 @@ function Reservation() {
                       : ""}
                   </p>
                 </div>
-                <p className="underline font-semibold">Edit</p>
+
+                <Dialog
+                  open={isDialogOpenGuest}
+                  onOpenChange={setIsDialogOpenGuest}
+                >
+                  <DialogTrigger>
+                    <p
+                      className="underline font-semibold cursor-pointer"
+                      onClick={() => setIsDialogOpenGuest(true)}
+                    >
+                      Edit
+                    </p>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-[23rem] mb-10 max-h-[40rem] overflow-y-auto">
+                    <div>
+                      <p className="text-xl font-semibold">Guests</p>
+                    </div>
+                    <div className="">
+                      <GuestCard
+                        title="Adults"
+                        paragraph="Age 13+"
+                        count={tempGuestCounts.adults}
+                        onIncrement={() => handleTempIncrement("adults")}
+                        onDecrement={() => handleTempDecrement("adults")}
+                      />
+                      <GuestCard
+                        title="Children"
+                        paragraph="Ages 2-12"
+                        count={tempGuestCounts.children}
+                        onIncrement={() => handleTempIncrement("children")}
+                        onDecrement={() => handleTempDecrement("children")}
+                      />
+                      <GuestCard
+                        title="Infants"
+                        paragraph="Under 2"
+                        count={tempGuestCounts.infants}
+                        onIncrement={() => handleTempIncrement("infants")}
+                        onDecrement={() => handleTempDecrement("infants")}
+                      />
+                      <GuestCard
+                        title="Pets"
+                        paragraph="Bringing a service animal?"
+                        count={tempGuestCounts.pets}
+                        onIncrement={() => handleTempIncrement("pets")}
+                        onDecrement={() => handleTempDecrement("pets")}
+                      />
+                    </div>
+
+                    <div className="flex justify-between">
+                      <Button
+                        variant={null}
+                        className="underline hover:bg-gray-100"
+                        onClick={handleCancle}
+                      >
+                        Cancle
+                      </Button>
+                      <Button onClick={handleGuestSave}>Save</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </CardContent>
             <CardFooter className="border-t">

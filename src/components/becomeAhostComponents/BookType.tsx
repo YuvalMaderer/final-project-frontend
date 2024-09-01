@@ -8,6 +8,7 @@ interface BookTypeProps {
   icon: JSX.Element;
   name: selection;
   description: string;
+  handleNewHomeUpdate: (selection: string) => void;
 }
 
 function BookType({
@@ -16,6 +17,7 @@ function BookType({
   icon,
   name,
   description,
+  handleNewHomeUpdate,
 }: BookTypeProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,6 +25,9 @@ function BookType({
   const handleClick = () => {
     setSelected(name);
     setSearchParams({ step: "bookType" });
+    if (name) {
+      handleNewHomeUpdate(name);
+    }
   };
 
   return (
