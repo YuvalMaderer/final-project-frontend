@@ -1,4 +1,5 @@
 import Amenities from "@/components/becomeAhostComponents/Amenities";
+import { Home } from "@/layouts/BecomeAhostLayout";
 import {
   Wifi,
   Thermometer,
@@ -14,7 +15,7 @@ import {
   CookingPot,
   Accessibility,
   Hand,
-  Home,
+  Home as HomeIcon,
   Refrigerator,
   CircleParking,
   Shirt,
@@ -39,7 +40,7 @@ import {
   Minus,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 export const essentialsAmenities: { name: AmenityName; icon: JSX.Element }[] = [
   { name: "Wifi", icon: <Wifi size={"36px"} /> },
@@ -78,10 +79,10 @@ export const standoutAmenities: { name: AmenityName; icon: JSX.Element }[] = [
   { name: "Accessible-height toilet", icon: <Accessibility size={"36px"} /> },
   { name: "Fixed grab bars for shower", icon: <Hand size={"36px"} /> },
   { name: "Handheld shower head", icon: <ShowerHead size={"36px"} /> },
-  { name: "Lowered electrical outlets", icon: <Home size={"36px"} /> },
+  { name: "Lowered electrical outlets", icon: <HomeIcon size={"36px"} /> },
   { name: "Wide hallways", icon: <DoorOpen size={"36px"} /> },
   { name: "Roll-in shower", icon: <ShowerHead size={"36px"} /> },
-  { name: "Braille signage", icon: <Home size={"36px"} /> },
+  { name: "Braille signage", icon: <HomeIcon size={"36px"} /> },
   { name: "Internet", icon: <EthernetPort size={"36px"} /> },
   { name: "Cable TV", icon: <Cable size={"36px"} /> },
   { name: "Free street parking", icon: <CircleParking size={"36px"} /> },
@@ -196,12 +197,36 @@ export type AmenityName =
   | "Ceiling or mobile hoist";
 
 function SelectAmenities() {
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
+
   const [selected, setSelected] = useState<AmenityName[]>([]);
   const [accessibilitySelected, setAccessibilitySelected] = useState<
     AmenityName[]
   >([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => setSearchParams({ step: "amenities" }), []);
+  useEffect(() => {
+    setSearchParams({ step: "amenities" });
+    handleNewHomeUpdate()
+  }, [selected, accessibilitySelected]);
+
+  function handleNewHomeUpdate() {
+    const localStorageHome = localStorage.getItem("newHome");
+
+    // Check if localStorageHome exists and parse it to an object
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+    // Update the homeObject with the new roomType
+    const updatedHome = {
+      ...homeObject,
+      amenities: selected,
+      accessibility: accessibilitySelected,
+    };
+
+    // Update the state and localStorage
+    setNewHome(updatedHome);
+    localStorage.setItem("newHome", JSON.stringify(updatedHome));
+  }
 
   return (
     <div className="flex justify-center p-5 ">

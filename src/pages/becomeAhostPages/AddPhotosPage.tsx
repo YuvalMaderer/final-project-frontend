@@ -12,9 +12,17 @@ import {
 } from "@/components/ui/dialog";
 import { Plus, Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
+import { Home } from "@/layouts/BecomeAhostLayout";
 
 function AddPhotosPage() {
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
+
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,7 +34,26 @@ function AddPhotosPage() {
     } else {
       setSearchParams({ step: "" });
     }
+    handleNewHomeUpdate();
   }, [selectedImages]);
+
+  function handleNewHomeUpdate() {
+    const localStorageHome = localStorage.getItem("newHome");
+
+    // Check if localStorageHome exists and parse it to an object
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+    // Update the homeObject with the new roomType
+    const updatedHome = {
+      ...homeObject,
+
+      imgUrls: selectedImages,
+    };
+
+    // Update the state and localStorage
+    setNewHome(updatedHome);
+    localStorage.setItem("newHome", JSON.stringify(updatedHome));
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

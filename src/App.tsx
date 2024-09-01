@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import HomeDetailsPage from "./pages/HomeDetailsPage";
 import MainLayout from "./layouts/MainLayout";
@@ -20,6 +20,7 @@ import AddPhotosPage from "./pages/becomeAhostPages/AddPhotosPage";
 import StepThreePage from "./pages/becomeAhostPages/StepThreePage";
 import SelectBookType from "./pages/becomeAhostPages/SelectBookType";
 import AddPricePage from "./pages/becomeAhostPages/AddPricePage";
+import { useAuth } from "./providers/user.context";
 
 function App() {
   return (

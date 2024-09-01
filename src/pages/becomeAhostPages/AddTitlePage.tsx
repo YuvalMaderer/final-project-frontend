@@ -1,11 +1,35 @@
 import { Textarea } from "@/components/ui/textarea";
+import { Home } from "@/layouts/BecomeAhostLayout";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function AddTitlePage() {
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
+
   const [text, setText] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => setSearchParams({ step: "addTitle" }), []);
+  useEffect(() => {
+    setSearchParams({ step: "addTitle" });
+    handleNewHomeUpdate();
+  }, [text]);
+
+  function handleNewHomeUpdate() {
+    const localStorageHome = localStorage.getItem("newHome");
+
+    // Check if localStorageHome exists and parse it to an object
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+    // Update the homeObject with the new roomType
+    const updatedHome = {
+      ...homeObject,
+      name: text,
+    };
+
+    // Update the state and localStorage
+    setNewHome(updatedHome);
+    localStorage.setItem("newHome", JSON.stringify(updatedHome));
+  }
 
   return (
     <div className="h-screen flex justify-center mt-40">

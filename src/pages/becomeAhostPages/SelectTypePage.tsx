@@ -1,6 +1,7 @@
 import HomeType from "@/components/becomeAhostComponents/HomeType";
+import { Home } from "@/layouts/BecomeAhostLayout";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 const types: { icon: string; name: section }[] = [
   {
@@ -121,11 +122,14 @@ export type section =
   | "Treehouses"
   | "Trulli"
   | "Windmill"
-  | "Yurts"
-  | undefined;
+  | "Yurts";
 
 function SelectTypePage() {
-  const [selected, setSelected] = useState<section>(undefined);
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
+
+  const [selected, setSelected] = useState<section|undefined>(undefined);
+
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => setSearchParams({ step: "" }), []);
 
@@ -143,6 +147,8 @@ function SelectTypePage() {
               setSelected={setSelected}
               icon={type.icon}
               name={type.name}
+              setNewHome={setNewHome}
+              newHome={newHome}
             />
           ))}
         </section>
