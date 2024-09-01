@@ -10,6 +10,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GuestProvider } from "./providers/Guest-Context.tsx";
 import { DateProvider } from "./providers/DateContext.tsx";
 
+
+
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const script = document.createElement("script");
 script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
@@ -36,6 +38,7 @@ createRoot(document.getElementById("root")!).render(
               <GoogleOAuthProvider clientId={googleId}>
                 <QueryClientProvider client={new QueryClient()}>
                   <App />
+            
                 </QueryClientProvider>
               </GoogleOAuthProvider>
             </DateProvider>

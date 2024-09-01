@@ -25,6 +25,7 @@ import FooterLayout from "./layouts/FooterLayout";
 import WishlistLayout from "./pages/WishlistLayout";
 import WishlistDetailPage from "./pages/WishlistDetailPage";
 import ReceiptPage from "./pages/becomeAhostPages/ReceiptPage";
+import HostPage from "./pages/HostPage";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
             <Route path="receipt" element={<ReceiptPage />} />
           </Route>
         </Route>
+        <Route path="/hostPage" element={<HostPage />} />
       </Routes>
     </>
   );
