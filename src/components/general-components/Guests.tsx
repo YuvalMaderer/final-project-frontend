@@ -14,6 +14,8 @@ import { updateSearchParams } from "@/lib/utils";
 import { useSearchParams } from "react-router-dom";
 import cn from "classnames";
 import { useGuestContext } from "@/providers/Guest-Context";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 type GuestType = "adults" | "children" | "infants" | "pets";
 
@@ -39,6 +41,17 @@ function Guests({
   initializeWithOneAdult = false,
 }: GuestProps) {
   const { guestCounts, setGuestCounts } = useGuestContext();
+  const location = useLocation();
+  const isHomeDetailsPage = location.pathname.startsWith("/homes/");
+
+  useEffect(() => {
+    if (isHomeDetailsPage && guestCounts.adults === 0) {
+      setGuestCounts((prevCounts) => ({
+        ...prevCounts,
+        adults: 1,
+      }));
+    }
+  }, [isHomeDetailsPage, guestCounts.adults, setGuestCounts]);
 
   const handleIncrement = (key: GuestType) => {
     setGuestCounts((prevCounts) => {

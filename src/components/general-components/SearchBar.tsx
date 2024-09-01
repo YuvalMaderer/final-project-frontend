@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
@@ -32,28 +32,44 @@ const monthNames = [
 function SearchBar() {
   const { checkDates, setCheckDates } = useDate();
   const [selectedDestination, setSelectedDestination] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    if (dropdownOpen) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100); // Adjust delay as needed
+    }
+  }, [dropdownOpen]);
 
   const handleSelection = (destination: string): void => {
     setSelectedDestination(destination);
+    setDropdownOpen(false);
   };
 
   return (
     <div className="flex flex-col items-center text-xs ">
       <div className="flex border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500 w-[50%]">
         <div className="p-1 px-4 flex-1 text-left hover:bg-gray-200 rounded-full">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
+          <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+            <DropdownMenuTrigger asChild>
               <Button
                 variant={null}
                 className="flex-col self-start text-xs inline-block text-left"
+                onClick={() => setDropdownOpen(true)}
               >
                 {/* Update the button label based on selectedDestination */}
                 <div className="text-black font-600">Where</div>
                 <input
+                  ref={inputRef}
                   type="text"
                   className="text-gray-500 bg-inherit"
                   placeholder={selectedDestination || "Search destinations"}
-                  readOnly
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                  }}
                 />
               </Button>
             </DropdownMenuTrigger>
