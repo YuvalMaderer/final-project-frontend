@@ -15,7 +15,6 @@ function BecomeAhostFooter() {
   const [progressOneValue, setProgressOneValue] = useState(0);
   const [progressTowValue, setProgressTowValue] = useState(0);
   const [progressThreeValue, setProgressThreeValue] = useState(0);
- 
 
   const [searchParams] = useSearchParams();
   const [step, setStep] = useState<string | null>(null);
@@ -62,11 +61,15 @@ function BecomeAhostFooter() {
     } else if (lastSegment === "bookType") {
       setProgressOneValue(100);
       setProgressTowValue(100);
-      setProgressThreeValue(20);
+      setProgressThreeValue(25);
     } else if (lastSegment === "addPrice") {
       setProgressOneValue(100);
       setProgressTowValue(100);
-      setProgressThreeValue(40);
+      setProgressThreeValue(50);
+    } else if (lastSegment === "receipt") {
+      setProgressOneValue(100);
+      setProgressTowValue(100);
+      setProgressThreeValue(75);
     }
   }
 
@@ -138,6 +141,8 @@ function BecomeAhostFooter() {
       navigate("stepThree");
     } else if (lastSegment === "addPrice") {
       navigate("bookType");
+    } else if (lastSegment === "receipt") {
+      navigate("addPrice");
     }
   }
 
