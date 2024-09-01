@@ -20,11 +20,13 @@ import {
 import axios from "axios";
 import { Home } from "@/layouts/BecomeAhostLayout";
 import api from "@/services/api.service";
+import { useToast } from "@/components/ui/use-toast";
 
 function AddPhotosPage() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
+  const { toast } = useToast();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,7 +78,12 @@ function AddPhotosPage() {
   };
 
   const handleUpload = async () => {
-    if (selectedImages.length === 0) {
+    if (selectedImages.length < 5) {
+      toast({
+        title: "Error",
+        description:
+          "Photo upload failed. Please ensure you have added at least 5 photos before submitting.",
+      });
       return;
     }
 
@@ -86,6 +93,10 @@ function AddPhotosPage() {
     });
 
     try {
+      toast({
+      
+        description: "Uploading...",
+      });
       const response = await api.post("/images/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -105,12 +116,20 @@ function AddPhotosPage() {
         setNewHome(updatedHome);
         localStorage.setItem("newHome", JSON.stringify(updatedHome));
         setSelectedImages([]); // Clear selected images after upload
+        toast({
+          title: "Upload Photos ",
+          description: "Photos uploaded successfully",
+        });
         navigate("/becomeAhost/addTitle"); // Redirect after successful upload
       } else {
         console.error("Upload failed");
       }
     } catch (error) {
       console.error("An error occurred while uploading:", error);
+      toast({
+        title: "Error",
+        description: "Photo upload failed. Please try again",
+      });
     } finally {
       setIsDialogOpen(false);
     }
