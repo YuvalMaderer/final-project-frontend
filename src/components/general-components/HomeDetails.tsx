@@ -32,6 +32,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import Guests from "./Guests";
 import { Link as ScrollLink } from "react-scroll";
 import { useGuestContext } from "@/providers/Guest-Context";
+import { useDate } from "@/hooks/useDate";
 const monthNames = [
   "Jan",
   "Feb",
@@ -54,9 +55,7 @@ function HomeDetails() {
   const [isStickyHeaderVisible, setIsStickyHeaderVisible] = useState(false);
   const [isPriceCardButtonVisible, setIsPriceCardButtonVisible] =
     useState(true);
-  const [checkDates, setCheckDates] = useState<DateRange | undefined>(
-    undefined
-  );
+  const { checkDates, setCheckDates } = useDate();
   const priceCardRef = useRef<HTMLDivElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -156,8 +155,8 @@ function HomeDetails() {
     return diffInDays;
   };
 
-  const CleaningFee = 88;
-  const AirbnbServiceFee = 112;
+  const CleaningFee = 35;
+  const AirbnbServiceFee = 67;
   const Texas = 12;
 
   // Calculate the overall rating
