@@ -11,7 +11,7 @@ type CardProps = {
   isDecrementDisabled?: boolean;
 };
 
-const Card: React.FC<CardProps> = ({
+export const Card: React.FC<CardProps> = ({
   title,
   paragraph,
   count,
