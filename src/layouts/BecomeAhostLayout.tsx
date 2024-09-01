@@ -11,7 +11,6 @@ export type Home = Omit<IHome, "_id">;
 function BecomeAhostLayout() {
   const { loggedInUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  
 
   const [newHome, setNewHome] = useState<Home>({
     name: "",

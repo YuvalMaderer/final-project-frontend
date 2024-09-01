@@ -17,7 +17,9 @@ import {
   useOutletContext,
   useSearchParams,
 } from "react-router-dom";
+import axios from "axios";
 import { Home } from "@/layouts/BecomeAhostLayout";
+import api from "@/services/api.service";
 
 function AddPhotosPage() {
   const [newHome, setNewHome] =
@@ -34,38 +36,34 @@ function AddPhotosPage() {
     } else {
       setSearchParams({ step: "" });
     }
+    // Handle new home update after images are uploaded
     handleNewHomeUpdate();
   }, [selectedImages]);
 
-  function handleNewHomeUpdate() {
+  async function handleNewHomeUpdate() {
+    // Fetch existing home object from local storage
     const localStorageHome = localStorage.getItem("newHome");
-
     const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
 
+    // Update the newHome state with image URLs
     const updatedHome = {
       ...homeObject,
-      imgUrls: selectedImages, // Storing the File objects directly
+      imgUrls: selectedImages.map((image) => URL.createObjectURL(image)), // Storing URLs temporarily
     };
 
     setNewHome(updatedHome);
     localStorage.setItem("newHome", JSON.stringify(updatedHome));
     console.log(newHome);
-    
   }
-
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
- 
-
     if (files) {
       const newFiles = Array.from(files);
       setSelectedImages((prevImages) => [...prevImages, ...newFiles]);
     }
-    e.target.value = "";
-
+    e.target.value = ""; // Clear the file input
     console.log(selectedImages);
-    
   };
 
   const handleDeleteImage = (index: number) => {
@@ -75,6 +73,47 @@ function AddPhotosPage() {
   const handleCancel = () => {
     setSelectedImages([]);
     setIsDialogOpen(false);
+  };
+
+  const handleUpload = async () => {
+    if (selectedImages.length === 0) {
+      return;
+    }
+
+    const formData = new FormData();
+    selectedImages.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    try {
+      const response = await api.post("/images/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data.success) {
+        const imageUrls = response.data.imageUrls;
+        const localStorageHome = localStorage.getItem("newHome");
+        const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+        const updatedHome = {
+          ...homeObject,
+          imgUrls: imageUrls, // Store the URLs from the server
+        };
+
+        setNewHome(updatedHome);
+        localStorage.setItem("newHome", JSON.stringify(updatedHome));
+        setSelectedImages([]); // Clear selected images after upload
+        navigate("/becomeAhost/addTitle"); // Redirect after successful upload
+      } else {
+        console.error("Upload failed");
+      }
+    } catch (error) {
+      console.error("An error occurred while uploading:", error);
+    } finally {
+      setIsDialogOpen(false);
+    }
   };
 
   return (
@@ -202,11 +241,7 @@ function AddPhotosPage() {
                   </Button>
                   <Button
                     className="text-white bg-gray-800 hover:bg-black cursor-pointer p-6 text-md"
-                    onClick={() => {
-                      if (searchParams.get("step") === "addPhotos") {
-                        navigate("/becomeAhost/addTitle");
-                      }
-                    }}
+                    onClick={handleUpload}
                   >
                     Upload
                   </Button>

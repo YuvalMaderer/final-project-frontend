@@ -9,7 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Home } from "@/layouts/BecomeAhostLayout";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function AddPricePage() {
   const [newHome, setNewHome] =
@@ -18,8 +18,12 @@ function AddPricePage() {
   const [isFocused, setIsFocused] = useState(false);
   const [guestPriceOpen, setGuestPriceOpen] = useState(true);
   const [youEarmOpen, setYouEarmOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => handleNewHomeUpdate(), [price]);
+  useEffect(() => {
+    setSearchParams({ step: "addPrice" });
+    handleNewHomeUpdate();
+  }, [price]);
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/[^0-9]/g, ""); // Remove any non-numeric characters
