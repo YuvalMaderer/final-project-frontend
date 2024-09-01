@@ -16,7 +16,50 @@ function BecomeAhostFooter() {
   useEffect(() => {
     const stepParam = searchParams.get("step");
     setStep(stepParam);
+    handleProgress();
   }, [searchParams]);
+
+  function handleProgress() {
+    const lastSegment = location.pathname.split("/").pop();
+    if (lastSegment === "becomeAhost") {
+      setProgressOneValue(0);
+    } else if (lastSegment === "selectType") {
+      setProgressOneValue(20);
+    } else if (lastSegment === "selectRoomType") {
+      setProgressOneValue(40);
+    } else if (lastSegment === "selectLocation") {
+      setProgressOneValue(60);
+    } else if (lastSegment === "floorPlan") {
+      setProgressOneValue(80);
+    } else if (lastSegment === "stepTwo") {
+      setProgressOneValue(100);
+      setProgressTowValue(0);
+    } else if (lastSegment === "amenities") {
+      setProgressOneValue(100);
+      setProgressTowValue(20);
+    } else if (lastSegment === "addPhotos") {
+      setProgressOneValue(100);
+      setProgressTowValue(40);
+    } else if (lastSegment === "addTitle") {
+      setProgressOneValue(100);
+      setProgressTowValue(60);
+    } else if (lastSegment === "addDescription") {
+      setProgressOneValue(100);
+      setProgressTowValue(80);
+    } else if (lastSegment === "stepThree") {
+      setProgressOneValue(100);
+      setProgressTowValue(100);
+      setProgressThreeValue(0);
+    } else if (lastSegment === "bookType") {
+      setProgressOneValue(100);
+      setProgressTowValue(100);
+      setProgressThreeValue(20);
+    } else if (lastSegment === "addPrice") {
+      setProgressOneValue(100);
+      setProgressTowValue(100);
+      setProgressThreeValue(40);
+    }
+  }
 
   function handleNext() {
     if (step === "stepOne") {
@@ -39,6 +82,10 @@ function BecomeAhostFooter() {
       navigate("addDescription");
     } else if (step === "addDescription") {
       navigate("stepThree");
+    } else if (step === "stepThree") {
+      navigate("bookType");
+    } else if (step === "bookType") {
+      navigate("addPrice");
     }
   }
 
@@ -65,6 +112,10 @@ function BecomeAhostFooter() {
       navigate("addTitle");
     } else if (lastSegment === "stepThree") {
       navigate("addDescription");
+    } else if (lastSegment === "bookType") {
+      navigate("stepThree");
+    } else if (lastSegment === "addPrice") {
+      navigate("bookType");
     }
   }
 
