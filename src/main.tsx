@@ -8,6 +8,7 @@ import { AuthProvider } from "./providers/user.context.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GuestProvider } from "./providers/Guest-Context.tsx";
+import { DateProvider } from "./providers/DateContext.tsx";
 
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const script = document.createElement("script");
@@ -31,11 +32,13 @@ createRoot(document.getElementById("root")!).render(
       <DayPickerProvider initialProps={dayPickerProps}>
         <AuthProvider>
           <GuestProvider>
-            <GoogleOAuthProvider clientId={googleId}>
-              <QueryClientProvider client={new QueryClient()}>
-                <App />
-              </QueryClientProvider>
-            </GoogleOAuthProvider>
+            <DateProvider>
+              <GoogleOAuthProvider clientId={googleId}>
+                <QueryClientProvider client={new QueryClient()}>
+                  <App />
+                </QueryClientProvider>
+              </GoogleOAuthProvider>
+            </DateProvider>
           </GuestProvider>
         </AuthProvider>
       </DayPickerProvider>

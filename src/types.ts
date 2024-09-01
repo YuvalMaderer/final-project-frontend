@@ -84,3 +84,12 @@ export type DateRange = {
   from: Date | undefined;
   to: Date | undefined;
 };
+
+export type IWishlist = {
+  title: string;
+  list: string[];
+}
+
+export interface IWishlistResponse {
+  wishlists: IWishlist[];
+}

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Guests from "./Guests";
 import { DateRange } from "@/types";
+import { useDate } from "@/hooks/useDate";
 
 const monthNames = [
   "Jan",
@@ -29,9 +30,7 @@ const monthNames = [
 ];
 
 function SearchBar() {
-  const [checkDates, setCheckDates] = useState<DateRange | undefined>(
-    undefined
-  );
+  const { checkDates, setCheckDates } = useDate();
   const [selectedDestination, setSelectedDestination] = useState("");
 
   const handleSelection = (destination: string): void => {
