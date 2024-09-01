@@ -18,7 +18,7 @@ export const GuestProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [guestCounts, setGuestCounts] = useState<GuestCounts>({
-    adults: 1,
+    adults: 0,
     children: 0,
     infants: 0,
     pets: 0,

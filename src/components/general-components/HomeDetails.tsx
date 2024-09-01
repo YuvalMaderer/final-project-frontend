@@ -33,6 +33,7 @@ import Guests from "./Guests";
 import { Link as ScrollLink } from "react-scroll";
 import { useGuestContext } from "@/providers/Guest-Context";
 import { useDate } from "@/hooks/useDate";
+
 const monthNames = [
   "Jan",
   "Feb",
@@ -299,6 +300,7 @@ function HomeDetails() {
           </div>
         </div>
       )}
+
       <div className="px-20">
         <div className="flex justify-between items-center">
           {/* Name */}
