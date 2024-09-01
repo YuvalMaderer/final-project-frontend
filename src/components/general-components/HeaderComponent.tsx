@@ -70,7 +70,9 @@ function HeaderComponent() {
                     <>
                       <DropdownMenuItem>Messages</DropdownMenuItem>
                       <DropdownMenuItem>Trips</DropdownMenuItem>
-                      <DropdownMenuItem>Wishlists</DropdownMenuItem>
+                      <Link to="/wishlists">
+                        <DropdownMenuItem>Wishlists</DropdownMenuItem>
+                      </Link>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
                       <DropdownMenuItem>Refer a host</DropdownMenuItem>

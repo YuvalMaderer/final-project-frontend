@@ -1,5 +1,5 @@
 import api from "@/services/api.service";
-import { IHome, QueryFilter } from "@/types";
+import { IHome, IWishlist, QueryFilter } from "@/types";
 
 // Utility function to safely convert filters to query params
 function serializeFilters(filters: QueryFilter): URLSearchParams {
@@ -46,4 +46,23 @@ export async function fetchHomeCountByFilers(filters: QueryFilter): Promise<numb
         console.error(err);
         throw err; // Optionally rethrow the error to handle it in the caller
       }
+}
+
+export async function fetchUserWishlists(userId: string): Promise<IWishlist[]> {
+  try {
+    const response = await api.get(`/user/getWishlist?userId=${userId}`);
+    return response.data; // Return the data property which should contain the list of wishlists
+  } catch (err) {
+    console.error('Error fetching user wishlists:', err);
+    throw err; // Optionally rethrow the error to handle it in the caller
+  }
+}
+
+export async function addToWishlist(userId: string, homeId: string, title: string): Promise<void> {
+  try {
+    await api.post(`/user/addToWishlist`, { userId, homeId, title });
+  } catch (err) {
+    console.error('Error adding to wishlist:', err);
+    throw err; // Optionally rethrow the error to handle it in the caller
+  }
 }

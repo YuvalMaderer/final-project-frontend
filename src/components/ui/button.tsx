@@ -17,6 +17,7 @@ const buttonVariants = cva(
         secondary: "bg-airbnb text-white hover:bg-airbnb/80 w-full",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        new: "bg-gray-900 text-white hover:bg-black",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -19,6 +19,10 @@ function SearchComponent({
 }: SearchComponentProps) {
   const types = [
     {
+      icon: "https://a0.muscache.com/pictures/b887040f-0968-4174-9a4f-2d41f8728248.jpg",
+      name: "Your search",
+    },
+    {
       icon: "https://a0.muscache.com/im/pictures/mediaverse/category_icon/original/3e5243c8-4d15-4c6b-97e3-7ba2bb7bb880.png",
       name: "Icons",
     },
@@ -157,10 +161,17 @@ function SearchComponent({
   ];
 
   const handleTypeClick = (typeName: string) => {
+    if (typeName === "Your search") {
+      updateSearchParams({ type: "" }, searchParams, setSearchParams);
+      return;
+    }
     updateSearchParams({ type: typeName }, searchParams, setSearchParams);
   };
 
   const isActiveType = (typeName: string) => {
+    if (typeName === "Your search") {
+      return true;
+    }
     return searchParams.get("type") === typeName;
   };
 

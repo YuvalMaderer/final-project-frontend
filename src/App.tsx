@@ -20,6 +20,7 @@ import AddPhotosPage from "./pages/becomeAhostPages/AddPhotosPage";
 import StepThreePage from "./pages/becomeAhostPages/StepThreePage";
 import SelectBookType from "./pages/becomeAhostPages/SelectBookType";
 import AddPricePage from "./pages/becomeAhostPages/AddPricePage";
+import WishlistPage from "./pages/WishlistPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         </Route>
 
         <Route path="/reservation/:id" element={<ReservationPage />} />
+        <Route path="/wishlists" element={<WishlistPage />} />
 
         <Route path="becomeAhost" element={<BecomeAhostLayout />}>
           <Route index element={<StepOnePage />} />
