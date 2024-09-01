@@ -21,6 +21,7 @@ import StepThreePage from "./pages/becomeAhostPages/StepThreePage";
 import SelectBookType from "./pages/becomeAhostPages/SelectBookType";
 import AddPricePage from "./pages/becomeAhostPages/AddPricePage";
 import WishlistPage from "./pages/WishlistPage";
+import FooterLayout from "./layouts/FooterLayout";
 
 function App() {
   return (
