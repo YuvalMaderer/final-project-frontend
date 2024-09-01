@@ -21,6 +21,8 @@ import StepThreePage from "./pages/becomeAhostPages/StepThreePage";
 import SelectBookType from "./pages/becomeAhostPages/SelectBookType";
 import AddPricePage from "./pages/becomeAhostPages/AddPricePage";
 import WishlistPage from "./pages/WishlistPage";
+import WishlistLayout from "./pages/wishlistLayout";
+import WishlistDetailPage from "./pages/wishlistDetailPage";
 
 function App() {
   return (
@@ -32,7 +34,10 @@ function App() {
         </Route>
 
         <Route path="/reservation/:id" element={<ReservationPage />} />
-        <Route path="/wishlists" element={<WishlistPage />} />
+        <Route path="wishlists" element={<WishlistLayout />}>
+          <Route index element={<WishlistPage />} />
+          <Route path=":title" element={<WishlistDetailPage />} />
+        </Route>
 
         <Route path="becomeAhost" element={<BecomeAhostLayout />}>
           <Route index element={<StepOnePage />} />
