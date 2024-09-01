@@ -107,11 +107,12 @@ function HomeDetails() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        console.log("IntersectionObserver callback:", entry.isIntersecting);
         setIsPriceCardButtonVisible(entry.isIntersecting);
       },
       {
         root: null,
-        threshold: 0,
+        threshold: 0, // Adjust if necessary
       }
     );
 
@@ -119,8 +120,9 @@ function HomeDetails() {
 
     return () => {
       observer.unobserve(currentRef);
+      console.log("Observer unobserved");
     };
-  }, []);
+  }, [priceCardRef.current]);
 
   useEffect(() => {
     const handleScroll = () => {
