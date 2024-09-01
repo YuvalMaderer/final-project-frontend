@@ -44,8 +44,6 @@ function HomePage() {
     setFilters(newFilters);
   }, [searchParams]);
 
-  console.log(filters);
-
   const { data: homes = [], isLoading } = useQuery<IHome[]>({
     queryKey: ["homes", filters],
     queryFn: () => fetchHomes(filters),

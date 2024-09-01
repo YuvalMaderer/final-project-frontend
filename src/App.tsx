@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import HomeDetailsPage from "./pages/HomeDetailsPage";
 import MainLayout from "./layouts/MainLayout";
@@ -21,33 +21,41 @@ import StepThreePage from "./pages/becomeAhostPages/StepThreePage";
 import SelectBookType from "./pages/becomeAhostPages/SelectBookType";
 import AddPricePage from "./pages/becomeAhostPages/AddPricePage";
 import WishlistPage from "./pages/WishlistPage";
+import FooterLayout from "./layouts/FooterLayout";
+import WishlistLayout from "./pages/WishlistLayout";
+import WishlistDetailPage from "./pages/WishlistDetailPage";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/homes/:id" element={<HomeDetailsPage />} />
-        </Route>
+        <Route path="/" element={<FooterLayout />}>
+          <Route element={<MainLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/homes/:id" element={<HomeDetailsPage />} />
+          </Route>
 
-        <Route path="/reservation/:id" element={<ReservationPage />} />
-        <Route path="/wishlists" element={<WishlistPage />} />
+          <Route path="/reservation/:id" element={<ReservationPage />} />
+          <Route path="wishlists" element={<WishlistLayout />}>
+            <Route index element={<WishlistPage />} />
+            <Route path=":title" element={<WishlistDetailPage />} />
+          </Route>
 
-        <Route path="becomeAhost" element={<BecomeAhostLayout />}>
-          <Route index element={<StepOnePage />} />
-          <Route path="selectType" element={<SelectTypePage />} />
-          <Route path="selectRoomType" element={<SelectRoomTypePage />} />
-          <Route path="selectLocation" element={<SelectLocationPage />} />
-          <Route path="floorPlan" element={<FloorPlan />} />
-          <Route path="stepTwo" element={<StepTwoPage />} />
-          <Route path="amenities" element={<SelectAmenities />} />
-          <Route path="addPhotos" element={<AddPhotosPage />} />
-          <Route path="addTitle" element={<AddTitlePage />} />
-          <Route path="addDescription" element={<AddDescriptionPage />} />
-          <Route path="stepThree" element={<StepThreePage />} />
-          <Route path="bookType" element={<SelectBookType />} />
-          <Route path="addPrice" element={<AddPricePage />} />
+          <Route path="becomeAhost" element={<BecomeAhostLayout />}>
+            <Route index element={<StepOnePage />} />
+            <Route path="selectType" element={<SelectTypePage />} />
+            <Route path="selectRoomType" element={<SelectRoomTypePage />} />
+            <Route path="selectLocation" element={<SelectLocationPage />} />
+            <Route path="floorPlan" element={<FloorPlan />} />
+            <Route path="stepTwo" element={<StepTwoPage />} />
+            <Route path="amenities" element={<SelectAmenities />} />
+            <Route path="addPhotos" element={<AddPhotosPage />} />
+            <Route path="addTitle" element={<AddTitlePage />} />
+            <Route path="addDescription" element={<AddDescriptionPage />} />
+            <Route path="stepThree" element={<StepThreePage />} />
+            <Route path="bookType" element={<SelectBookType />} />
+            <Route path="addPrice" element={<AddPricePage />} />
+          </Route>
         </Route>
       </Routes>
     </>

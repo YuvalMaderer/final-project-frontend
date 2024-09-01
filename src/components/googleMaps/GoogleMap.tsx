@@ -30,6 +30,7 @@ export default function GoogleMap({ homes, position }: GoogleMapProps) {
           defaultCenter={position}
           mapId={"aa21e74a7cd52a60"}
           fullscreenControl={false}
+          gestureHandling="greedy"
         >
           {open && (
             <InfoWindow

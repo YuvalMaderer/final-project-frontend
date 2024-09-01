@@ -56,36 +56,39 @@ function WishlistPage() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold font-montserrat">Wishlists</h1>
+      <div className="mx-24">
+        <h1 className="text-3xl font-bold font-montserrat mb-4">Wishlists</h1>
 
-      <div className="grid grid-cols-4 font-montserrat">
-        {userWishlists.map((wishlist: IWishlist) => {
-          // Use the first item from the wishlist
-          const firstItemId = wishlist.list[0];
-          const home = homeData[firstItemId];
+        <div className="grid grid-cols-4 font-montserrat">
+          {userWishlists.map((wishlist: IWishlist) => {
+            // Use the first item from the wishlist
+            const firstItemId = wishlist.list[0];
+            const home = homeData[firstItemId];
 
-          return (
-            <Link to={wishlist.title} key={wishlist.title}>
-              <div className="cursor-pointer">
-                <div>
-                  {home?.imgUrls.length > 0 ? (
-                    <img
-                      src={home.imgUrls[0]}
-                      alt={home.name}
-                      className="w-[280px] h-[280px] border-4 border-white shadow-xl rounded-3xl"
-                    />
-                  ) : (
-                    <div>No images available</div>
-                  )}
+            return (
+              <Link to={wishlist.title} key={wishlist.title}>
+                <div className="cursor-pointer">
+                  <div>
+                    {home?.imgUrls.length > 0 ? (
+                      <img
+                        loading="lazy"
+                        src={home.imgUrls[0]}
+                        alt={home.name}
+                        className="w-[280px] h-[280px] border-4 border-white shadow-xl rounded-3xl"
+                      />
+                    ) : (
+                      <div>No images available</div>
+                    )}
+                  </div>
+                  <h2 className="font-500 mt-2">{wishlist.title}</h2>
+                  <h2 className="font-500 mt-1 text-gray-500 text-xs">
+                    {wishlist.list.length} saved
+                  </h2>
                 </div>
-                <h2 className="font-500 mt-2">{wishlist.title}</h2>
-                <h2 className="font-500 mt-1 text-gray-500 text-xs">
-                  {wishlist.list.length} saved
-                </h2>
-              </div>
-            </Link>
-          );
-        })}
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </>
   );
