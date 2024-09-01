@@ -60,7 +60,7 @@ function WishlistDetailPage() {
         onClick={handleGoBack}
       />
       <h1 className="text-3xl ml-12 font-bold mt-2 mb-2">
-        {wishlistData.wishlist.title}
+        {wishlistData?.wishlist.title}
       </h1>
       <div className="flex">
         <HomesList
