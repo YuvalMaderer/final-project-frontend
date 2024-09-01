@@ -71,6 +71,7 @@ function WishlistPage() {
                   <div>
                     {home?.imgUrls.length > 0 ? (
                       <img
+                        loading="lazy"
                         src={home.imgUrls[0]}
                         alt={home.name}
                         className="w-[280px] h-[280px] border-4 border-white shadow-xl rounded-3xl"
