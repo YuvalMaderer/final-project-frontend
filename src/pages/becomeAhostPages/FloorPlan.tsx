@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 
 import { Search } from "lucide-react";
 import { updateSearchParams } from "@/lib/utils";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Card from "@/components/general-components/GuestCard";
+import { Home } from "@/layouts/BecomeAhostLayout";
 
 type FloorPlan = "Guests" | "Bedrooms" | "Beds" | "Bathrooms";
 
 function FloorPlan() {
+  const [newHome, setNewHome] =
+    useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => setSearchParams({ step: "floorPlan" }), []);
 
   const [guestCounts, setGuestCounts] = useState({
     Guests: 1,
@@ -18,6 +20,30 @@ function FloorPlan() {
     Beds: 1,
     Bathrooms: 1,
   });
+  useEffect(() => {
+    setSearchParams({ step: "floorPlan" });
+    handleNewHomeUpdate();
+  }, [guestCounts]);
+
+  function handleNewHomeUpdate() {
+    const localStorageHome = localStorage.getItem("newHome");
+
+    // Check if localStorageHome exists and parse it to an object
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+    // Update the homeObject with the new roomType
+    const updatedHome = {
+      ...homeObject,
+      capacity: guestCounts.Guests,
+      bedrooms: guestCounts.Bedrooms,
+      bathrooms: guestCounts.Bathrooms,
+      beds: guestCounts.Beds,
+    };
+
+    // Update the state and localStorage
+    setNewHome(updatedHome);
+    localStorage.setItem("newHome", JSON.stringify(updatedHome));
+  }
 
   const handleIncrement = (key: FloorPlan) => {
     setGuestCounts((prevCounts) => {
