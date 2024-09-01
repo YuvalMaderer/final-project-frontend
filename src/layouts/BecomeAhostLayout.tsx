@@ -1,5 +1,7 @@
 import BecomeAhostFooter from "@/components/becomeAhostComponents/BecomeAhostFooter";
 import BecomeAhostHeader from "@/components/becomeAhostComponents/BecomeAhostHeader";
+import Modal from "@/components/general-components/LoginModalComponent";
+import { useAuth } from "@/providers/user.context";
 import { IHome } from "@/types";
 import { useState } from "react";
 
@@ -7,6 +9,10 @@ import { Outlet } from "react-router-dom";
 export type Home = Omit<IHome, "_id">;
 
 function BecomeAhostLayout() {
+  const { loggedInUser } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  
+
   const [newHome, setNewHome] = useState<Home>({
     name: "",
     type: "string",
@@ -47,11 +53,17 @@ function BecomeAhostLayout() {
   });
 
   return (
-    <div>
-      <BecomeAhostHeader />
-      <Outlet context={[newHome, setNewHome]} />
-      <BecomeAhostFooter />
-    </div>
+    <>
+      {loggedInUser ? (
+        <div>
+          <BecomeAhostHeader />
+          <Outlet context={[newHome, setNewHome]} />
+          <BecomeAhostFooter />
+        </div>
+      ) : (
+        <Modal isOpen={true} onClose={() => setIsOpen(!isOpen)} />
+      )}
+    </>
   );
 }
 

@@ -23,7 +23,7 @@ function AddPhotosPage() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -40,30 +40,32 @@ function AddPhotosPage() {
   function handleNewHomeUpdate() {
     const localStorageHome = localStorage.getItem("newHome");
 
-    // Check if localStorageHome exists and parse it to an object
     const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
 
-    // Update the homeObject with the new roomType
     const updatedHome = {
       ...homeObject,
-
-      imgUrls: selectedImages,
+      imgUrls: selectedImages, // Storing the File objects directly
     };
 
-    // Update the state and localStorage
     setNewHome(updatedHome);
     localStorage.setItem("newHome", JSON.stringify(updatedHome));
+    console.log(newHome);
+    
   }
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+ 
+
     if (files) {
-      const newImages = Array.from(files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setSelectedImages((prevImages) => [...prevImages, ...newImages]);
+      const newFiles = Array.from(files);
+      setSelectedImages((prevImages) => [...prevImages, ...newFiles]);
     }
     e.target.value = "";
+
+    console.log(selectedImages);
+    
   };
 
   const handleDeleteImage = (index: number) => {
@@ -152,26 +154,29 @@ function AddPhotosPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   {/* Display selected images with delete button */}
-                  {selectedImages.map((image, index) => (
-                    <div key={index} className="relative">
-                      <img
-                        src={image}
-                        alt={`Selected ${index}`}
-                        className="w-full h-auto object-cover rounded-md"
-                      />
-                      <button
-                        onClick={() => handleDeleteImage(index)}
-                        className="absolute top-1 right-1 bg-black rounded-full p-2 shadow-lg"
-                      >
-                        <Trash2 size={20} color="white" />
-                      </button>
-                      {index === 0 && (
-                        <Button className="absolute top-1 left-1 rounded-full bg-white opacity-90 hover:bg-white">
-                          Cover photo
-                        </Button>
-                      )}
-                    </div>
-                  ))}
+                  {selectedImages.map((image, index) => {
+                    const imageUrl = URL.createObjectURL(image); // Create a URL for each file
+                    return (
+                      <div key={index} className="relative">
+                        <img
+                          src={imageUrl}
+                          alt={`Selected ${index}`}
+                          className="w-full h-auto object-cover rounded-md"
+                        />
+                        <button
+                          onClick={() => handleDeleteImage(index)}
+                          className="absolute top-1 right-1 bg-black rounded-full p-2 shadow-lg"
+                        >
+                          <Trash2 size={20} color="white" />
+                        </button>
+                        {index === 0 && (
+                          <Button className="absolute top-1 left-1 rounded-full bg-white opacity-90 hover:bg-white">
+                            Cover photo
+                          </Button>
+                        )}
+                      </div>
+                    );
+                  })}
 
                   {/* Hidden file input */}
                   <input
