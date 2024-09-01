@@ -11,14 +11,18 @@ import {
 import Modal from "./LoginModalComponent";
 import { useState } from "react";
 import { useAuth } from "@/providers/user.context";
+import { useLocation } from "react-router-dom";
 
 function HeaderComponent() {
   const [isModalOpen, setModalOpen] = useState(false);
-  const { loggedInUser, logout } = useAuth(); // Assuming useAuth returns the user object directly.
+  const { loggedInUser, logout } = useAuth();
+  const location = useLocation();
+
+  const isHomePage = location.pathname === "/";
 
   return (
     <>
-      <div className="sticky top-0 bg-white z-50">
+      <div className={`bg-white z-50 ${isHomePage ? "sticky top-0" : ""}`}>
         <nav className="flex justify-between items-center p-3 px-20">
           <Link to="/">
             <img
