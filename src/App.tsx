@@ -18,6 +18,8 @@ import AddTitlePage from "./pages/becomeAhostPages/AddTitlePage";
 import AddDescriptionPage from "./pages/becomeAhostPages/AddDescriptionPage";
 import AddPhotosPage from "./pages/becomeAhostPages/AddPhotosPage";
 import StepThreePage from "./pages/becomeAhostPages/StepThreePage";
+import SelectBookType from "./pages/becomeAhostPages/SelectBookType";
+import AddPricePage from "./pages/becomeAhostPages/AddPricePage";
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
           <Route path="addTitle" element={<AddTitlePage />} />
           <Route path="addDescription" element={<AddDescriptionPage />} />
           <Route path="stepThree" element={<StepThreePage />} />
+          <Route path="bookType" element={<SelectBookType />} />
+          <Route path="addPrice" element={<AddPricePage />} />
         </Route>
       </Routes>
     </>
