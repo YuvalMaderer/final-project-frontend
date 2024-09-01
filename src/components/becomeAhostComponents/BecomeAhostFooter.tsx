@@ -10,13 +10,12 @@ import {
 import { Home } from "@/layouts/BecomeAhostLayout";
 import { createNewHome } from "@/lib/http";
 
-
-
 function BecomeAhostFooter() {
   useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [progressOneValue, setProgressOneValue] = useState(0);
   const [progressTowValue, setProgressTowValue] = useState(0);
   const [progressThreeValue, setProgressThreeValue] = useState(0);
+ 
 
   const [searchParams] = useSearchParams();
   const [step, setStep] = useState<string | null>(null);
@@ -71,7 +70,7 @@ function BecomeAhostFooter() {
     }
   }
 
-  function handleNext() {
+  async function handleNext() {
     if (step === "stepOne") {
       navigate("selectType");
     } else if (step === "selectType") {
@@ -99,11 +98,16 @@ function BecomeAhostFooter() {
     } else if (step === "addPrice") {
       navigate("receipt");
     } else if (step === "receipt") {
-      const localStorageHome = localStorage.getItem("newHome");
-      const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
-      console.log(homeObject);
+      try {
+        const localStorageHome = localStorage.getItem("newHome");
+        const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+        console.log(homeObject);
 
-      createNewHome(homeObject);
+        await createNewHome(homeObject);
+        navigate("/hostPage");
+      } catch (error) {
+        console.log("error while post new home");
+      }
     }
   }
 
