@@ -54,6 +54,7 @@ function App() {
           <Route path="stepTwo" element={<StepTwoPage />} />
           <Route path="amenities" element={<SelectAmenities />} />
           <Route path="addPhotos" element={<AddPhotosPage />} />
+
           <Route path="addTitle" element={<AddTitlePage />} />
           <Route path="addDescription" element={<AddDescriptionPage />} />
           <Route path="stepThree" element={<StepThreePage />} />
