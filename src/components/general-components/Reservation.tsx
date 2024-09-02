@@ -1,7 +1,7 @@
-import { fetchHomeById } from "@/lib/http";
-import { DateRange, IHome, IReservationRequest } from "@/types";
+import { fetchHomeById, fetchHomeReservations } from "@/lib/http";
+import { DateRange, IHome, IReservation, IReservationRequest } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -17,11 +17,17 @@ import { Button } from "../ui/button";
 import { useAuth } from "@/providers/user.context";
 import { useEffect, useState } from "react";
 import Modal from "./LoginModalComponent";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+} from "../ui/dialog";
 import { Calendar } from "../ui/calendar";
 import { Card as GuestCard } from "./GuestCard";
 import { useMutation } from "@tanstack/react-query";
 import { createNewReservation } from "@/lib/http";
+import confetti from "canvas-confetti";
 
 type GuestType = "adults" | "children" | "infants" | "pets";
 
@@ -35,13 +41,55 @@ function Reservation() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenGuest, setIsDialogOpenGuest] = useState(false);
+  const [isDialogOpenPay, setIsDialogOpenPay] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isDialogOpenPay) {
+      setShowConfetti(true);
+      const intervalId = setInterval(() => {
+        confetti({
+          angle: Math.random() * 360,
+          spread: 60,
+          particleCount: 50,
+          origin: { x: Math.random(), y: Math.random() - 0.2 },
+        });
+      }, 1000);
+
+      return () => clearInterval(intervalId);
+    } else {
+      setShowConfetti(false);
+    }
+  }, [isDialogOpenPay]);
 
   useEffect(() => {
     if (isDialogOpenGuest) {
       setTempGuestCounts(guestCounts);
     }
   }, [isDialogOpenGuest, guestCounts]);
+
+  const getReservedDates = (reservations: IReservation[]): Date[] => {
+    return reservations.flatMap((reservation) => {
+      const dates: Date[] = [];
+      for (
+        let currentDate = new Date(reservation.startDate);
+        currentDate <= new Date(reservation.endDate);
+        currentDate.setDate(currentDate.getDate() + 1)
+      ) {
+        dates.push(new Date(currentDate));
+      }
+      return dates;
+    });
+  };
+
+  const { data: reservations } = useQuery<IReservation[]>({
+    queryKey: ["reservations", id],
+    queryFn: () => fetchHomeReservations(id as string),
+  });
+
+  const reservedDates = reservations ? getReservedDates(reservations) : [];
 
   const {
     data: home,
@@ -60,6 +108,7 @@ function Reservation() {
     mutationFn: createNewReservation,
     onSuccess: (data) => {
       console.log("Reservation created:", data);
+      setIsDialogOpenPay(true); // Open dialog on success
     },
     onError: (error) => {
       console.error("Error creating reservation:", error);
@@ -275,6 +324,7 @@ function Reservation() {
                       </p>
                     </div>
                     <Calendar
+                      disabled={reservedDates}
                       mode="range"
                       selected={tempDates}
                       onSelect={(ev) => {
@@ -504,6 +554,48 @@ function Reservation() {
               </CardContent>
             </Card>
           </div>
+          <Dialog open={isDialogOpenPay} onOpenChange={setIsDialogOpenPay}>
+            <DialogContent
+              onInteractOutside={(e) => {
+                e.preventDefault();
+              }}
+              className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-auto"
+            >
+              <div className="flex flex-col items-center gap-6">
+                <div className="bg-green-500 text-white rounded-full p-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold">Payment Successful!</h2>
+                <p className="text-gray-600">
+                  Thank you for your purchase. Your reservation is now
+                  confirmed.
+                </p>
+                <p className="text-gray-600">
+                  Please review your reservation details and contact us if you
+                  have any questions.
+                </p>
+                <Link to="/" className="w-full">
+                  <Button>Back to Home</Button>
+                </Link>
+              </div>
+              {showConfetti && (
+                <div className="absolute inset-0 pointer-events-none">
+                  <canvas id="confetti-canvas" />
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

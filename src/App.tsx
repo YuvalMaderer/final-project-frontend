@@ -55,6 +55,7 @@ function App() {
           <Route path="stepTwo" element={<StepTwoPage />} />
           <Route path="amenities" element={<SelectAmenities />} />
           <Route path="addPhotos" element={<AddPhotosPage />} />
+
           <Route path="addTitle" element={<AddTitlePage />} />
           <Route path="addDescription" element={<AddDescriptionPage />} />
           <Route path="stepThree" element={<StepThreePage />} />
@@ -63,9 +64,7 @@ function App() {
           <Route path="receipt" element={<ReceiptPage />} />
         </Route>
 
-        <Route path="/hostPage" element={<HostLayout />}>
-          <Route index element={<HostPage />} />
-        </Route>
+        <Route path="/hostPage" element={<HostPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
