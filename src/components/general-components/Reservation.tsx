@@ -1,7 +1,7 @@
-import { fetchHomeById } from "@/lib/http";
-import { DateRange, IHome, IReservationRequest } from "@/types";
+import { fetchHomeById, fetchHomeReservations } from "@/lib/http";
+import { DateRange, IHome, IReservation, IReservationRequest } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -35,6 +35,8 @@ function Reservation() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenGuest, setIsDialogOpenGuest] = useState(false);
+  const [isDialogOpenPay, setIsDialogOpenPay] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,6 +44,27 @@ function Reservation() {
       setTempGuestCounts(guestCounts);
     }
   }, [isDialogOpenGuest, guestCounts]);
+
+  const getReservedDates = (reservations: IReservation[]): Date[] => {
+    return reservations.flatMap((reservation) => {
+      const dates: Date[] = [];
+      for (
+        let currentDate = new Date(reservation.startDate);
+        currentDate <= new Date(reservation.endDate);
+        currentDate.setDate(currentDate.getDate() + 1)
+      ) {
+        dates.push(new Date(currentDate));
+      }
+      return dates;
+    });
+  };
+
+  const { data: reservations } = useQuery<IReservation[]>({
+    queryKey: ["reservations", id],
+    queryFn: () => fetchHomeReservations(id as string),
+  });
+
+  const reservedDates = reservations ? getReservedDates(reservations) : [];
 
   const {
     data: home,
@@ -60,6 +83,7 @@ function Reservation() {
     mutationFn: createNewReservation,
     onSuccess: (data) => {
       console.log("Reservation created:", data);
+      setIsDialogOpenPay(true); // Open dialog on success
     },
     onError: (error) => {
       console.error("Error creating reservation:", error);
@@ -275,6 +299,7 @@ function Reservation() {
                       </p>
                     </div>
                     <Calendar
+                      disabled={reservedDates}
                       mode="range"
                       selected={tempDates}
                       onSelect={(ev) => {
@@ -504,6 +529,27 @@ function Reservation() {
               </CardContent>
             </Card>
           </div>
+          <Dialog open={isDialogOpenPay} onOpenChange={setIsDialogOpenPay}>
+            <DialogContent
+              onInteractOutside={(e) => {
+                e.preventDefault();
+              }}
+              className="flex flex-col gap-10"
+            >
+              <p className="text-2xl font-semibold">Payment Successful!</p>
+              <p className="text-xl">
+                Thank you for your purchase. Your reservation is now confirmed.
+              </p>
+              <p className="text-md">
+                Please review your reservation details and contact us if you
+                have any questions.
+              </p>
+
+              <Link className="flex justify-end" to={"/"}>
+                <Button>Back to home</Button>
+              </Link>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

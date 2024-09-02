@@ -42,24 +42,25 @@ function App() {
             <Route index element={<WishlistPage />} />
             <Route path=":title" element={<WishlistDetailPage />} />
           </Route>
-
-          <Route path="becomeAhost" element={<BecomeAhostLayout />}>
-            <Route index element={<StepOnePage />} />
-            <Route path="selectType" element={<SelectTypePage />} />
-            <Route path="selectRoomType" element={<SelectRoomTypePage />} />
-            <Route path="selectLocation" element={<SelectLocationPage />} />
-            <Route path="floorPlan" element={<FloorPlan />} />
-            <Route path="stepTwo" element={<StepTwoPage />} />
-            <Route path="amenities" element={<SelectAmenities />} />
-            <Route path="addPhotos" element={<AddPhotosPage />} />
-            <Route path="addTitle" element={<AddTitlePage />} />
-            <Route path="addDescription" element={<AddDescriptionPage />} />
-            <Route path="stepThree" element={<StepThreePage />} />
-            <Route path="bookType" element={<SelectBookType />} />
-            <Route path="addPrice" element={<AddPricePage />} />
-            <Route path="receipt" element={<ReceiptPage />} />
-          </Route>
         </Route>
+
+        <Route path="becomeAhost" element={<BecomeAhostLayout />}>
+          <Route index element={<StepOnePage />} />
+          <Route path="selectType" element={<SelectTypePage />} />
+          <Route path="selectRoomType" element={<SelectRoomTypePage />} />
+          <Route path="selectLocation" element={<SelectLocationPage />} />
+          <Route path="floorPlan" element={<FloorPlan />} />
+          <Route path="stepTwo" element={<StepTwoPage />} />
+          <Route path="amenities" element={<SelectAmenities />} />
+          <Route path="addPhotos" element={<AddPhotosPage />} />
+          <Route path="addTitle" element={<AddTitlePage />} />
+          <Route path="addDescription" element={<AddDescriptionPage />} />
+          <Route path="stepThree" element={<StepThreePage />} />
+          <Route path="bookType" element={<SelectBookType />} />
+          <Route path="addPrice" element={<AddPricePage />} />
+          <Route path="receipt" element={<ReceiptPage />} />
+        </Route>
+
         <Route path="/hostPage" element={<HostPage />} />
       </Routes>
     </>
