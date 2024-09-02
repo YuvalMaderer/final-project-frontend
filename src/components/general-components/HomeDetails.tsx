@@ -1,7 +1,7 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchHomeById } from "@/lib/http";
-import { DateRange, IHome } from "@/types";
+import { fetchHomeById, fetchHomeReservations } from "@/lib/http";
+import { DateRange, IHome, IReservation } from "@/types";
 import { RiShare2Line } from "react-icons/ri";
 import { IReview } from "@/types";
 import { Heart, Star } from "lucide-react";
@@ -69,6 +69,33 @@ function HomeDetails() {
     queryFn: () => fetchHomeById(id as string),
   });
 
+  const getReservedDates = (reservations: IReservation[]): Date[] => {
+    return reservations.flatMap((reservation) => {
+      const dates: Date[] = [];
+      for (
+        let currentDate = new Date(reservation.startDate);
+        currentDate <= new Date(reservation.endDate);
+        currentDate.setDate(currentDate.getDate() + 1)
+      ) {
+        dates.push(new Date(currentDate));
+      }
+      return dates;
+    });
+  };
+
+  const { data: reservations } = useQuery<IReservation[]>({
+    queryKey: ["reservations", id],
+    queryFn: () => fetchHomeReservations(id as string),
+  });
+
+  if (error) {
+    console.error("Error fetching reservations:", error);
+  }
+
+  console.log("Reservations:", reservations);
+
+  const reservedDates = reservations ? getReservedDates(reservations) : [];
+
   const adjustDateForLocalTimeZone = (date: Date): Date => {
     const offset = date.getTimezoneOffset() * 60000; // Offset in milliseconds
     return new Date(date.getTime() - offset);
@@ -113,7 +140,7 @@ function HomeDetails() {
       },
       {
         root: null,
-        threshold: 0, // Adjust if necessary
+        threshold: 0,
       }
     );
 
@@ -574,6 +601,7 @@ function HomeDetails() {
                   head_row: "",
                   row: "w-full mt-2",
                 }}
+                disabled={reservedDates}
                 mode="range"
                 selected={checkDates}
                 onSelect={(ev) => {
@@ -645,6 +673,7 @@ function HomeDetails() {
 
                       <PopoverContent className="w-auto p-0">
                         <Calendar
+                          disabled={reservedDates}
                           mode="range"
                           selected={checkDates}
                           onSelect={(ev) => {

@@ -1,6 +1,6 @@
 import { Home } from "@/layouts/BecomeAhostLayout";
 import api from "@/services/api.service";
-import { IHome, IWishlist, IWishlistResponse, QueryFilter } from "@/types";
+import { IHome, IReservation, IReservationRequest, IReservationResponse, IWishlist, IWishlistResponse, QueryFilter } from "@/types";
 
 // Utility function to safely convert filters to query params
 function serializeFilters(filters: QueryFilter): URLSearchParams {
@@ -100,3 +100,31 @@ export async function createNewHome(newHome: Home) {
     throw err; // Optionally rethrow the error to handle it in the caller
   }
 }
+
+export async function createNewReservation(
+  reservation: IReservationRequest
+): Promise<IReservationResponse> {
+  try {
+    const response = await api.post<IReservationResponse>(`/reservation/create`, reservation);
+    return response.data;
+  } catch (err) {
+    console.error("Error creating new reservation:", err);
+    throw err;
+  }
+}
+
+
+export const fetchHomeReservations = async (homeId: string): Promise<IReservation[]> => {
+
+  try {
+    const response = await api.get(`/reservation/${homeId}`)
+    return response.data;
+  
+  } catch (error) {
+    console.error('Error parsing JSON:', error);
+    throw new Error('Failed to parse response data');
+  }
+};
+
+
+
