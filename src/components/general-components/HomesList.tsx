@@ -11,9 +11,17 @@ type HomesListProps = {
   homes: IHome[] | undefined; // Define homes as an array of IHome objects
   isLoading: boolean;
   totalHomes: number | undefined;
+  isHomePage: boolean;
+  wishlistName: string | undefined;
 };
 
-function HomesList({ homes, isLoading, totalHomes }: HomesListProps) {
+function HomesList({
+  homes,
+  isLoading,
+  totalHomes,
+  isHomePage,
+  wishlistName,
+}: HomesListProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const homesPerPage = 18;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -58,6 +66,8 @@ function HomesList({ homes, isLoading, totalHomes }: HomesListProps) {
               images={home.imgUrls}
               name={home.name}
               homeId={home._id}
+              isHomePage={isHomePage}
+              wishlistName={wishlistName}
             />
             <div className="flex justify-between">
               <p className="font-600 text-[14px]">{home.loc.address}</p>

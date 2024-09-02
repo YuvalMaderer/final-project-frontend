@@ -8,7 +8,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { UseEmblaCarouselType } from "embla-carousel-react";
-import { addToWishlist, fetchHomeById, fetchUserWishlists } from "@/lib/http";
+import {
+  addToWishlist,
+  fetchHomeById,
+  fetchUserWishlists,
+  removeFromWishlist,
+} from "@/lib/http";
 import { useAuth } from "@/providers/user.context";
 import {
   Dialog,
@@ -29,17 +34,27 @@ interface HomeCarouselProps {
   images: string[];
   name: string;
   homeId: string; // Home ID passed as a prop
+  isHomePage: boolean;
+  wishlistName: string | undefined;
 }
 
 type EmblaCarouselApi = UseEmblaCarouselType[1];
 
-function HomeCarousel({ images, name, homeId }: HomeCarouselProps) {
+function HomeCarousel({
+  images,
+  name,
+  homeId,
+  isHomePage,
+  wishlistName,
+}: HomeCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [emblaApi, setEmblaApi] = useState<EmblaCarouselApi | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { loggedInUser } = useAuth();
+
   const [homeData, setHomeData] = useState<{ [key: string]: IHome }>({});
   const userId = loggedInUser?.user._id;
+
   const [newWishlistName, setNewWishlistName] = useState<string>("");
   const [isCreateNewWishlist, setIsCreateNewWishlist] =
     useState<boolean>(false);
@@ -122,6 +137,27 @@ function HomeCarousel({ images, name, homeId }: HomeCarouselProps) {
     setNewWishlistName(event.target.value);
   }
 
+  const handleRemoveFromWishlist = (
+    ev:
+      | React.MouseEvent<HTMLDivElement, MouseEvent>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    title: string | undefined,
+    homeId: string,
+    userId: string
+  ) => {
+    ev.preventDefault();
+    ev.stopPropagation(); // Prevents event from bubbling up to the Link
+    if (!title) {
+      return;
+    }
+
+    try {
+      removeFromWishlist(title, homeId, userId);
+    } catch (err) {
+      console.error("Failed to add home to wishlist:", err);
+    }
+  };
+
   return (
     <div className="relative w-72 pb-2">
       <Carousel
@@ -138,71 +174,69 @@ function HomeCarousel({ images, name, homeId }: HomeCarouselProps) {
                     alt={`${name} - Image ${index + 1}`}
                     className="w-[270px] h-[270px] rounded-lg cursor-pointer"
                   />
-
-                  <Dialog open={isDialogOpen}>
-                    <DialogTrigger>
-                      <button
-                        className="absolute top-2 right-8 z-50 flex items-center justify-center p-1 rounded-full"
-                        // Adding stopPropagation here to prevent navigation
-                        onClick={(ev) => {
-                          ev.stopPropagation(); // Prevents event from bubbling up to the Link
-                          ev.preventDefault();
-                          setIsDialogOpen(true);
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 32 32"
-                          aria-hidden="true"
-                          role="presentation"
-                          focusable="false"
-                          className="w-6 h-6 fill-current text-black stroke-white stroke-2"
+                  {isHomePage ? (
+                    <Dialog open={isDialogOpen}>
+                      <DialogTrigger>
+                        <button
+                          className="absolute top-2 right-8 z-50 flex items-center justify-center p-1 rounded-full"
+                          onClick={(ev) => {
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                            setIsDialogOpen(true);
+                          }}
                         >
-                          <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
-                        </svg>
-                      </button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Add to wishlist</DialogTitle>
-                        <DialogDescription>
-                          {isCreateNewWishlist ? (
-                            <div className="space-y-2">
-                              <Input
-                                value={newWishlistName}
-                                onChange={handleChangeWishlistName}
-                                placeholder="Name"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                                className={cn(
-                                  newWishlistName.length > 50 &&
-                                    "border-2 border-red-600"
-                                )}
-                              />
-                              <div className="flex justify-between">
-                                <p className="text-xs">
-                                  {newWishlistName.length}/50
-                                </p>
-                                {newWishlistName.length > 50 && (
-                                  <p className="text-red-600 text-xs">
-                                    Over character limit
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 32 32"
+                            aria-hidden="true"
+                            role="presentation"
+                            focusable="false"
+                            className="w-6 h-6 fill-current text-black stroke-white stroke-2"
+                          >
+                            <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
+                          </svg>
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Add to wishlist</DialogTitle>
+                          <DialogDescription>
+                            {isCreateNewWishlist ? (
+                              <div className="space-y-2">
+                                <Input
+                                  value={newWishlistName}
+                                  onChange={handleChangeWishlistName}
+                                  placeholder="Name"
+                                  onClick={(ev) => {
+                                    ev.preventDefault();
+                                  }}
+                                  className={cn(
+                                    newWishlistName.length > 50 &&
+                                      "border-2 border-red-600"
+                                  )}
+                                />
+                                <div className="flex justify-between">
+                                  <p className="text-xs">
+                                    {newWishlistName.length}/50
                                   </p>
-                                )}
+                                  {newWishlistName.length > 50 && (
+                                    <p className="text-red-600 text-xs">
+                                      Over character limit
+                                    </p>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          ) : (
-                            <div className="grid grid-cols-2 font-montserrat max-h-[33rem] overflow-y-auto">
-                              {userWishlists.map((wishlist: IWishlist) => {
-                                // Use the first item from the wishlist
-                                const firstItemId = wishlist.list[0];
-                                const home = homeData[firstItemId];
+                            ) : (
+                              <div className="grid grid-cols-2 font-montserrat max-h-[33rem] overflow-y-auto">
+                                {userWishlists.map((wishlist: IWishlist) => {
+                                  // Use the first item from the wishlist
+                                  const firstItemId = wishlist.list[0];
+                                  const home = homeData[firstItemId];
 
-                                return (
-                                  <>
+                                  return (
                                     <div
                                       className="cursor-pointer font-montserrat"
-                                      key={wishlist.title}
+                                      key={wishlist._id}
                                       onClick={(ev) =>
                                         handleAddToWishlist(
                                           ev,
@@ -230,47 +264,72 @@ function HomeCarousel({ images, name, homeId }: HomeCarouselProps) {
                                         {wishlist.list.length} saved
                                       </h2>
                                     </div>
-                                  </>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                          {isCreateNewWishlist ? (
+                            <Button
+                              variant="new"
+                              className="w-full h-12"
+                              onClick={(ev) => {
+                                ev.preventDefault();
+                                handleAddToWishlist(
+                                  ev,
+                                  homeId,
+                                  userId,
+                                  newWishlistName
                                 );
-                              })}
-                            </div>
+                              }}
+                              disabled={newWishlistName.length > 50}
+                            >
+                              Create
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="new"
+                              className="w-full h-12"
+                              onClick={(ev) => {
+                                ev.preventDefault();
+                                setIsCreateNewWishlist(true);
+                              }}
+                              disabled={newWishlistName.length > 50}
+                            >
+                              Create new wishlist
+                            </Button>
                           )}
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter>
-                        {isCreateNewWishlist ? (
-                          <Button
-                            variant="new"
-                            className="w-full h-12"
-                            onClick={(ev) => {
-                              ev.preventDefault();
-                              handleAddToWishlist(
-                                ev,
-                                homeId,
-                                userId,
-                                newWishlistName
-                              );
-                            }}
-                            disabled={newWishlistName.length > 50}
-                          >
-                            Create
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="new"
-                            className="w-full h-12"
-                            onClick={(ev) => {
-                              ev.preventDefault();
-                              setIsCreateNewWishlist(true);
-                            }}
-                            disabled={newWishlistName.length > 50}
-                          >
-                            Create new wishlist
-                          </Button>
-                        )}
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  ) : (
+                    <button
+                      className="absolute top-2 right-8 z-50 flex items-center justify-center p-1 rounded-full"
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        handleRemoveFromWishlist(
+                          ev,
+                          wishlistName,
+                          homeId,
+                          userId
+                        );
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 32 32"
+                        aria-hidden="true"
+                        role="presentation"
+                        focusable="false"
+                        className="w-6 h-6 fill-current text-red-600 stroke-white stroke-2"
+                      >
+                        <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
+                      </svg>
+                    </button>
+                  )}
                 </div>
               </Link>
             </CarouselItem>
