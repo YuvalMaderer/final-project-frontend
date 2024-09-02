@@ -88,11 +88,22 @@ function HomeDetails() {
     queryFn: () => fetchHomeReservations(id as string),
   });
 
+  useEffect(() => {
+    // Set a timeout to scroll to the top after 1 second (1000 milliseconds)
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "auto",
+      });
+    }, 1);
+
+    // Cleanup function to clear the timeout if the component unmounts before the timeout completes
+    return () => clearTimeout(timer);
+  }, []);
+
   if (error) {
     console.error("Error fetching reservations:", error);
   }
-
-  console.log("Reservations:", reservations);
 
   const reservedDates = reservations ? getReservedDates(reservations) : [];
 

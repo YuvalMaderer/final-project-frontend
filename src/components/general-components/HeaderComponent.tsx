@@ -57,7 +57,15 @@ function HeaderComponent() {
                   <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden">
                     {loggedInUser ? (
                       <div className="bg-black w-6 h-6 rounded-full text-white flex justify-center items-center text-xs">
-                        {loggedInUser.user.firstName[0]}
+                        {loggedInUser.user.picture ? (
+                          <img
+                            src={loggedInUser.user.picture}
+                            alt={loggedInUser.user.firstName[0]}
+                            className="w-full h-full object-cover rounded-full"
+                          />
+                        ) : (
+                          <span>{loggedInUser.user.firstName[0]}</span>
+                        )}
                       </div>
                     ) : (
                       <svg
