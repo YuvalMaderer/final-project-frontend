@@ -64,7 +64,9 @@ function App() {
           <Route path="receipt" element={<ReceiptPage />} />
         </Route>
 
-        <Route path="/hostPage" element={<HostPage />} />
+        <Route path="/hostPage" element={<HostLayout />}>
+          <Route index element={<HostPage />} />
+        </Route>
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
