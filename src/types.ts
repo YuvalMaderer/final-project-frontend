@@ -93,3 +93,36 @@ export type IWishlist = {
 export interface IWishlistResponse {
   wishlists: IWishlist[];
 }
+
+export interface IReservationRequest {
+  user: string;
+  home: string;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  totalPrice: number;
+}
+
+export interface IReservationResponse {
+  message: string;
+  reservation: {
+    _id: string;
+    user: string;
+    host: string;
+    home: string;
+    startDate: Date;
+    endDate: Date;
+    totalPrice: number;
+    status: string; 
+  };
+}
+
+export interface IReservation {
+  _id: string;
+  user: string;
+  host: string;
+  home: string;
+  startDate: Date;
+  endDate: Date;
+  totalPrice: number;
+  status: "pending" | "confirmed" | "cancelled";
+}

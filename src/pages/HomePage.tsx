@@ -108,6 +108,7 @@ function HomePage() {
           isLoading={isLoading}
           totalHomes={totalHomes}
           isHomePage={isHomePage}
+          wishlistName=""
         />
         {position && <GoogleMap homes={homes} position={position} />}
       </div>

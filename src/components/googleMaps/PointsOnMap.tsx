@@ -44,6 +44,8 @@ function HomesOnMap({ points }: Props) {
                     images={point.imgUrls}
                     name={point.name}
                     homeId={point._id}
+                    wishlistName=""
+                    isHomePage={true}
                   />
                   <div className="flex justify-between items-center">
                     <p className="font-500">{point.loc.address}</p>

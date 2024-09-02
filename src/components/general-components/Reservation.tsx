@@ -1,5 +1,5 @@
 import { fetchHomeById } from "@/lib/http";
-import { DateRange, IHome } from "@/types";
+import { DateRange, IHome, IReservationRequest } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -20,6 +20,9 @@ import Modal from "./LoginModalComponent";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Calendar } from "../ui/calendar";
 import { Card as GuestCard } from "./GuestCard";
+import { useMutation } from "@tanstack/react-query";
+import { createNewReservation } from "@/lib/http";
+
 type GuestType = "adults" | "children" | "infants" | "pets";
 
 function Reservation() {
@@ -49,6 +52,20 @@ function Reservation() {
     queryFn: () => fetchHomeById(id as string),
   });
 
+  const {
+    mutate: createReservation,
+    isPending: isCreating,
+    error: reservationError,
+  } = useMutation({
+    mutationFn: createNewReservation,
+    onSuccess: (data) => {
+      console.log("Reservation created:", data);
+    },
+    onError: (error) => {
+      console.error("Error creating reservation:", error);
+    },
+  });
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading home details</div>;
   if (!home) return <div>No home details available.</div>;
@@ -61,6 +78,37 @@ function Reservation() {
 
     return diffInDays;
   };
+
+  const formatDateToUTC = (date: Date | undefined) => {
+    if (!date) return undefined;
+    // Return date in ISO string format in UTC
+    return new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    ).toISOString();
+  };
+
+  const parseDate = (dateString: string | undefined): Date | undefined => {
+    if (!dateString) return undefined;
+    return new Date(dateString);
+  };
+
+  const CleaningFee = 35;
+  const AirbnbServiceFee = 67;
+  const Texas = 12;
+
+  const reservationData: IReservationRequest = {
+    user: loggedInUser?.user._id || "",
+    home: home._id,
+    startDate: parseDate(formatDateToUTC(checkDates?.from)),
+    endDate: parseDate(formatDateToUTC(checkDates?.to)),
+    totalPrice:
+      home.price * calculateNights(checkDates) +
+      CleaningFee +
+      AirbnbServiceFee +
+      Texas,
+  };
+
+  console.log("Reservation data:", reservationData);
 
   const formatDates = () => {
     if (!checkDates?.from || !checkDates?.to) return "";
@@ -141,6 +189,14 @@ function Reservation() {
     });
   };
 
+  const handlePay = () => {
+    if (loggedInUser && checkDates) {
+      createReservation(reservationData);
+    } else {
+      console.log("Please log in or select dates");
+    }
+  };
+
   const handleGuestSave = () => {
     setGuestCounts(tempGuestCounts);
     setIsDialogOpenGuest(false);
@@ -162,17 +218,9 @@ function Reservation() {
     setTempDates(undefined);
   };
 
-  const handle = () => {
-    console.log("work");
-  };
-
   const handleGoBack = () => {
     navigate(-1); // This will navigate back to the previous page
   };
-
-  const CleaningFee = 35;
-  const AirbnbServiceFee = 67;
-  const Texas = 12;
 
   return (
     <div>
@@ -192,7 +240,6 @@ function Reservation() {
               {loggedInUser && (
                 <div className="flex flex-col mb-4">
                   <div className="flex flex-col  gap-4 mb-2">
-                    {/* Replace `Vi` with your actual icon component */}
                     <CircleCheck className="w-8 h-8" />
                     <span className="font-semibold text-xl">
                       Hi, you're logged in
@@ -346,11 +393,16 @@ function Reservation() {
               <div className="mt-8 flex flex-col gap-4">
                 <p className="text-xl font-semibold">Choose how to pay</p>
                 <Button
-                  onClick={loggedInUser ? handle : undefined}
-                  disabled={!loggedInUser}
+                  onClick={handlePay}
+                  disabled={!loggedInUser || isCreating}
                 >
-                  PayPal
+                  {isCreating ? <span>Processing...</span> : "PayPal"}
                 </Button>
+                {reservationError && (
+                  <p className="text-red-500 mt-2">
+                    Error creating reservation: {reservationError.message}
+                  </p>
+                )}
               </div>
             </CardFooter>
             <CardFooter className="border-t">

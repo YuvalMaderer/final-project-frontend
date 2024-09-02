@@ -1,3 +1,4 @@
+import { useToast } from "@/components/ui/use-toast";
 import api from "@/services/api.service";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { AxiosError } from "axios";
@@ -67,6 +68,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     undefined
   );
   const [token, setToken] = useLocalStorage<string | null>("token", null);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!token) {
@@ -106,10 +108,18 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
       setToken(response.data.token);
       setLoggedInUser(response.data.user); // Ensure the user is set correctly
+      toast({
+        title: "Success!",
+        description: "You have been logged in",
+      });
 
       return response.data;
     } catch (error: unknown) {
       console.error("Error logging in:", error);
+      toast({
+        title: "Failed",
+        description: "Username or password incorrect",
+      });
       throw error;
     }
   };
@@ -117,8 +127,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const register = async (userData: RegisterData): Promise<void> => {
     try {
       await api.post("/auth/register", userData);
+      toast({
+        title: "Success",
+        description: "You have registered successfully",
+      });
     } catch (error: unknown) {
       console.error("Error registering:", error);
+      toast({
+        title: "Failed",
+        description: "There was an error while registered",
+      });
       throw error;
     }
   };
@@ -135,8 +153,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       const response = await api.post("/auth/google", { credential });
       setToken(response.data.token);
       setLoggedInUser(response.data.user);
+      toast({
+        title: "Success!",
+        description: "You have been logged in",
+      });
     } catch (error: unknown) {
       console.error("Google login failed:", error);
+      toast({
+        title: "Failed",
+        description: "Username or password incorrect",
+      });
     }
   };
 
