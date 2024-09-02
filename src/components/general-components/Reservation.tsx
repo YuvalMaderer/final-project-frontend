@@ -17,12 +17,7 @@ import { Button } from "../ui/button";
 import { useAuth } from "@/providers/user.context";
 import { useEffect, useState } from "react";
 import Modal from "./LoginModalComponent";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Calendar } from "../ui/calendar";
 import { Card as GuestCard } from "./GuestCard";
 import { useMutation } from "@tanstack/react-query";

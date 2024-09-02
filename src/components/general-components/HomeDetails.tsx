@@ -33,6 +33,7 @@ import Guests from "./Guests";
 import { Link as ScrollLink } from "react-scroll";
 import { useGuestContext } from "@/providers/Guest-Context";
 import { useDate } from "@/hooks/useDate";
+import GoogleMap from "../googleMaps/GoogleMap";
 
 const monthNames = [
   "Jan",
@@ -69,6 +70,10 @@ function HomeDetails() {
     queryFn: () => fetchHomeById(id as string),
   });
 
+  const position: { lat: number; lng: number } = {
+    lat: home?.loc.lat,
+    lng: home?.loc.lan,
+  };
   const getReservedDates = (reservations: IReservation[]): Date[] => {
     return reservations.flatMap((reservation) => {
       const dates: Date[] = [];
@@ -778,6 +783,16 @@ function HomeDetails() {
           isDialogOpen={isReviewDialogOpen}
           onDialogOpenChange={handleReviewDialogChange}
         />
+        <div className="w-full flex justify-center items-center">
+          {position && (
+            <GoogleMap
+              homes={[home]}
+              position={position}
+              zoom={17}
+              width="80%"
+            />
+          )}
+        </div>
       </div>
     </div>
   );

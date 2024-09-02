@@ -8,9 +8,16 @@ const googleApiKey: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 interface GoogleMapProps {
   homes: IHome[] | undefined;
   position: { lat: number; lng: number };
+  zoom?: number;
+  width?: string;
 }
 
-export default function GoogleMap({ homes, position }: GoogleMapProps) {
+export default function GoogleMap({
+  homes,
+  position,
+  zoom = 11,
+  width = "60%",
+}: GoogleMapProps) {
   const [open, setOpen] = useState(false);
 
   if (!googleApiKey) return;
@@ -20,13 +27,13 @@ export default function GoogleMap({ homes, position }: GoogleMapProps) {
       <div
         style={{
           height: "80vh",
-          width: "60%",
+          width: width,
           position: "sticky",
           top: "230px",
         }}
       >
         <Map
-          defaultZoom={11}
+          defaultZoom={zoom}
           defaultCenter={position}
           mapId={"aa21e74a7cd52a60"}
           fullscreenControl={false}
