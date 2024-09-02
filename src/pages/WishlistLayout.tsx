@@ -5,7 +5,7 @@ function WishlistLayout() {
   return (
     <>
       <HeaderComponent />
-      <Outlet />;
+      <Outlet />
     </>
   );
 }

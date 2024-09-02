@@ -26,6 +26,7 @@ import WishlistLayout from "./pages/WishlistLayout";
 import WishlistDetailPage from "./pages/WishlistDetailPage";
 import ReceiptPage from "./pages/becomeAhostPages/ReceiptPage";
 import HostPage from "./pages/HostPage";
+import HostLayout from "./layouts/HostLayout";
 
 function App() {
   return (

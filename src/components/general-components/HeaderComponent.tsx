@@ -13,6 +13,8 @@ import { useState } from "react";
 import { useAuth } from "@/providers/user.context";
 import { useLocation } from "react-router-dom";
 
+import logo from "../../assets/airbnb-logo.webp";
+
 function HeaderComponent() {
   const [isModalOpen, setModalOpen] = useState(false);
   const { loggedInUser, logout } = useAuth();
@@ -25,11 +27,7 @@ function HeaderComponent() {
       <div className={`bg-white z-50 ${isHomePage ? "sticky top-0" : ""}`}>
         <nav className="flex justify-between items-center p-3 px-20">
           <Link to="/">
-            <img
-              src="src/assets/airbnb-logo.webp"
-              alt="logo"
-              className="w-[105px] h-[60px]"
-            />
+            <img src={logo} alt="logo" className="w-[105px] h-[60px]" />
           </Link>
           <div className="flex gap-6 ml-40">
             <NavLink
@@ -57,7 +55,15 @@ function HeaderComponent() {
                   <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden">
                     {loggedInUser ? (
                       <div className="bg-black w-6 h-6 rounded-full text-white flex justify-center items-center text-xs">
-                        {loggedInUser.user.firstName[0]}
+                        {loggedInUser.user.picture ? (
+                          <img
+                            src={loggedInUser.user.picture}
+                            alt={loggedInUser.user.firstName[0]}
+                            className="w-full h-full object-cover rounded-full"
+                          />
+                        ) : (
+                          <span>{loggedInUser.user.firstName[0]}</span>
+                        )}
                       </div>
                     ) : (
                       <svg
@@ -84,7 +90,9 @@ function HeaderComponent() {
                         <DropdownMenuItem>Wishlists</DropdownMenuItem>
                       </Link>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
+                      <Link to={"/hostPage"}>
+                        <DropdownMenuItem>Manage listings</DropdownMenuItem>
+                      </Link>
                       <DropdownMenuItem>Refer a host</DropdownMenuItem>
                       <DropdownMenuItem>Account</DropdownMenuItem>
                       <DropdownMenuSeparator />

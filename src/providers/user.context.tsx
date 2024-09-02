@@ -17,16 +17,18 @@ interface IWhishlist {
 }
 
 interface User {
-  _id: string;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  birthday: Date;
-  reviews: string[];
-  wishlists: IWhishlist[];
-  picture?: string;
-  phoneNumber?: string;
+  user: {
+    _id: string;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    birthday: Date;
+    reviews: string[];
+    wishlists: IWhishlist[];
+    picture?: string;
+    phoneNumber?: string;
+  };
 }
 
 interface AuthContextType {
@@ -98,6 +100,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setToken(null);
     setLoggedInUser(null);
+    window.location.reload();
   };
 
   const login = async (userData: LoginData): Promise<LoginResponse> => {
@@ -110,6 +113,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         title: "Success!",
         description: "You have been logged in",
       });
+      window.location.reload();
 
       return response.data;
     } catch (error: unknown) {
@@ -143,6 +147,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     credential?: string;
   }): Promise<void> => {
     const { credential } = credentialResponse;
+
     if (!credential) {
       console.error("Credential is undefined");
       return;
