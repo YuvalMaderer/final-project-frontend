@@ -10,7 +10,11 @@ function AddTitlePage() {
   const [text, setText] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
-    setSearchParams({ step: "addTitle" });
+    if (text.length > 0) {
+      setSearchParams({ step: "addTitle" });
+    } else {
+      setSearchParams({ step: "" });
+    }
     handleNewHomeUpdate();
   }, [text]);
 
@@ -55,6 +59,7 @@ function AddTitlePage() {
         />
         <div className=" text-sm text-gray-500 font-600">{text.length}/32</div>
       </div>
+    
     </div>
   );
 }

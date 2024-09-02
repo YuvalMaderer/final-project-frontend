@@ -21,6 +21,7 @@ import axios from "axios";
 import { Home } from "@/layouts/BecomeAhostLayout";
 import api from "@/services/api.service";
 import { useToast } from "@/components/ui/use-toast";
+import Loader from "@/components/ui/Loader";
 
 function AddPhotosPage() {
   const [newHome, setNewHome] =
@@ -30,11 +31,13 @@ function AddPhotosPage() {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isDisabled, setIsDisabled] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedImages.length >= 5) {
       setSearchParams({ step: "addPhotos" });
+      setIsDisabled(false);
     } else {
       setSearchParams({ step: "" });
     }
@@ -93,9 +96,9 @@ function AddPhotosPage() {
     });
 
     try {
+      setIsDisabled(true);
       toast({
-      
-        description: "Uploading...",
+        description: <Loader />,
       });
       const response = await api.post("/images/upload", formData, {
         headers: {
@@ -132,6 +135,7 @@ function AddPhotosPage() {
       });
     } finally {
       setIsDialogOpen(false);
+      setIsDisabled(false);
     }
   };
 
@@ -259,6 +263,7 @@ function AddPhotosPage() {
                     Cancel
                   </Button>
                   <Button
+                    disabled={isDisabled}
                     className="text-white bg-gray-800 hover:bg-black cursor-pointer p-6 text-md"
                     onClick={handleUpload}
                   >

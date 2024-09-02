@@ -5,6 +5,7 @@ import { useAuth } from "@/providers/user.context";
 import { IWishlistResponse, IHome } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 function WishlistDetailPage() {
@@ -12,6 +13,7 @@ function WishlistDetailPage() {
   const userId = loggedInUser?.user._id;
   const { title } = useParams();
   const Navigate = useNavigate();
+  const [isHomePage, setIsHomePage] = useState(false);
 
   const {
     data: wishlistData,
@@ -67,6 +69,8 @@ function WishlistDetailPage() {
           homes={homesData}
           isLoading={homesLoading}
           totalHomes={homesData?.length}
+          isHomePage={isHomePage}
+          wishlistName={title}
         />
         {position && <GoogleMap homes={homesData} position={position} />}
       </div>

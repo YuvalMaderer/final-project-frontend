@@ -7,6 +7,7 @@ function BecomeAhostHeader() {
     <>
       <header className="flex justify-between px-14 pt-9 sticky top-0 z-20 bg-white pb-7">
         <svg
+          onClick={() => navigate("/")}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 32 32"
           aria-hidden="true"

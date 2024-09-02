@@ -128,3 +128,13 @@ export const fetchHomeReservations = async (homeId: string): Promise<IReservatio
 
 
 
+export async function removeFromWishlist(title: string, homeId: string, userId: string): Promise<void> {
+  try {
+    await api.delete(`/user/removeFromWishlist`, {
+      data: { title, homeId, userId } // Use `data` instead of `params`
+    });
+  } catch (err) {
+    console.error("Error removing from wishlist:", err);
+    throw err; // Optionally rethrow the error to handle it in the caller
+  }
+}
