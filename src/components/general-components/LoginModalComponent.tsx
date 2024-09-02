@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { Fullscreen, X } from "lucide-react";
 import React, { useEffect, useState, useRef } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -103,6 +103,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </div>
         <div className="w-full flex justify-center pt-4">
           <GoogleLogin
+            shape="circle"
+            theme="outline"
+            width="1000"
+            size="large"
+            text="continue_with"
+            locale="en-US"
             onSuccess={async (credentialResponse: CredentialResponse) => {
               if (credentialResponse.credential) {
                 try {

@@ -27,6 +27,7 @@ import WishlistDetailPage from "./pages/WishlistDetailPage";
 import ReceiptPage from "./pages/becomeAhostPages/ReceiptPage";
 import HostPage from "./pages/HostPage";
 import HostLayout from "./layouts/HostLayout";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -65,6 +66,8 @@ function App() {
         <Route path="/hostPage" element={<HostLayout />}>
           <Route index element={<HostPage />} />
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

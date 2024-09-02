@@ -12,9 +12,9 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { googleApi } from "@/lib/googleApiKey";
 import { useOutletContext } from "react-router-dom";
 import { Home } from "@/layouts/BecomeAhostLayout";
+import { googleApi } from "@/lib/googleApiKey";
 
 interface LatLng {
   lat: number;
