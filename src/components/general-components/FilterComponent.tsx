@@ -412,46 +412,6 @@ const FilterModal: React.FC<ModalProps> = ({
           <div className="space-y-2 pb-4">
             <h1 className="font-600 text-xl pb-2">Price Range</h1>
             <p className="text-xs">Nightly prices including fees and taxes</p>
-            <div className="flex items-center">
-              <Label htmlFor="min-price" className="mr-2 text-[16px]">
-                Min Price:
-              </Label>
-              <input
-                type="number"
-                id="min-price"
-                min="0"
-                max="1500"
-                value={minPrice}
-                onChange={(e) => {
-                  setMinPrice(Number(e.target.value));
-                  setFilters((prevFilters) => ({
-                    ...prevFilters,
-                    minPrice: Number(e.target.value),
-                  }));
-                }}
-                className="border-[1px] border-gray-300 rounded-sm px-2 py-1 text-[16px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="flex items-center">
-              <Label htmlFor="max-price" className="mr-2 text-[16px]">
-                Max Price:
-              </Label>
-              <input
-                type="number"
-                id="max-price"
-                min="0"
-                max="1500"
-                value={maxPrice}
-                onChange={(e) => {
-                  setMaxPrice(Number(e.target.value));
-                  setFilters((prevFilters) => ({
-                    ...prevFilters,
-                    maxPrice: Number(e.target.value),
-                  }));
-                }}
-                className="border-[1px] border-gray-300 rounded-sm px-2 py-1 text-[16px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
             <Slider
               range
               min={0}
@@ -474,6 +434,54 @@ const FilterModal: React.FC<ModalProps> = ({
                 }));
               }}
             />
+            <div className="flex justify-between">
+              <div className="flex flex-col items-center">
+                <Label
+                  htmlFor="min-price"
+                  className="text-[12px] text-gray-600 font-600"
+                >
+                  Minimum
+                </Label>
+                <input
+                  type="number"
+                  id="min-price"
+                  min="0"
+                  max="1500"
+                  value={minPrice}
+                  onChange={(e) => {
+                    setMinPrice(Number(e.target.value));
+                    setFilters((prevFilters) => ({
+                      ...prevFilters,
+                      minPrice: Number(e.target.value),
+                    }));
+                  }}
+                  className="no-arrows h-10 border-[1px] border-gray-300 rounded-full text-center px-2 py-1 text-[16px] focus:outline-none focus:ring-2 focus:ring-black"
+                />
+              </div>
+              <div className="flex flex-col items-center">
+                <Label
+                  htmlFor="max-price"
+                  className="text-[12px] text-gray-600 font-600"
+                >
+                  Maximum
+                </Label>
+                <input
+                  type="number"
+                  id="max-price"
+                  min="0"
+                  max="1500"
+                  value={maxPrice}
+                  onChange={(e) => {
+                    setMaxPrice(Number(e.target.value));
+                    setFilters((prevFilters) => ({
+                      ...prevFilters,
+                      maxPrice: Number(e.target.value),
+                    }));
+                  }}
+                  className="no-arrows h-10 border-[1px] border-gray-300 rounded-full text-center px-2 py-1 text-[16px] focus:outline-none focus:ring-2 focus:ring-black"
+                />
+              </div>
+            </div>
           </div>
           <hr className="pb-4" />
           <div className="space-y-4 pb-4">
