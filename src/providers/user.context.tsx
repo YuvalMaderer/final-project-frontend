@@ -16,16 +16,18 @@ interface IWhishlist {
 }
 
 interface User {
-  _id:string
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  birthday: Date;
-  reviews: string[];
-  wishlists: IWhishlist[];
-  picture?: string;
-  phoneNumber?: string;
+  user: {
+    _id: string;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    birthday: Date;
+    reviews: string[];
+    wishlists: IWhishlist[];
+    picture?: string;
+    phoneNumber?: string;
+  };
 }
 
 interface AuthContextType {
