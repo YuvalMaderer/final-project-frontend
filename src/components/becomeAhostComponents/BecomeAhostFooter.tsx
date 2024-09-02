@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 import { Home } from "@/layouts/BecomeAhostLayout";
 import { createNewHome } from "@/lib/http";
+import { toast, useToast } from "../ui/use-toast";
+import { useMutation } from "@tanstack/react-query";
 
 function BecomeAhostFooter() {
   useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
@@ -21,11 +23,78 @@ function BecomeAhostFooter() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { toast } = useToast();
+  const [isDisabled, setIsDisabled] = useState(true);
+
   useEffect(() => {
     const stepParam = searchParams.get("step");
     setStep(stepParam);
-    handleProgress();
   }, [searchParams]);
+
+  useEffect(() => {
+    handleProgress();
+    handleDisabled();
+  }, [step, location.pathname]);
+
+  const mutation = useMutation({
+    mutationFn: createNewHome, // Use mutationFn to pass the function
+    onSuccess: () => {
+      toast({
+        title: "Upload New Listing",
+        description: "Welcome Aboard! You’re Officially a Host",
+      });
+      navigate("/hostPage");
+    },
+    onError: (error) => {
+      console.error("Error while posting new home:", error);
+      toast({
+        title: "Error",
+        description:
+          "There was an issue creating your listing. Please try again.",
+      });
+    },
+  });
+
+  function handleDisabled() {
+    const enabledSteps = [
+      "stepOne",
+      "selectType",
+      "selectRoomType",
+      "selectLocation",
+      "floorPlan",
+      "stepTwo",
+      "amenities",
+      "addPhotos",
+      "addTitle",
+      "addDescription",
+      "stepThree",
+      "bookType",
+      "addPrice",
+      "receipt",
+    ];
+
+    setIsDisabled(!enabledSteps.includes(step!));
+  }
+
+  function handleUploadHome() {
+    try {
+      const localStorageHome = localStorage.getItem("newHome");
+      const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+
+      // Ensure correct types
+      homeObject.price = Number(homeObject.price.replace(/,/g, "")); // Convert price to number
+      homeObject.capacity = Number(homeObject.capacity);
+      homeObject.bathrooms = Number(homeObject.bathrooms);
+      homeObject.bedrooms = Number(homeObject.bedrooms);
+      homeObject.beds = Number(homeObject.beds);
+
+      console.log("Home Object:", homeObject); // Log to inspect the object before sending
+
+      mutation.mutate(homeObject); // Trigger the mutation
+    } catch (error) {
+      console.error("Error while preparing to create new home:", error);
+    }
+  }
 
   function handleProgress() {
     const lastSegment = location.pathname.split("/").pop();
@@ -100,17 +169,9 @@ function BecomeAhostFooter() {
       navigate("addPrice");
     } else if (step === "addPrice") {
       navigate("receipt");
-    } else if (step === "receipt") {
-      try {
-        const localStorageHome = localStorage.getItem("newHome");
-        const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
-        console.log(homeObject);
-
-        await createNewHome(homeObject);
-        navigate("/hostPage");
-      } catch (error) {
-        console.log("error while post new home");
-      }
+    }
+    if (step === "receipt") {
+      handleUploadHome();
     }
   }
 
@@ -171,6 +232,7 @@ function BecomeAhostFooter() {
           Back
         </Button>
         <Button
+          disabled={isDisabled}
           onClick={handleNext}
           className="text-white bg-gray-800 px-7 py-6 text-md rounded-lg hover:bg-black"
         >
