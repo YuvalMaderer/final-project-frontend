@@ -10,7 +10,11 @@ function AddDescriptionPage() {
   const [text, setText] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
-    setSearchParams({ step: "addDescription" });
+    if (text.length > 0) {
+      setSearchParams({ step: "addDescription" });
+    } else {
+      setSearchParams({ step: "" });
+    }
     handleNewHomeUpdate();
   }, [text]);
 

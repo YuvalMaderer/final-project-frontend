@@ -1,9 +1,11 @@
+import ReceiptDailog from "@/components/becomeAhostComponents/ReceiptDailog";
 import { Home } from "@/layouts/BecomeAhostLayout";
 import { Star } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function ReceiptPage() {
+  const [isOpne, setIsOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
@@ -27,7 +29,10 @@ function ReceiptPage() {
           </p>
         </div>
         <div className="sm:flex sm:gap-10 sm:items-start justify-center">
-          <div className="p-4 rounded-3xl overflow-hidden shadow-2xl max-w-xs mx-auto sm:mx-0">
+          <div
+            onClick={() => setIsOpen(!isOpne)}
+            className="p-4 rounded-3xl overflow-hidden shadow-2xl max-w-xs mx-auto sm:mx-0"
+          >
             <div className="relative">
               <img src={newHome.imgUrls[0]} alt="" />
               <span
@@ -116,6 +121,7 @@ function ReceiptPage() {
           </div>
         </div>
       </div>
+      <ReceiptDailog newHome={newHome} isOpen={isOpne} setIsOpen={setIsOpen} />
     </div>
   );
 }
