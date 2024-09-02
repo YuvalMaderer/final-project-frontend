@@ -162,6 +162,13 @@ const FilterModal: React.FC<ModalProps> = ({
       AllowsPets: false,
     });
 
+  const [minPrice, setMinPrice] = useState(
+    Number(searchParams.get("minPrice")) || 0
+  );
+  const [maxPrice, setMaxPrice] = useState(
+    Number(searchParams.get("maxPrice")) || 1500
+  );
+
   const { data: count } = useQuery<number | string>({
     queryKey: ["count", filters],
     queryFn: () => fetchHomeCountByFilers(filters),
@@ -180,8 +187,8 @@ const FilterModal: React.FC<ModalProps> = ({
     // Only add the parameters if they exist (not undefined or null)
     if (filters.type) params.type = filters.type;
     if (filters.roomType) params.roomType = filters.roomType;
-    if (filters.minPrice) params.minPrice = filters.minPrice.toString();
-    if (filters.maxPrice) params.maxPrice = filters.maxPrice.toString();
+    if (filters.minPrice !== 0) params.minPrice = minPrice.toString();
+    if (filters.maxPrice !== 1500) params.maxPrice = maxPrice.toString();
     if (filters.bedrooms) params.bedrooms = filters.bedrooms.toString();
     if (filters.beds) params.beds = filters.beds.toString();
     if (filters.bathrooms) params.bathrooms = filters.bathrooms.toString();
@@ -405,21 +412,67 @@ const FilterModal: React.FC<ModalProps> = ({
           <div className="space-y-2 pb-4">
             <h1 className="font-600 text-xl pb-2">Price Range</h1>
             <p className="text-xs">Nightly prices including fees and taxes</p>
+            <div className="flex items-center">
+              <Label htmlFor="min-price" className="mr-2 text-[16px]">
+                Min Price:
+              </Label>
+              <input
+                type="number"
+                id="min-price"
+                min="0"
+                max="1500"
+                value={minPrice}
+                onChange={(e) => {
+                  setMinPrice(Number(e.target.value));
+                  setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    minPrice: Number(e.target.value),
+                  }));
+                }}
+                className="border-[1px] border-gray-300 rounded-sm px-2 py-1 text-[16px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex items-center">
+              <Label htmlFor="max-price" className="mr-2 text-[16px]">
+                Max Price:
+              </Label>
+              <input
+                type="number"
+                id="max-price"
+                min="0"
+                max="1500"
+                value={maxPrice}
+                onChange={(e) => {
+                  setMaxPrice(Number(e.target.value));
+                  setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    maxPrice: Number(e.target.value),
+                  }));
+                }}
+                className="border-[1px] border-gray-300 rounded-sm px-2 py-1 text-[16px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
             <Slider
               range
               min={0}
               max={1500}
-              step={10}
-              defaultValue={[
-                Number(searchParams.get("minPrice")) || 0,
-                Number(searchParams.get("maxPrice")) || 1500,
-              ]}
-              trackStyle={[{ backgroundColor: "skyblue" }]}
-              handleStyle={[
-                { borderColor: "skyblue" },
-                { borderColor: "skyblue" },
-              ]}
+              step={2}
+              defaultValue={[minPrice, maxPrice]}
+              trackStyle={[{ backgroundColor: "black" }]}
+              handleStyle={[{ borderColor: "black" }, { borderColor: "black" }]}
               railStyle={{ backgroundColor: "lightgray" }}
+              onChange={([min, max]) => {
+                setMinPrice(min);
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  minPrice: min,
+                }));
+                setMaxPrice(max);
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  maxPrice: max,
+                }));
+              }}
             />
           </div>
           <hr className="pb-4" />

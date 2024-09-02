@@ -29,6 +29,7 @@ import { IHome, IWishlist, IWishlistResponse } from "@/types";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
+import { useToast } from "../ui/use-toast";
 
 interface HomeCarouselProps {
   images: string[];
@@ -51,6 +52,7 @@ function HomeCarousel({
   const [emblaApi, setEmblaApi] = useState<EmblaCarouselApi | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { loggedInUser } = useAuth();
+  const { toast } = useToast();
 
   const [homeData, setHomeData] = useState<{ [key: string]: IHome }>({});
   const userId = loggedInUser?.user._id;
@@ -125,9 +127,17 @@ function HomeCarousel({
     ev.stopPropagation(); // Prevents event from bubbling up to the Link
     try {
       addToWishlist(userId, homeId, title);
+      toast({
+        title: "Success!",
+        description: "The house have been added to the wishlist",
+      });
       setIsDialogOpen(false);
     } catch (err) {
       console.error("Failed to add home to wishlist:", err);
+      toast({
+        title: "Failed",
+        description: "There was an error adding the home to the wishlist",
+      });
     }
   };
 
@@ -153,8 +163,16 @@ function HomeCarousel({
 
     try {
       removeFromWishlist(title, homeId, userId);
+      toast({
+        title: "Success!",
+        description: "The home was successfully removed",
+      });
     } catch (err) {
       console.error("Failed to add home to wishlist:", err);
+      toast({
+        title: "Failed",
+        description: "There was an error removing the home from the wishlist",
+      });
     }
   };
 
