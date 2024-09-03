@@ -2,6 +2,7 @@ import FilterModal from "@/components/general-components/FilterComponent";
 import HomesList from "@/components/general-components/HomesList";
 import SearchComponent from "@/components/general-components/SearchComponent";
 import GoogleMap from "@/components/googleMaps/GoogleMap";
+
 import { fetchHomeCountByFilers, fetchHomes } from "@/lib/http";
 import { IHome, QueryFilter } from "@/types";
 import { useQuery } from "@tanstack/react-query";
@@ -61,7 +62,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex justify-center items-center gap-16 bg-white sticky top-[182px] pt-3 mt-0 z-50 border-b-[1px] border-gray-200">
+      <div className="flex justify-center items-center gap-16 bg-white sticky top-[110px] pt-3 mt-0 z-40 border-b-[1px] border-gray-200">
         <SearchComponent
           searchParams={searchParams}
           setSearchParams={setSearchParams}
@@ -101,7 +102,7 @@ function HomePage() {
           initialFilters={defaultFilters}
         />
       </div>
-      <div className="flex">
+      <div className="flex gap-10">
         <HomesList
           homes={homes}
           isLoading={isLoading}
