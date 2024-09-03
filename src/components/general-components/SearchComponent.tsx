@@ -176,17 +176,17 @@ function SearchComponent({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center text-[#6A6A6A] border-b-[1px] border-gray-200 pb-4 mt-2">
+    <div className="flex flex-col justify-center items-center text-[#6A6A6A] pb-4 mt-2">
       <Carousel
         opts={{ align: "start" }}
-        className="w-full max-w-[75rem] flex justify-center items-center"
+        className="w-full max-w-[78rem] flex justify-center items-center"
       >
         <CarouselContent>
           {types.map((type, index) => (
             <CarouselItem
               key={index}
               onClick={() => handleTypeClick(type.name)}
-              className={`flex flex-col items-center basis-1/13 p-0 mx-6 cursor-pointer transition duration-150 ease-in-out ${
+              className={`flex flex-col items-center basis-1/13 p-0 mx-4 cursor-pointer transition duration-150 ease-in-out ${
                 isActiveType(type.name)
                   ? "text-black border-b-2 border-black"
                   : "hover:text-black hover:border-b-2"
