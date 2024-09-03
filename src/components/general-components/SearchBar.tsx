@@ -29,9 +29,16 @@ const monthNames = [
   "Dec",
 ];
 
-function SearchBar() {
+interface SearchBarProps {
+  selectedDestination: string;
+  setSelectedDestination: (destination: string) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({
+  selectedDestination,
+  setSelectedDestination,
+}) => {
   const { checkDates, setCheckDates } = useDate();
-  const [selectedDestination, setSelectedDestination] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -98,14 +105,14 @@ function SearchBar() {
                     <p className="font-500">Europe</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleSelection("Italy")}>
+                <DropdownMenuItem onClick={() => handleSelection("London")}>
                   <div className="space-y-2">
                     <img
                       src="https://a0.muscache.com/im/pictures/ea5598d7-2b07-4ed7-84da-d1eabd9f2714.jpg?im_w=320"
                       alt="Italy"
                       className="w-[122px] h-[122px] rounded-lg border border-gray-200 cursor-pointer"
                     />
-                    <p className="font-500">Italy</p>
+                    <p className="font-500">London</p>
                   </div>
                 </DropdownMenuItem>
               </div>
@@ -122,14 +129,14 @@ function SearchBar() {
                     <p className="font-500">United States</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleSelection("Greece")}>
+                <DropdownMenuItem onClick={() => handleSelection("Israel")}>
                   <div className="space-y-2">
                     <img
                       src="https://a0.muscache.com/im/pictures/09be1400-6a42-4a4f-90f6-897e50110031.jpg?im_w=320"
                       alt="Greece"
                       className="w-[122px] h-[122px] rounded-lg border border-gray-200 cursor-pointer"
                     />
-                    <p className="font-500">Greece</p>
+                    <p className="font-500">Israel</p>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -201,6 +208,6 @@ function SearchBar() {
       </div>
     </div>
   );
-}
+};
 
 export default SearchBar;

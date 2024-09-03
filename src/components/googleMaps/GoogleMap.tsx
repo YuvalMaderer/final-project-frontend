@@ -25,7 +25,7 @@ export default function GoogleMap({
   return (
     <APIProvider apiKey={googleApiKey}>
       <div
-        className="h-[75vh] sticky top-[273px] hidden sm:hidden md:hidden lg:block"
+        className="h-[75vh] sticky top-[200px] hidden sm:hidden md:hidden lg:block"
         style={{ width: width }} // Use inline style for dynamic width
       >
         <Map
