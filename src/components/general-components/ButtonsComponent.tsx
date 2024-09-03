@@ -1,15 +1,31 @@
 import { QueryFilter } from "@/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ButtonsProps {
   setFilters: React.Dispatch<React.SetStateAction<QueryFilter>>;
   filterType: keyof QueryFilter;
+  resetFilters: boolean;
+  setIsResetFilters: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Buttons: React.FC<ButtonsProps> = ({ setFilters, filterType }) => {
+const Buttons: React.FC<ButtonsProps> = ({
+  setFilters,
+  filterType,
+  resetFilters,
+  setIsResetFilters,
+}) => {
   const buttons: string[] = ["Any", "1", "2", "3", "4", "5", "6", "7", "8+"];
 
   const [chosenButton, setChosenButton] = useState<string>(buttons[0]);
+
+  useEffect(() => {
+    if (resetFilters) {
+      setChosenButton(buttons[0]);
+      handleClick("Any");
+    }
+
+    return () => setIsResetFilters(false);
+  }, [resetFilters, buttons]);
 
   const handleClick = (value: string): void => {
     let newValue = value === "Any" ? undefined : value;

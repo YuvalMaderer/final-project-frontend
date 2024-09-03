@@ -5,7 +5,7 @@ import { Star } from "lucide-react";
 import { useState } from "react";
 import HomeCarousel from "../general-components/HomeCarousel";
 
-export type Props = { points: IHome[] | undefined | IHome };
+export type Props = { points: IHome[] | undefined };
 
 function HomesOnMap({ points }: Props) {
   const [openId, setOpenId] = useState<string | null>(null);
