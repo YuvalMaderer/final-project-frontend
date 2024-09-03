@@ -23,10 +23,11 @@ function HostHeader() {
   }, [loggedInUser]);
   return (
     <>
-      <header className="flex justify-between px-14 pt-9 sticky top-0 z-20 bg-white pb-7">
+      <header className="flex justify-between border-b h-20 items-center px-8 pt-6 sticky top-0 z-20 bg-white pb-7">
         <svg
-          width="30"
-          height="32"
+          className="mt-4"
+          width="50"
+          height="50"
           style={{
             display: "block",
             color: "#F5385D",
