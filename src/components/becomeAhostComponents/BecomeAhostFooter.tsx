@@ -36,6 +36,8 @@ function BecomeAhostFooter() {
     handleDisabled();
   }, [step, location.pathname]);
 
+
+// use react query to upload the new listing
   const mutation = useMutation({
     mutationFn: createNewHome, // Use mutationFn to pass the function
     onSuccess: () => {

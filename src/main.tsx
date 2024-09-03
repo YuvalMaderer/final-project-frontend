@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GuestProvider } from "./providers/Guest-Context.tsx";
 import { DateProvider } from "./providers/DateContext.tsx";
 import { Toaster } from "@/components/ui/toaster";
+import { queryClient } from "./lib/http.ts";
 
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const script = document.createElement("script");
@@ -17,6 +18,7 @@ script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=ini
 script.async = true;
 script.defer = true;
 document.head.appendChild(script);
+
 
 const dayPickerProps: DayPickerProps = {
   // Add any initial DayPicker props you need here
@@ -35,7 +37,7 @@ createRoot(document.getElementById("root")!).render(
           <GuestProvider>
             <DateProvider>
               <GoogleOAuthProvider clientId={googleId}>
-                <QueryClientProvider client={new QueryClient()}>
+                <QueryClientProvider client={queryClient}>
                   <App />
                   <Toaster />
                 </QueryClientProvider>

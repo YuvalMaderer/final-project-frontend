@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 
 import {
@@ -16,6 +16,11 @@ import Modal from "../general-components/LoginModalComponent";
 function HostHeader() {
   const { loggedInUser, logout } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
+  useEffect(() => {
+    if (!loggedInUser) {
+      setModalOpen(true);
+    }
+  }, [loggedInUser]);
   return (
     <>
       <header className="flex justify-between px-14 pt-9 sticky top-0 z-20 bg-white pb-7">
@@ -108,6 +113,7 @@ function HostHeader() {
           </DropdownMenu>
         </div>
       </header>
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen} />
     </>
   );
 }
