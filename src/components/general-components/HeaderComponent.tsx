@@ -79,7 +79,9 @@ function HeaderComponent() {
                   {loggedInUser ? (
                     <>
                       <DropdownMenuItem>Messages</DropdownMenuItem>
-                      <DropdownMenuItem>Trips</DropdownMenuItem>
+                      <Link to="/trips">
+                        <DropdownMenuItem>Trips</DropdownMenuItem>
+                      </Link>
                       <Link to="/wishlists">
                         <DropdownMenuItem>Wishlists</DropdownMenuItem>
                       </Link>
@@ -94,7 +96,13 @@ function HeaderComponent() {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>Gift cars</DropdownMenuItem>
                       <DropdownMenuItem>Help center</DropdownMenuItem>
-                      <DropdownMenuItem onClick={logout}>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          logout();
+                          // Navigate after logging out
+                          window.location.href = "/";
+                        }}
+                      >
                         Logout
                       </DropdownMenuItem>
                     </>

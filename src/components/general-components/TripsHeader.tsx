@@ -80,7 +80,16 @@ function TripsHeader() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Gift cars</DropdownMenuItem>
                     <DropdownMenuItem>Help center</DropdownMenuItem>
-                    <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      onClick={() => {
+                        logout();
+                        // Navigate after logging out
+                        window.location.href = "/";
+                      }}
+                    >
+                      Logout
+                    </DropdownMenuItem>
                   </>
                 ) : (
                   <>
