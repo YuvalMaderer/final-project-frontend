@@ -120,11 +120,16 @@ function HomeCarousel({
       | React.MouseEvent<HTMLDivElement, MouseEvent>
       | React.MouseEvent<HTMLButtonElement, MouseEvent>,
     homeId: string,
-    userId: string,
+    userId: string | undefined,
     title: string
   ) => {
     ev.preventDefault();
     ev.stopPropagation(); // Prevents event from bubbling up to the Link
+
+    if (!userId) {
+      return;
+    }
+
     try {
       addToWishlist(userId, homeId, title);
       toast({
@@ -153,11 +158,11 @@ function HomeCarousel({
       | React.MouseEvent<HTMLButtonElement, MouseEvent>,
     title: string | undefined,
     homeId: string,
-    userId: string
+    userId: string | undefined
   ) => {
     ev.preventDefault();
     ev.stopPropagation(); // Prevents event from bubbling up to the Link
-    if (!title) {
+    if (!title || !userId) {
       return;
     }
 
@@ -215,12 +220,44 @@ function HomeCarousel({
                           </svg>
                         </button>
                       </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Add to wishlist</DialogTitle>
-                          <DialogDescription>
+                      <DialogContent
+                        onInteractOutside={(ev) => {
+                          ev.preventDefault();
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setIsDialogOpen(false);
+                        }}
+                      >
+                        <DialogHeader
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                          }}
+                        >
+                          <DialogTitle
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
+                          >
+                            Add to wishlist
+                          </DialogTitle>
+                          <DialogDescription
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
+                          >
                             {isCreateNewWishlist ? (
-                              <div className="space-y-2">
+                              <div
+                                className="space-y-2"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                }}
+                              >
                                 <Input
                                   value={newWishlistName}
                                   onChange={handleChangeWishlistName}
@@ -254,7 +291,7 @@ function HomeCarousel({
                                   return (
                                     <div
                                       className="cursor-pointer font-montserrat"
-                                      key={wishlist._id}
+                                      key={wishlist.title}
                                       onClick={(ev) =>
                                         handleAddToWishlist(
                                           ev,
@@ -312,6 +349,7 @@ function HomeCarousel({
                               className="w-full h-12"
                               onClick={(ev) => {
                                 ev.preventDefault();
+                                ev.stopPropagation();
                                 setIsCreateNewWishlist(true);
                               }}
                               disabled={newWishlistName.length > 50}

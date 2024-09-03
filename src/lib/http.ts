@@ -59,7 +59,8 @@ export async function fetchHomeCountByFilers(
   }
 }
 
-export async function fetchUserWishlists(userId: string): Promise<IWishlist[]> {
+export async function fetchUserWishlists(userId: string | undefined): Promise<IWishlist[]> {
+  
   try {
     const response = await api.get(`/user/getWishlist?userId=${userId}`);
     return response.data; // Return the data property which should contain the list of wishlists
@@ -153,7 +154,7 @@ export async function removeFromWishlist(
 
 export async function getAllUserReservations() {
   try {
-    const response = await api.get(`/reservation/user`);
+    const response = await api.get(`/reservation`);
     return response.data;
   } catch (error) {
     // Handle the error by logging it, sending it to an error tracking service, etc.

@@ -21,8 +21,13 @@ export const updateSearchParams = (
   );
 
   // Compare the current and merged parameters excluding the "page" key
-  const currentParamsWithoutPage = (({ page, ...rest }) => rest)(currentParams);
-  const mergedParamsWithoutPage = (({ page, ...rest }) => rest)(mergedParams);
+  const currentParamsWithoutPage = Object.fromEntries(
+    Object.entries(currentParams).filter(([key]) => key !== 'page')
+  );
+  const mergedParamsWithoutPage = Object.fromEntries(
+    Object.entries(mergedParams).filter(([key]) => key !== 'page')
+  );
+  
 
   // Check if the "page" parameter is present and skip if so
   if (
