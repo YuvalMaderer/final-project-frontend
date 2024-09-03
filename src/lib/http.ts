@@ -62,8 +62,9 @@ export async function fetchHomeCountByFilers(
   }
 }
 
-export async function fetchUserWishlists(userId: string | undefined): Promise<IWishlist[]> {
-  
+export async function fetchUserWishlists(
+  userId: string | undefined
+): Promise<IWishlist[]> {
   try {
     const response = await api.get(`/user/getWishlist?userId=${userId}`);
     return response.data; // Return the data property which should contain the list of wishlists
@@ -158,6 +159,22 @@ export async function removeFromWishlist(
 export async function getAllHostReservations() {
   try {
     const response = await api.get(`/reservation/host`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching host reservations:", error);
+
+    // Attach the response status to the error
+    if (error.response) {
+      error.status = error.response.status;
+    }
+
+    throw error;
+  }
+}
+
+export async function getAllUserReservations() {
+  try {
+    const response = await api.get(`/reservation/user`);
     return response.data;
   } catch (error: any) {
     console.error("Error fetching user reservations:", error);
