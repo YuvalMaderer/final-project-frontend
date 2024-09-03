@@ -22,13 +22,15 @@ import imageThree from "../assets/resources-three.webp";
 import imageFour from "../assets/resources-four.webp";
 import ResourcesCard from "@/components/host/ResourcesCard";
 import { Link } from "react-router-dom";
+import CanceledReservations from "@/components/host/CanceledReservations";
 
 type selectedReservations =
   | "Checking out"
   | "Currently hosting"
   | "Arriving soon"
   | "Upcoming"
-  | "Pending";
+  | "Pending"
+  | "Canceled";
 
 export type PopulateReservationResponse = {
   _id: string;
@@ -168,6 +170,8 @@ function HostPage() {
         handleReservationStatusUpdate={handleReservationStatusUpdate}
       />
     );
+  } else if (reservations && selected === "Canceled") {
+    content = <CanceledReservations reservations={reservations} />;
   } else if (reservations && selected === "Upcoming") {
     // Filter confirmed reservations
     const confirmedReservations = reservations.filter(
@@ -272,6 +276,12 @@ function HostPage() {
             className="bg-white border-[1.5px] border-gray-300 rounded-full hover:border-black hover:bg-white p-2"
           >
             Pending
+          </Button>
+          <Button
+            onClick={() => setSelected("Canceled")}
+            className="bg-white border-[1.5px] border-gray-300 rounded-full hover:border-black hover:bg-white p-2"
+          >
+            Canceled
           </Button>
         </div>
         {content}
