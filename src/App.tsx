@@ -29,6 +29,7 @@ import HostPage from "./pages/HostPage";
 import HostLayout from "./layouts/HostLayout";
 import NotFoundPage from "./pages/NotFoundPage";
 import TripsPage from "./pages/TripsPage";
+import TripsLayout from "./layouts/TripsLayout";
 
 function App() {
   return (
@@ -39,7 +40,10 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/homes/:id" element={<HomeDetailsPage />} />
           </Route>
-          <Route path="trips" element={<TripsPage />} />
+          <Route path="trips" element={<TripsLayout />}>
+            <Route index element={<TripsPage />} />
+          </Route>
+
           <Route path="/reservation/:id" element={<ReservationPage />} />
           <Route path="wishlists" element={<WishlistLayout />}>
             <Route index element={<WishlistPage />} />
