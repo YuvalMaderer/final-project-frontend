@@ -10,6 +10,7 @@ import {
 import { Button } from "../ui/button";
 import { PopulateReservationResponse } from "@/pages/HostPage";
 import NotHaveReservaions from "./NotHaveReservaions";
+import { Separator } from "../ui/separator";
 
 interface PendingReservationProps {
   reservations: PopulateReservationResponse[];
@@ -63,19 +64,36 @@ function PendingReservation({
                     </p>
                     <p>Total Price: ${filteredReservation.totalPrice}</p>
                   </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button variant="outline">Decline</Button>
-                    <Button
-                      onClick={() =>
-                        handleReservationStatusUpdate(
-                          filteredReservation._id,
-                          "confirmed"
-                        )
-                      }
-                      variant={"new"}
-                    >
-                      Confirm
-                    </Button>
+                  <CardFooter className="flex-col m-0 p-0">
+                    <Separator />
+                    <div className=" flex justify-between py-4 px-6 items-center">
+                      <div>
+                        <Button
+                          onClick={() =>
+                            handleReservationStatusUpdate(
+                              filteredReservation._id,
+                              "cancelled"
+                            )
+                          }
+                          variant="outline"
+                        >
+                          Decline
+                        </Button>
+                      </div>
+                      <div>
+                        <Button
+                          onClick={() =>
+                            handleReservationStatusUpdate(
+                              filteredReservation._id,
+                              "confirmed"
+                            )
+                          }
+                          variant={"new"}
+                        >
+                          Confirm
+                        </Button>
+                      </div>
+                    </div>
                   </CardFooter>
                 </Card>
               </div>

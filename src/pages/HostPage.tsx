@@ -14,6 +14,14 @@ import { useEffect, useState } from "react";
 import ReservationsList from "@/components/host/ReservationsList";
 import NotHaveReservaions from "@/components/host/NotHaveReservaions";
 import Modal from "@/components/general-components/LoginModalComponent";
+import SkeletonReservations from "@/components/host/SkeletonReservations";
+
+import imageOne from "../assets/resource-one.webp";
+import imageTow from "../assets/rerources-two.webp";
+import imageThree from "../assets/resources-three.webp";
+import imageFour from "../assets/resources-four.webp";
+import ResourcesCard from "@/components/host/ResourcesCard";
+import { Link } from "react-router-dom";
 
 type selectedReservations =
   | "Checking out"
@@ -38,6 +46,29 @@ export type PopulateReservationResponse = {
   totalPrice: number;
   status: "pending" | "confirmed" | "cancelled";
 };
+
+const resources = [
+  {
+    image: imageOne,
+    text: "The Messages tab is your new inbox",
+    link: "https://www.airbnb.com/resources/hosting-homes/a/the-messages-tab-is-your-new-inbox-678",
+  },
+  {
+    image: imageTow,
+    text: "Earning dashboard adds interactive charts and reporting hub",
+    link: "https://www.airbnb.com/resources/hosting-homes/a/earnings-dashboard-a-better-look-at-your-bottom-line-675",
+  },
+  {
+    image: imageThree,
+    text: "Upgraded profiles tell you more avout your guests",
+    link: "https://www.airbnb.com/resources/hosting-homes/a/know-more-about-your-guests-with-profile-upgrades-676",
+  },
+  {
+    image: imageFour,
+    text: "Listings tab upgrades give you even more control",
+    link: "https://www.airbnb.com/resources/hosting-homes/a/more-control-in-the-listings-tab-677",
+  },
+];
 
 function HostPage() {
   let content = <NotHaveReservaions />;
@@ -110,13 +141,17 @@ function HostPage() {
   }
 
   if (reservationsLoading) {
-    content = <div>...Loading</div>;
+    content = (
+      <div>
+        <SkeletonReservations count={4} />
+      </div>
+    );
   }
   if (reservationsError) {
     const errorStatus = (reservationsError as any).status;
 
     if (errorStatus === 404) {
-      content = <div>You currently don’t have any reservations</div>;
+      content = <NotHaveReservaions />;
     } else {
       content = <div>Error, please try again</div>;
     }
@@ -240,6 +275,19 @@ function HostPage() {
           </Button>
         </div>
         {content}
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-500 py-8">Resources and tips</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 py-6">
+          {resources.map((resource) => {
+            return (
+              <Link to={resource.link}>
+                <ResourcesCard img={resource.image} text={resource.text} />
+              </Link>
+            );
+          })}
+        </div>
       </section>
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen} />
     </div>
