@@ -77,7 +77,9 @@ function HostHeader() {
               {loggedInUser ? (
                 <>
                   <DropdownMenuItem>Messages</DropdownMenuItem>
-                  <DropdownMenuItem>Trips</DropdownMenuItem>
+                  <Link to="/trips">
+                    <DropdownMenuItem>Trips</DropdownMenuItem>
+                  </Link>
                   <Link to="/wishlists">
                     <DropdownMenuItem>Wishlists</DropdownMenuItem>
                   </Link>
@@ -86,7 +88,9 @@ function HostHeader() {
                     <DropdownMenuItem>Manage listings</DropdownMenuItem>
                   </Link>
                   <DropdownMenuItem>Refer a host</DropdownMenuItem>
-                  <DropdownMenuItem>Account</DropdownMenuItem>
+                  <Link to={"/Account"}>
+                    <DropdownMenuItem>Account</DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Gift cars</DropdownMenuItem>
                   <DropdownMenuItem>Help center</DropdownMenuItem>

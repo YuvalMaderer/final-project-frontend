@@ -28,6 +28,10 @@ import ReceiptPage from "./pages/becomeAhostPages/ReceiptPage";
 import HostPage from "./pages/HostPage";
 import HostLayout from "./layouts/HostLayout";
 import NotFoundPage from "./pages/NotFoundPage";
+import TripsPage from "./pages/TripsPage";
+import TripsLayout from "./layouts/TripsLayout";
+import AccountPage from "./pages/AccountPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -37,6 +41,13 @@ function App() {
           <Route element={<MainLayout />}>
             <Route index element={<HomePage />} />
             <Route path="/homes/:id" element={<HomeDetailsPage />} />
+          </Route>
+          <Route path="trips" element={<TripsLayout />}>
+            <Route index element={<TripsPage />} />
+          </Route>
+          <Route path="account" element={<TripsLayout />}>
+            <Route index element={<AccountPage />} />
+            <Route path="profile" element={<ProfilePage />} />
           </Route>
 
           <Route path="/reservation/:id" element={<ReservationPage />} />

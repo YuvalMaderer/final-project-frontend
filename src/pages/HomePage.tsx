@@ -12,7 +12,6 @@ import { useSearchParams } from "react-router-dom";
 function HomePage() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isHomePage, setIsHomePage] = useState(true);
 
   const defaultFilters: QueryFilter = {
     type: undefined,
@@ -62,7 +61,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex justify-center items-center gap-16 bg-white sticky top-40 z-50">
+      <div className="flex justify-center items-center gap-16 bg-white sticky top-[182px] pt-3 mt-0 z-50 border-b-[1px] border-gray-200">
         <SearchComponent
           searchParams={searchParams}
           setSearchParams={setSearchParams}
@@ -107,7 +106,7 @@ function HomePage() {
           homes={homes}
           isLoading={isLoading}
           totalHomes={totalHomes}
-          isHomePage={isHomePage}
+          isHomePage={true}
           wishlistName=""
         />
         {position && <GoogleMap homes={homes} position={position} />}

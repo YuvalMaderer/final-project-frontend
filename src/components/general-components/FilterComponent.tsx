@@ -90,6 +90,7 @@ const FilterModal: React.FC<ModalProps> = ({
   setSearchParams,
   initialFilters,
 }) => {
+  const [isResetFilters, setIsResetFilters] = useState<boolean>(false);
   const [show, setShow] = useState(false);
   const [checkedState, setCheckedState] = useState({
     Wifi: false,
@@ -175,49 +176,108 @@ const FilterModal: React.FC<ModalProps> = ({
   });
 
   const resetFilters = () => {
+    setIsResetFilters(true);
+    setCheckedState({
+      Wifi: false,
+      Kitchen: false,
+      Washer: false,
+      Dryer: false,
+      "Air conditioning": false,
+      Heating: false,
+      "Dedicated workspace": false,
+      TV: false,
+      "Hair dryer": false,
+      Iron: false,
+      Pool: false,
+      "Hot tub": false,
+      "Free parking": false,
+      "EV charger": false,
+      Crib: false,
+      "King bed": false,
+      Gym: false,
+      "BBQ grill": false,
+      Breakfast: false,
+      "Indoor fireplace": false,
+      "Smoking allowed": false,
+      Beachfront: false,
+      Waterfront: false,
+      "Smoke alarm": false,
+      "Carbon monoxide alarm": false,
+    });
+    setBookingOptionsCheck({
+      InstantBook: false,
+      SelfCheckIn: false,
+      AllowsPets: false,
+    });
+    setAccessibilityCheck(
+      accessibilityFeatures.reduce((acc, feature) => {
+        acc[feature] = false;
+        return acc;
+      }, {} as AccessibilityCheck)
+    );
+    setLanguageCheck(
+      languages.reduce((acc, language) => {
+        acc[language] = false;
+        return acc;
+      }, {} as LanguageCheck)
+    );
     setFilters(initialFilters);
-    // Optionally, update the URL to remove the query parameters
-    window.history.replaceState(null, "", window.location.pathname);
+    setMinPrice(0);
+    setMaxPrice(1500);
   };
 
   const handleFilterClick = () => {
-    // Create a new object to hold the query parameters
     const params: Record<string, string> = {};
 
-    // Only add the parameters if they exist (not undefined or null)
     if (filters.type) params.type = filters.type;
-    if (filters.roomType) params.roomType = filters.roomType;
+
+    params.roomType = filters.roomType === undefined ? "" : filters.roomType;
+
     if (filters.minPrice !== 0) params.minPrice = minPrice.toString();
     if (filters.maxPrice !== 1500) params.maxPrice = maxPrice.toString();
-    if (filters.bedrooms) params.bedrooms = filters.bedrooms.toString();
-    if (filters.beds) params.beds = filters.beds.toString();
-    if (filters.bathrooms) params.bathrooms = filters.bathrooms.toString();
-    if (Array.isArray(filters.hostLanguage)) {
+
+    params.bedrooms = filters.bedrooms === undefined ? "" : filters.bedrooms;
+    params.beds = filters.beds === undefined ? "" : filters.beds;
+    params.bathrooms = filters.bathrooms === undefined ? "" : filters.bathrooms;
+
+    if (filters.hostLanguage === undefined) {
+      params.hostLanguage = "";
+    } else if (Array.isArray(filters.hostLanguage)) {
       params.hostLanguage = filters.hostLanguage.join(",");
     } else if (filters.hostLanguage) {
       params.hostLanguage = filters.hostLanguage;
     }
+
     if (filters.capacity) params.capacity = filters.capacity.toString();
-    if (filters.accessibility)
+
+    if (filters.accessibility === undefined) params.accessibility = "";
+    else if (filters.accessibility)
       params.accessibility = filters.accessibility.toString();
+
     if (filters.location) params.location = filters.location;
-    if (filters.startDate) params.startDate = filters.startDate.toISOString(); // Ensure ISO format for dates
+
+    if (filters.startDate) params.startDate = filters.startDate.toISOString();
     if (filters.endDate) params.endDate = filters.endDate.toISOString();
 
-    // Handle amenities as a comma-separated string, only if it's not empty
-    if (filters.amenities && filters.amenities.length > 0) {
+    if (filters.amenities === undefined) params.amenities = "";
+    else if (filters.amenities && filters.amenities.length > 0) {
       params.amenities = filters.amenities.join(",");
     }
 
-    // Handle booking options, only add if true
     if (filters.InstantBook) {
       params.InstantBook = "true";
+    } else {
+      params.InstantBook = "";
     }
     if (filters.SelfCheckIn) {
       params.SelfCheckIn = "true";
+    } else {
+      params.SelfCheckIn = "";
     }
     if (filters.AllowsPets) {
       params.AllowsPets = "true";
+    } else {
+      params.AllowsPets = "";
     }
 
     // Update the URL with the new query parameters
@@ -358,7 +418,19 @@ const FilterModal: React.FC<ModalProps> = ({
           <div className="pb-4 ">
             <h1 className="font-600 text-xl">Type of place</h1>
             <div className="w-full flex justify-center items-center">
-              <Tabs defaultValue="anytype" className="w-[400px]">
+              <Tabs
+                defaultValue="anytype"
+                className="w-[400px]"
+                value={
+                  filters.roomType === undefined
+                    ? "anytype"
+                    : filters.roomType === "Private room"
+                    ? "room"
+                    : filters.roomType === "Entire home/apt"
+                    ? "entire"
+                    : "anytype"
+                }
+              >
                 <TabsContent value="anytype">
                   Search rooms, entire homes, or any type of place
                 </TabsContent>
@@ -418,20 +490,26 @@ const FilterModal: React.FC<ModalProps> = ({
               max={1500}
               step={2}
               defaultValue={[minPrice, maxPrice]}
+              value={[minPrice, maxPrice]}
+              allowCross={false}
               trackStyle={[{ backgroundColor: "black" }]}
               handleStyle={[{ borderColor: "black" }, { borderColor: "black" }]}
               railStyle={{ backgroundColor: "lightgray" }}
-              onChange={([min, max]) => {
-                setMinPrice(min);
-                setFilters((prevFilters) => ({
-                  ...prevFilters,
-                  minPrice: min,
-                }));
-                setMaxPrice(max);
-                setFilters((prevFilters) => ({
-                  ...prevFilters,
-                  maxPrice: max,
-                }));
+              onChange={(value: number | number[]) => {
+                if (Array.isArray(value)) {
+                  const [min, max] = value;
+                  setMinPrice(min);
+                  setMaxPrice(max);
+
+                  setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    minPrice: min,
+                    maxPrice: max,
+                  }));
+                } else {
+                  // Handle the case where value is not an array if necessary
+                  console.error("Expected an array, but got:", value);
+                }
               }}
             />
             <div className="flex justify-between">
@@ -487,11 +565,26 @@ const FilterModal: React.FC<ModalProps> = ({
           <div className="space-y-4 pb-4">
             <h1 className="font-600 text-xl pb-2">Rooms and beds</h1>
             <p className="text-[16px]">Bedrooms</p>
-            <Buttons setFilters={setFilters} filterType="bedrooms" />
+            <Buttons
+              setFilters={setFilters}
+              filterType="bedrooms"
+              resetFilters={isResetFilters}
+              setIsResetFilters={setIsResetFilters}
+            />
             <p className="text-[16px]">Beds</p>
-            <Buttons setFilters={setFilters} filterType="beds" />
+            <Buttons
+              setFilters={setFilters}
+              filterType="beds"
+              resetFilters={isResetFilters}
+              setIsResetFilters={setIsResetFilters}
+            />
             <p className="text-[16px]">Bathrooms</p>
-            <Buttons setFilters={setFilters} filterType="bathrooms" />
+            <Buttons
+              setFilters={setFilters}
+              filterType="bathrooms"
+              resetFilters={isResetFilters}
+              setIsResetFilters={setIsResetFilters}
+            />
           </div>
           <hr className="pb-4" />
           <div>
@@ -862,7 +955,7 @@ const FilterModal: React.FC<ModalProps> = ({
                         <input
                           type="checkbox"
                           id={accessibility}
-                          checked={accessibilityCheck.accessibility}
+                          checked={accessibilityCheck[accessibility]}
                           onChange={() =>
                             handleAccessibilityChange(accessibility)
                           }
@@ -897,7 +990,7 @@ const FilterModal: React.FC<ModalProps> = ({
                         <input
                           type="checkbox"
                           id={language}
-                          checked={languageCheck.language}
+                          checked={languageCheck[language]}
                           onChange={() => handleLanguageChange(language)}
                         />
                         <label

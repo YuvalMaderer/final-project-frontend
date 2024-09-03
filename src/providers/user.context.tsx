@@ -101,6 +101,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     setToken(null);
     setLoggedInUser(null);
     window.location.reload();
+    toast({
+      title: "Logout",
+      description: "You have been logged in",
+    });
   };
 
   const login = async (userData: LoginData): Promise<LoginResponse> => {
@@ -109,12 +113,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
       setToken(response.data.token);
       setLoggedInUser(response.data.user); // Ensure the user is set correctly
+      window.location.reload();
+
       toast({
         title: "Success!",
         description: "You have been logged in",
       });
-      window.location.reload();
-
       return response.data;
     } catch (error: unknown) {
       console.error("Error logging in:", error);
@@ -133,6 +137,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         title: "Success",
         description: "You have registered successfully",
       });
+      window.location.reload();
     } catch (error: unknown) {
       console.error("Error registering:", error);
       toast({
@@ -160,6 +165,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         title: "Success!",
         description: "You have been logged in",
       });
+      window.location.reload();
     } catch (error: unknown) {
       console.error("Google login failed:", error);
       toast({

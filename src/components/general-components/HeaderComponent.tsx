@@ -36,12 +36,6 @@ function HeaderComponent() {
             >
               Stays
             </NavLink>
-            <NavLink
-              to="/experiences"
-              className={({ isActive }) => (isActive ? "font-bold" : "")}
-            >
-              Experiences
-            </NavLink>
           </div>
           <div className="flex items-center gap-6">
             <Link to="/becomeAhost" className="font-600 text-sm">
@@ -94,7 +88,9 @@ function HeaderComponent() {
                         <DropdownMenuItem>Manage listings</DropdownMenuItem>
                       </Link>
                       <DropdownMenuItem>Refer a host</DropdownMenuItem>
-                      <DropdownMenuItem>Account</DropdownMenuItem>
+                      <Link to={"/account"}>
+                        <DropdownMenuItem>Account</DropdownMenuItem>
+                      </Link>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>Gift cars</DropdownMenuItem>
                       <DropdownMenuItem>Help center</DropdownMenuItem>
@@ -125,7 +121,7 @@ function HeaderComponent() {
           </div>
         </nav>
         <SearchBar />
-        <hr className="my-6" />
+        <hr className="pt-2 pb-4 mt-4" />
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />

@@ -1,4 +1,4 @@
-import { Fullscreen, X } from "lucide-react";
+import { X } from "lucide-react";
 import React, { useEffect, useState, useRef } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
