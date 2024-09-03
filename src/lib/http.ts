@@ -9,6 +9,9 @@ import {
   IWishlistResponse,
   QueryFilter,
 } from "@/types";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+
+export const queryClient = new QueryClient();
 
 // Utility function to safely convert filters to query params
 function serializeFilters(filters: QueryFilter): URLSearchParams {
@@ -59,8 +62,9 @@ export async function fetchHomeCountByFilers(
   }
 }
 
-export async function fetchUserWishlists(userId: string | undefined): Promise<IWishlist[]> {
-  
+export async function fetchUserWishlists(
+  userId: string | undefined
+): Promise<IWishlist[]> {
   try {
     const response = await api.get(`/user/getWishlist?userId=${userId}`);
     return response.data; // Return the data property which should contain the list of wishlists
@@ -152,17 +156,55 @@ export async function removeFromWishlist(
   }
 }
 
+export async function getAllHostReservations() {
+  try {
+    const response = await api.get(`/reservation/host`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching host reservations:", error);
+
+    // Attach the response status to the error
+    if (error.response) {
+      error.status = error.response.status;
+    }
+
+    throw error;
+  }
+}
+
 export async function getAllUserReservations() {
   try {
     const response = await api.get(`/reservation/user`);
     return response.data;
-  } catch (error) {
-    // Handle the error by logging it, sending it to an error tracking service, etc.
+  } catch (error: any) {
     console.error("Error fetching user reservations:", error);
 
-    // Optionally, you can throw the error again or a custom error to be handled by the caller
-    throw new Error(
-      "Failed to fetch user reservations. Please try again later."
+    // Attach the response status to the error
+    if (error.response) {
+      error.status = error.response.status;
+    }
+
+    throw error;
+  }
+}
+
+export async function updateReservationStatus(
+  reservationId: string,
+  status: string
+) {
+  try {
+    const response = await api.patch(
+      `/reservation/updateStatus/${reservationId}`,
+      {
+        status, // Send the status in the request body as an object
+      }
     );
+
+    // Optionally, you can handle the response here if needed
+    return response.data; // Return the updated reservation data
+  } catch (error) {
+    console.error("Error updating reservation status:", error);
+    // Handle the error, e.g., show an error message to the user
+    throw error; // Optionally re-throw the error to be handled by the caller
   }
 }
