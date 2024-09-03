@@ -154,7 +154,7 @@ export async function removeFromWishlist(
 
 export async function getAllUserReservations() {
   try {
-    const response = await api.get(`/reservation`);
+    const response = await api.get(`/reservation/user`);
     return response.data;
   } catch (error) {
     // Handle the error by logging it, sending it to an error tracking service, etc.
