@@ -72,7 +72,9 @@ function HostHeader() {
               {loggedInUser ? (
                 <>
                   <DropdownMenuItem>Messages</DropdownMenuItem>
-                  <DropdownMenuItem>Trips</DropdownMenuItem>
+                  <Link to="/trips">
+                    <DropdownMenuItem>Trips</DropdownMenuItem>
+                  </Link>
                   <Link to="/wishlists">
                     <DropdownMenuItem>Wishlists</DropdownMenuItem>
                   </Link>

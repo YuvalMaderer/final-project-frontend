@@ -28,6 +28,7 @@ import ReceiptPage from "./pages/becomeAhostPages/ReceiptPage";
 import HostPage from "./pages/HostPage";
 import HostLayout from "./layouts/HostLayout";
 import NotFoundPage from "./pages/NotFoundPage";
+import TripsPage from "./pages/TripsPage";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/homes/:id" element={<HomeDetailsPage />} />
           </Route>
-
+          <Route path="trips" element={<TripsPage />} />
           <Route path="/reservation/:id" element={<ReservationPage />} />
           <Route path="wishlists" element={<WishlistLayout />}>
             <Route index element={<WishlistPage />} />
