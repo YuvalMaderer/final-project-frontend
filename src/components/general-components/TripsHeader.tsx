@@ -33,7 +33,15 @@ function TripsHeader() {
                 <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden">
                   {loggedInUser ? (
                     <div className="bg-black w-6 h-6 rounded-full text-white flex justify-center items-center text-xs">
-                      {loggedInUser.user.firstName[0]}
+                      {loggedInUser.user.picture ? (
+                        <img
+                          src={loggedInUser.user.picture}
+                          alt={loggedInUser.user.firstName[0]}
+                          className="w-full h-full object-cover rounded-full"
+                        />
+                      ) : (
+                        <span>{loggedInUser.user.firstName[0]}</span>
+                      )}
                     </div>
                   ) : (
                     <svg
@@ -66,7 +74,9 @@ function TripsHeader() {
                       <DropdownMenuItem>Manage listings</DropdownMenuItem>
                     </Link>
                     <DropdownMenuItem>Refer a host</DropdownMenuItem>
-                    <DropdownMenuItem>Account</DropdownMenuItem>
+                    <Link to={"/Account"}>
+                      <DropdownMenuItem>Account</DropdownMenuItem>
+                    </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Gift cars</DropdownMenuItem>
                     <DropdownMenuItem>Help center</DropdownMenuItem>

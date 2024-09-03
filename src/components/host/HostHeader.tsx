@@ -83,7 +83,9 @@ function HostHeader() {
                     <DropdownMenuItem>Manage listings</DropdownMenuItem>
                   </Link>
                   <DropdownMenuItem>Refer a host</DropdownMenuItem>
-                  <DropdownMenuItem>Account</DropdownMenuItem>
+                  <Link to={"/Account"}>
+                    <DropdownMenuItem>Account</DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Gift cars</DropdownMenuItem>
                   <DropdownMenuItem>Help center</DropdownMenuItem>
