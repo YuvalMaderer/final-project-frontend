@@ -1,5 +1,5 @@
 import { Globe, Menu } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import {
   DropdownMenu,
@@ -24,25 +24,14 @@ function HeaderComponent() {
 
   return (
     <>
-      <div className={`bg-white z-50 ${isHomePage ? "sticky top-0" : ""}`}>
-        <nav className="flex justify-between items-center p-3 px-20">
+      <div
+        className={`bg-white z-50 pb-[2px] ${isHomePage ? "sticky top-0" : ""}`}
+      >
+        <nav className="flex justify-between items-center p-3 pb-0 px-20">
           <Link to="/">
             <img src={logo} alt="logo" className="w-[105px] h-[60px]" />
           </Link>
-          <div className="flex gap-6 ml-40">
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "font-bold" : "")}
-            >
-              Stays
-            </NavLink>
-            <NavLink
-              to="/experiences"
-              className={({ isActive }) => (isActive ? "font-bold" : "")}
-            >
-              Experiences
-            </NavLink>
-          </div>
+          <SearchBar />
           <div className="flex items-center gap-6">
             <Link to="/becomeAhost" className="font-600 text-sm">
               Airbnb your home
@@ -126,7 +115,6 @@ function HeaderComponent() {
             </div>
           </div>
         </nav>
-        <SearchBar />
         <hr className="my-6" />
       </div>
 

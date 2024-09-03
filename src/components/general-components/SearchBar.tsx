@@ -50,7 +50,7 @@ function SearchBar() {
 
   return (
     <div className="flex flex-col items-center text-xs ">
-      <div className="flex border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500 w-[50%]">
+      <div className="flex border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500">
         <div className="p-1 px-4 flex-1 text-left hover:bg-gray-200 rounded-full">
           <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>

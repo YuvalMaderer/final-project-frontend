@@ -39,7 +39,7 @@ function HomesList({
   if (isLoading) {
     return (
       <div className="w-full flex justify-between min-h-screen">
-        <div className="grid grid-cols-3 gap-4 ml-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 ml-16">
           {Array.from({ length: 18 }, (_, index) => (
             <div key={index}>
               <Skeleton className="h-[270px] w-[270px] rounded-xl mb-2" />
@@ -59,7 +59,7 @@ function HomesList({
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-10">
         {homes?.map((home) => (
           <div key={home._id} className="w-64">
             <HomeCarousel

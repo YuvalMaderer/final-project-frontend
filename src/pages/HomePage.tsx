@@ -61,7 +61,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex justify-center items-center gap-16 bg-white sticky top-40 z-50">
+      <div className="flex justify-center items-center gap-16 bg-white sticky top-[109px] z-50">
         <SearchComponent
           searchParams={searchParams}
           setSearchParams={setSearchParams}
