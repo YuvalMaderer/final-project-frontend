@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -8,6 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { PopulateReservationResponse } from "@/pages/HostPage";
+import { Separator } from "../ui/separator";
 
 function ReservationCard({
   filteredReservation,
@@ -35,10 +35,10 @@ function ReservationCard({
             {new Date(filteredReservation.startDate).toLocaleDateString()} -{" "}
             {new Date(filteredReservation.endDate).toLocaleDateString()}
           </p>
-          <p>Total Price: ${filteredReservation.totalPrice}</p>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          {/* Additional actions or buttons can be added here if needed */}
+        <CardFooter className=" flex-col m-0 p-0 items-start">
+          <Separator />
+          <p className="py-4 px-6">Total Price: ${filteredReservation.totalPrice}</p>
         </CardFooter>
       </Card>
     </div>

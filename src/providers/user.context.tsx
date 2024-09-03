@@ -10,6 +10,7 @@ import {
   ReactNode,
   FC,
 } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface IWhishlist {
   title: string;
@@ -69,6 +70,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   );
   const [token, setToken] = useLocalStorage<string | null>("token", null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) {
@@ -100,7 +102,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setToken(null);
     setLoggedInUser(null);
-    window.location.reload();
+    navigate("/");
     toast({
       title: "Logout",
       description: "You have been logged in",

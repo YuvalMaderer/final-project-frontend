@@ -1,3 +1,5 @@
+import { PopulateReservationResponse } from "@/pages/HostPage";
+
 import React from "react";
 import {
   Card,
@@ -8,24 +10,17 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import { PopulateReservationResponse } from "@/pages/HostPage";
+
 import NotHaveReservaions from "./NotHaveReservaions";
 import { Separator } from "../ui/separator";
 
-interface PendingReservationProps {
+interface CancelReservationProps {
   reservations: PopulateReservationResponse[];
-  handleReservationStatusUpdate: (
-    reservationId: string,
-    status: string
-  ) => void;
 }
 
-function PendingReservation({
-  reservations,
-  handleReservationStatusUpdate,
-}: PendingReservationProps) {
+function CanceledReservations({ reservations }: CancelReservationProps) {
   const filteredReservations = reservations!.filter(
-    (reservation) => reservation.status === "pending"
+    (reservation) => reservation.status === "cancelled"
   );
 
   return (
@@ -68,30 +63,7 @@ function PendingReservation({
                     <Separator />
                     <div className=" flex justify-between py-4 px-6 items-center">
                       <div>
-                        <Button
-                          onClick={() =>
-                            handleReservationStatusUpdate(
-                              filteredReservation._id,
-                              "cancelled"
-                            )
-                          }
-                          variant="outline"
-                        >
-                          Decline
-                        </Button>
-                      </div>
-                      <div>
-                        <Button
-                          onClick={() =>
-                            handleReservationStatusUpdate(
-                              filteredReservation._id,
-                              "confirmed"
-                            )
-                          }
-                          variant={"new"}
-                        >
-                          Confirm
-                        </Button>
+                        <Button variant="outline">Delete</Button>
                       </div>
                     </div>
                   </CardFooter>
@@ -105,4 +77,4 @@ function PendingReservation({
   );
 }
 
-export default PendingReservation;
+export default CanceledReservations;
