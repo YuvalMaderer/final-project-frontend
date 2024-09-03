@@ -121,7 +121,7 @@ function HeaderComponent() {
           </div>
         </nav>
         <SearchBar />
-        <hr className="my-6" />
+        <hr className="pt-2 pb-4 mt-4" />
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
