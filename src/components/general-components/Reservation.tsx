@@ -580,7 +580,7 @@ function Reservation() {
                   Please review your reservation details and contact us if you
                   have any questions.
                 </p>
-                <Link to="/" className="w-full">
+                <Link to="/" className="w-full flex justify-center">
                   <Button>Back to Home</Button>
                 </Link>
               </div>
