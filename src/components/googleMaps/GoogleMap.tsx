@@ -25,12 +25,8 @@ export default function GoogleMap({
   return (
     <APIProvider apiKey={googleApiKey}>
       <div
-        style={{
-          height: "80vh",
-          width: width,
-          position: "sticky",
-          top: "230px",
-        }}
+        className="h-[75vh] sticky top-[180px] hidden sm:hidden md:hidden lg:block"
+        style={{ width: width }} // Use inline style for dynamic width
       >
         <Map
           defaultZoom={zoom}
