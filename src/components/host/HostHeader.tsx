@@ -76,7 +76,6 @@ function HostHeader() {
             <DropdownMenuContent className="relative right-12 top-4 w-60 flex flex-col gap-2">
               {loggedInUser ? (
                 <>
-                  <DropdownMenuItem>Messages</DropdownMenuItem>
                   <Link to="/trips">
                     <DropdownMenuItem>Trips</DropdownMenuItem>
                   </Link>
@@ -97,16 +96,7 @@ function HostHeader() {
                   <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
                 </>
               ) : (
-                <>
-                  <DropdownMenuItem
-                    className="font-bold"
-                    onClick={() => setModalOpen(true)}
-                  >
-                    Log in
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setModalOpen(true)}>
-                    Sign up
-                  </DropdownMenuItem>
+                <> 
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Gift cards</DropdownMenuItem>
                   <DropdownMenuItem>Airbnb your home</DropdownMenuItem>

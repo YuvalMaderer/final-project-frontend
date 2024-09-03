@@ -7,7 +7,7 @@ function StepTwoPage() {
   useEffect(() => setSearchParams({ step: "stepTwo" }), []);
   return (
     <main className="h-screen  px-20 items-center justify-center">
-      <div className="flex items-center justify-center mx-auto mt-20">
+      <div className="flex items-center justify-center mx-auto">
         <section className="space-y-8 max-w-[700px]">
           <p className="text-lg font-[500]">Step 2</p>
           <h1 className="text-5xl font-[500]">Make your place stand out</h1>

@@ -9,10 +9,11 @@ import {
 } from "@/lib/http";
 import { useAuth } from "@/providers/user.context";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ReservationsList from "@/components/host/ReservationsList";
 import NotHaveReservaions from "@/components/host/NotHaveReservaions";
+import Modal from "@/components/general-components/LoginModalComponent";
 
 type selectedReservations =
   | "Checking out"
@@ -42,6 +43,12 @@ function HostPage() {
   let content = <NotHaveReservaions />;
   const { loggedInUser } = useAuth();
   const [selected, setSelected] = useState<selectedReservations>();
+  const [isModalOpen, setModalOpen] = useState(true);
+  useEffect(() => {
+    if (loggedInUser) {
+      setModalOpen(false);
+    }
+  }, [loggedInUser]);
 
   //get all host reservations using react query
   const {
@@ -234,6 +241,7 @@ function HostPage() {
         </div>
         {content}
       </section>
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen} />
     </div>
   );
 }
