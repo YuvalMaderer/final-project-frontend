@@ -41,6 +41,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const { checkDates, setCheckDates } = useDate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [inputValue, setInputValue] = useState<string>(selectedDestination);
 
   useEffect(() => {
     if (dropdownOpen) {
@@ -50,6 +51,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   }, [dropdownOpen]);
 
+  useEffect(() => {
+    setInputValue(selectedDestination);
+  }, [selectedDestination]);
+
   const handleSelection = (destination: string): void => {
     setSelectedDestination(destination);
     setDropdownOpen(false);
@@ -57,29 +62,42 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="flex flex-col items-center text-xs ">
-      <div className="flex border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500">
-        <div className="p-1 px-4 flex-1 text-left hover:bg-gray-200 rounded-full">
+      <div className="flex justify-center items-center border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500">
+        <div className="p-3 px-6 flex-1 text-left hover:bg-gray-200 rounded-full">
           <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant={null}
-                className="flex-col self-start text-xs inline-block text-left"
-                onClick={() => setDropdownOpen(true)}
-              >
-                {/* Update the button label based on selectedDestination */}
-                <div className="text-black font-600">Where</div>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  className="text-gray-500 bg-inherit"
-                  placeholder={selectedDestination || "Search destinations"}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                  }}
-                />
-              </Button>
-            </DropdownMenuTrigger>
+            <div className="flex flex-col ">
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant={null}
+                  className="h-0 flex justify-start text-xs text-left"
+                  onClick={() => setDropdownOpen(true)}
+                >
+                  {/* Update the button label based on selectedDestination */}
+                  <div className="text-black font-600 ">Where</div>
+                </Button>
+              </DropdownMenuTrigger>
+              <input
+                type="text"
+                ref={inputRef}
+                className="ml-4 border-none outline-none bg-transparent focus:ring-0 focus:border-none focus-visible:ring-0 focus-visible:border-none focus:outline-none focus:shadow-none"
+                style={{ boxShadow: "none", border: "none", outline: "none" }}
+                placeholder={selectedDestination || "Search destinations"}
+                onClick={(e: React.MouseEvent<HTMLInputElement>) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setInputValue(e.target.value); // Update the temporary input value as the user types
+                }}
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === "Enter") {
+                    setSelectedDestination(inputValue); // Commit the input value to the selected destination
+                    setDropdownOpen(false); // Close the dropdown on Enter
+                  }
+                }}
+                value={inputValue} // Show the current input value in the input field
+              />
+            </div>
             <DropdownMenuContent className="rounded-3xl relative left-28 top-4 p-6">
               <DropdownMenuLabel>Search by region</DropdownMenuLabel>
               <div className="flex">
