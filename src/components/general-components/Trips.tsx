@@ -7,6 +7,7 @@ import tripImage from "../../assets/tripImage.webp";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IHome } from "@/types";
+import { CalendarDays, MapPin, User } from "lucide-react";
 
 type PopulateReservationResponse = {
   _id: string;
@@ -70,39 +71,56 @@ function Trips() {
             const home = homes[reservation.home._id];
             const firstImage = home?.imgUrls[0];
             return (
-              <Card className="flex p-4" key={reservation._id}>
-                <div className="flex-shrink-0 mr-4">
+              <Card
+                key={reservation._id}
+                className="border-none overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+              >
+                <div className="relative h-48">
                   <img
-                    className="w-20 h-20 rounded-lg object-cover"
-                    src={firstImage}
-                    alt="firstImage"
+                    className="w-full h-full object-cover"
+                    src={firstImage || "/api/placeholder/400/300"}
+                    alt={`${home?.loc.city} property`}
                   />
-                </div>
-                <div className="flex flex-col flex-grow">
-                  <div className="mb-2">
-                    <h3 className="text-lg font-semibold">{home?.loc.city}</h3>
-                    <p className="text-sm text-gray-500">
-                      {`hosted by ${home?.host.fullname}`}
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {new Date(reservation.startDate).toLocaleDateString(
-                        "en-US",
-                        { month: "short", day: "numeric" }
-                      )}{" "}
-                      -{" "}
-                      {new Date(reservation.endDate).toLocaleDateString(
-                        "en-US",
-                        { month: "short", day: "numeric", year: "numeric" }
-                      )}
-                    </p>
+                  <div className="absolute top-2 right-2 bg-black text-white px-2 py-1 rounded-full text-sm font-medium">
+                    {reservation.status}
                   </div>
-                  <div className="mt-6 flex justify-between items-center gap-2">
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="text-xl font-semibold mb-2">
+                    {home?.loc.city}
+                  </h3>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-gray-600">
+                      <User className="w-4 h-4 mr-2" />
+                      <p className="text-sm">{`Hosted by ${home?.host.fullname}`}</p>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <CalendarDays className="w-4 h-4 mr-2" />
+                      <p className="text-sm">
+                        {new Date(reservation.startDate).toLocaleDateString(
+                          "en-US",
+                          { month: "short", day: "numeric" }
+                        )}{" "}
+                        -
+                        {new Date(reservation.endDate).toLocaleDateString(
+                          "en-US",
+                          { month: "short", day: "numeric", year: "numeric" }
+                        )}
+                      </p>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      <p className="text-sm">{home?.loc.address}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4">
                     <Link to={`/homes/${home?._id}`}>
-                      <Button size="sm">View Details</Button>
+                      <Button variant={"outline"} className="w-full">
+                        View Details
+                      </Button>
                     </Link>
-                    <p className="text-sm font-medium">{reservation.status}</p>
                   </div>
-                </div>
+                </CardContent>
               </Card>
             );
           })}
