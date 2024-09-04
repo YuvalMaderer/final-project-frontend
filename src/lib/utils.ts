@@ -46,9 +46,6 @@ export const updateSearchParams = (
 };
 
 
-
-
-
 export const calculateOverallAverageRating = (reviews: IReview[]) => {
   let totalRating = 0;
   const numCategories = 6;

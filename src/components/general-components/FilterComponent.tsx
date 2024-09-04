@@ -391,7 +391,7 @@ const FilterModal: React.FC<ModalProps> = ({
   return (
     <div
       onClick={handleOutsideClick}
-      className={`font-montserrat fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity duration-300 ease-out ${
+      className={`font-montserrat fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[100] transition-opacity duration-300 ease-out ${
         isOpen ? "opacity-100" : "opacity-0"
       }`}
     >

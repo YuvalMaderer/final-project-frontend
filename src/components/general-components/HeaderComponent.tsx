@@ -84,7 +84,7 @@ function HeaderComponent() {
 
   return (
     <>
-      <div className={`bg-white z-50 ${isHomePage ? "sticky top-0" : ""}`}>
+      <div className={`bg-white z-30 ${isHomePage ? "sticky top-0" : ""}`}>
         <nav className="flex justify-between items-center p-3 px-20">
           <Link to="/">
             <img src={logo} alt="logo" className="w-[105px] h-[60px]" />
@@ -198,7 +198,9 @@ function HeaderComponent() {
                 <DropdownMenuContent className="relative right-12 top-4 w-60 flex flex-col gap-2">
                   {loggedInUser ? (
                     <>
-                      <DropdownMenuItem>Messages</DropdownMenuItem>
+                      <Link to="/account/messages">
+                        <DropdownMenuItem>Messages</DropdownMenuItem>
+                      </Link>
                       <Link to="/trips">
                         <DropdownMenuItem>Trips</DropdownMenuItem>
                       </Link>

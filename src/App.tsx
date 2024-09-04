@@ -32,6 +32,9 @@ import TripsPage from "./pages/TripsPage";
 import TripsLayout from "./layouts/TripsLayout";
 import AccountPage from "./pages/AccountPage";
 import ProfilePage from "./pages/ProfilePage";
+import MessagesLayout from "./pages/MessagesLayout";
+import ChatRoomPage from "./pages/ChatRoomPage";
+import MessagePage from "./pages/MessagePage";
 
 function App() {
   return (
@@ -48,6 +51,10 @@ function App() {
           <Route path="account" element={<TripsLayout />}>
             <Route index element={<AccountPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="messages" element={<MessagesLayout />}>
+              <Route index element={<MessagePage />} />
+              <Route path=":roomId" element={<ChatRoomPage />} />
+            </Route>
           </Route>
 
           <Route path="/reservation/:id" element={<ReservationPage />} />
@@ -66,7 +73,6 @@ function App() {
           <Route path="stepTwo" element={<StepTwoPage />} />
           <Route path="amenities" element={<SelectAmenities />} />
           <Route path="addPhotos" element={<AddPhotosPage />} />
-
           <Route path="addTitle" element={<AddTitlePage />} />
           <Route path="addDescription" element={<AddDescriptionPage />} />
           <Route path="stepThree" element={<StepThreePage />} />
