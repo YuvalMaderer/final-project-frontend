@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { DollarSign, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Home } from "@/layouts/BecomeAhostLayout";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function AddPricePage() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
-  const [price, setPrice] = useState("0");
+
+  // Initialize price with the value from localStorage if it exists, or set it to "0"
+  const [price, setPrice] = useState<string>(() => {
+    const localStorageHome = localStorage.getItem("newHome");
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+    return homeObject?.price ? String(homeObject.price) : "0"; // Make sure it's a string
+  });
+
   const [isFocused, setIsFocused] = useState(false);
   const [guestPriceOpen, setGuestPriceOpen] = useState(true);
-  const [youEarmOpen, setYouEarmOpen] = useState(false);
+  const [youEarnOpen, setYouEarnOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -43,7 +44,7 @@ function AddPricePage() {
     // Check if localStorageHome exists and parse it to an object
     const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
 
-    // Update the homeObject with the new roomType
+    // Update the homeObject with the new price
     const updatedHome = {
       ...homeObject,
       price: price,
@@ -54,17 +55,13 @@ function AddPricePage() {
     localStorage.setItem("newHome", JSON.stringify(updatedHome));
   }
 
-  // Determine text size based on the length of the price
-
   return (
-    <div className="h-screen overflow-hidden flex flex-col items-center pt-10 ">
+    <div className="h-screen overflow-hidden flex flex-col items-center pt-10">
       <div className="space-y-2 mb-8 w-[30%]">
         <h1 className="text-4xl font-[500]">Now, set your price</h1>
         <p className="text-lg text-[#9d9d9d]">You can change it anytime.</p>
       </div>
-      <div
-        className={`flex justify-center items-center space-x-2 text-9xl font-bold`}
-      >
+      <div className={`flex justify-center items-center space-x-2 text-9xl font-bold`}>
         <span>$</span>
         <Input
           id="price"
@@ -73,8 +70,7 @@ function AddPricePage() {
           onChange={handlePriceChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className={`text-9xl h-44 font-bold border-none outline-none focus:ring-0 focus:border-none focus-visible:ring-0 focus-visible:border-none focus:outline-none focus:shadow-none w-[30%]`}
-          style={{ boxShadow: "none", border: "none", outline: "none" }}
+          className="text-9xl h-44 font-bold border-none outline-none focus:ring-0 focus:border-none w-[30%]"
         />
         {!isFocused && (
           <Label
@@ -88,7 +84,7 @@ function AddPricePage() {
       <div className="w-[40%] space-y-4">
         <div
           onClick={() => {
-            setYouEarmOpen(false);
+            setYouEarnOpen(false);
             setGuestPriceOpen(true);
           }}
           className="border border-black p-6 rounded-xl space-y-4 focus:outline-none focus:ring-2 focus:ring-black"
@@ -104,9 +100,9 @@ function AddPricePage() {
                 <span>Guest service fee</span>
                 <span>
                   $
-                  {(
-                    parseFloat(price.replace(/,/g, "")) * 0.14
-                  ).toLocaleString()}
+                  {price && !isNaN(Number(price.replace(/,/g, "")))
+                    ? (parseFloat(price.replace(/,/g, "")) * 0.14).toLocaleString()
+                    : "0"}
                 </span>
               </div>
             </div>
@@ -114,19 +110,21 @@ function AddPricePage() {
           <div className="flex justify-between text-lg font-[500]">
             <span>Guest Price</span>
             <span>
-              ${(parseFloat(price.replace(/,/g, "")) * 1.14).toLocaleString()}
+              {price && !isNaN(Number(price.replace(/,/g, "")))
+                ? (parseFloat(price.replace(/,/g, "")) * 1.14).toLocaleString()
+                : "0"}
             </span>
           </div>
         </div>
         <div
           onClick={() => {
-            setYouEarmOpen(true);
+            setYouEarnOpen(true);
             setGuestPriceOpen(false);
           }}
           className="border border-black p-6 rounded-xl space-y-4 focus:outline-none focus:ring-2 focus:ring-black"
           tabIndex={0}
         >
-          {youEarmOpen && (
+          {youEarnOpen && (
             <div className="border-b pb-4 space-y-3">
               <div className="flex justify-between text-lg">
                 <span>Base Price</span>
@@ -136,9 +134,9 @@ function AddPricePage() {
                 <span>Host service fee</span>
                 <span>
                   -$
-                  {(
-                    parseFloat(price.replace(/,/g, "")) * 0.03
-                  ).toLocaleString()}
+                  {price && !isNaN(Number(price.replace(/,/g, "")))
+                    ? (parseFloat(price.replace(/,/g, "")) * 0.03).toLocaleString()
+                    : "0"}
                 </span>
               </div>
             </div>
@@ -146,7 +144,9 @@ function AddPricePage() {
           <div className="flex justify-between text-lg font-[500]">
             <span>You earn</span>
             <span>
-              ${(parseFloat(price.replace(/,/g, "")) * 0.97).toLocaleString()}
+              {price && !isNaN(Number(price.replace(/,/g, "")))
+                ? (parseFloat(price.replace(/,/g, "")) * 0.97).toLocaleString()
+                : "0"}
             </span>
           </div>
         </div>

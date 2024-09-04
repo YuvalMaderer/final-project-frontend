@@ -200,30 +200,39 @@ function SelectAmenities() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
-  const [selected, setSelected] = useState<AmenityName[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Initialize selected amenities with values from localStorage or default to an empty array
+  const [selected, setSelected] = useState<AmenityName[]>(() => {
+    const localStorageHome = localStorage.getItem("newHome");
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+    return homeObject?.amenities || [];
+  });
+
+  // Initialize accessibility amenities with values from localStorage or default to an empty array
   const [accessibilitySelected, setAccessibilitySelected] = useState<
     AmenityName[]
-  >([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  >(() => {
+    const localStorageHome = localStorage.getItem("newHome");
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+    return homeObject?.accessibility || [];
+  });
+
   useEffect(() => {
     setSearchParams({ step: "amenities" });
-    handleNewHomeUpdate()
+    handleNewHomeUpdate();
   }, [selected, accessibilitySelected]);
 
   function handleNewHomeUpdate() {
     const localStorageHome = localStorage.getItem("newHome");
-
-    // Check if localStorageHome exists and parse it to an object
     const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
 
-    // Update the homeObject with the new roomType
     const updatedHome = {
       ...homeObject,
       amenities: selected,
       accessibility: accessibilitySelected,
     };
 
-    // Update the state and localStorage
     setNewHome(updatedHome);
     localStorage.setItem("newHome", JSON.stringify(updatedHome));
   }

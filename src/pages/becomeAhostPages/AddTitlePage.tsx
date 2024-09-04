@@ -7,8 +7,15 @@ function AddTitlePage() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
-  const [text, setText] = useState("");
+  // Initialize title with the name from localStorage if it exists
+  const [text, setText] = useState(() => {
+    const localStorageHome = localStorage.getItem("newHome");
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+    return homeObject?.name || ""; // Start with the name from localStorage, or an empty string if it doesn't exist
+  });
+
   const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
     if (text.length > 0) {
       setSearchParams({ step: "addTitle" });
@@ -24,7 +31,7 @@ function AddTitlePage() {
     // Check if localStorageHome exists and parse it to an object
     const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
 
-    // Update the homeObject with the new roomType
+    // Update the homeObject with the new title and host details
     const updatedHome = {
       ...homeObject,
       name: text,
@@ -57,9 +64,8 @@ function AddTitlePage() {
           maxLength={32}
           className="w-full"
         />
-        <div className=" text-sm text-gray-500 font-600">{text.length}/32</div>
+        <div className="text-sm text-gray-500 font-600">{text.length}/32</div>
       </div>
-    
     </div>
   );
 }

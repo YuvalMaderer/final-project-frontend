@@ -8,7 +8,7 @@ interface BookTypeProps {
   icon: JSX.Element;
   name: selection;
   description: string;
-  handleNewHomeUpdate: (selection: string) => void;
+  handleNewHomeUpdate: (selection: selection) => void;
 }
 
 function BookType({

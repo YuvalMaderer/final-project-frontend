@@ -14,12 +14,19 @@ function FloorPlan() {
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [guestCounts, setGuestCounts] = useState({
-    Guests: 1,
-    Bedrooms: 0,
-    Beds: 1,
-    Bathrooms: 1,
+  // Initialize guestCounts with values from localStorage or default values
+  const [guestCounts, setGuestCounts] = useState(() => {
+    const localStorageHome = localStorage.getItem("newHome");
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : null;
+
+    return {
+      Guests: homeObject?.capacity || 1,
+      Bedrooms: homeObject?.bedrooms || 0,
+      Beds: homeObject?.beds || 1,
+      Bathrooms: homeObject?.bathrooms || 1,
+    };
   });
+
   useEffect(() => {
     setSearchParams({ step: "floorPlan" });
     handleNewHomeUpdate();
