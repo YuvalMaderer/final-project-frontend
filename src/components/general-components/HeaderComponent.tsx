@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Globe, Menu, Search } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import {
@@ -17,11 +17,12 @@ import logo from "../../assets/airbnb-logo.webp";
 import { Button } from "../ui/button";
 import { useDate } from "@/hooks/useDate";
 import { useGuestContext } from "@/providers/Guest-Context";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { useCurrency } from "@/providers/CurrencyContext";
+import CurrencySelector from "./CurrencySelector";
+import { fetchNotifications } from "@/lib/http";
+import { INotification } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 
 function HeaderComponent() {
-  const { currency, setCurrency } = useCurrency();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isReplacementClicked, setIsReplacementClicked] = useState(false);
@@ -31,7 +32,16 @@ function HeaderComponent() {
   const { checkDates, setCheckDates } = useDate();
   const { guestCounts, setGuestCounts } = useGuestContext();
   const [selectedDestination, setSelectedDestination] = useState<string>("");
-  const [activeItem, setActiveItem] = useState("language");
+
+  const { data: notifications } = useQuery<INotification[], Error>({
+    queryKey: ["notifications", loggedInUser?.user._id],
+    queryFn: () => fetchNotifications(loggedInUser?.user._id as string),
+    enabled: !!loggedInUser?.user._id,
+  });
+
+  const unreadNotifications = notifications?.filter(
+    (notification) => !notification.read
+  );
 
   const isHomePage = location.pathname === "/";
 
@@ -86,13 +96,13 @@ function HeaderComponent() {
     }, 1000);
   };
 
-  const handleClick = (item) => {
-    setActiveItem(item); // Set the clicked item as active
-  };
-
   return (
     <>
-      <div className={`bg-white z-30 ${isHomePage ? "sticky top-0" : ""}`}>
+      <div
+        className={`bg-white z-10 ${isReplacementClicked ? "z-50" : ""} ${
+          isHomePage ? "sticky top-0" : ""
+        }`}
+      >
         <nav className="flex justify-between items-center p-3 px-20">
           <Link to="/">
             <img src={logo} alt="logo" className="w-[105px] h-[60px]" />
@@ -102,7 +112,7 @@ function HeaderComponent() {
             <div
               className={`flex relative left-64 items-center transition-all duration-300 ${
                 isScrolled && !isReplacementClicked
-                  ? "opacity-0 translate-y-[-20px]"
+                  ? "opacity-0 translate-y-[-20px] "
                   : "opacity-100 translate-y-0"
               }`}
             >
@@ -121,7 +131,7 @@ function HeaderComponent() {
               }`}
             >
               <div
-                className="flex items-center border border-gray-300 rounded-full py-2 shadow-sm text-sm cursor-pointer"
+                className="flex items-center border  border-gray-300 rounded-full py-2 shadow-sm text-sm cursor-pointer"
                 onClick={handleReplacementClick}
               >
                 <div className="px-3 ml-4 border-r border-gray-300 font-semibold">
@@ -169,85 +179,7 @@ function HeaderComponent() {
             <Link to="/becomeAhost" className="font-600 text-sm">
               Airbnb your home
             </Link>
-            <Dialog>
-              <DialogTrigger>
-                <Globe className="w-4 h-4" />
-              </DialogTrigger>
-              <DialogContent className="max-w-6xl mb-10 max-h-[40rem] overflow-y-auto">
-                <nav className="flex flex-col gap-10 text-sm p-6 ">
-                  <div className="flex gap-10 border-b">
-                    <p
-                      className={`cursor-pointer ${
-                        activeItem === "language"
-                          ? "font-bold border-b-2 border-black pb-2"
-                          : "text-gray-500 font-semibold"
-                      }`}
-                      onClick={() => handleClick("language")}
-                    >
-                      Language and region
-                    </p>
-                    <p
-                      className={`cursor-pointer ${
-                        activeItem === "currency"
-                          ? "font-bold border-b-2 border-black pb-2"
-                          : "text-gray-500 font-semibold"
-                      }`}
-                      onClick={() => handleClick("currency")}
-                    >
-                      Currency
-                    </p>
-                  </div>
-                  <div>
-                    {activeItem === "language" ? (
-                      <div className="flex flex-col gap-6 ">
-                        <div className="text-2xl font-semibold">
-                          Choose a language and region
-                        </div>
-                        <div className="flex flex-col cursor-pointer hover:bg-gray-100 border border-black rounded-lg p-4 py-3 w-52">
-                          <p className="font-semibold">English</p>
-                          <p>United States</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-6">
-                        <div className="text-2xl font-semibold">
-                          Choose a currency
-                        </div>
-                        <div className="flex gap-4">
-                          <div
-                            className={`flex flex-col cursor-pointer hover:bg-gray-100 border border-black rounded-lg p-4 py-3 w-52 ${
-                              currency === "USD" ? "bg-gray-200" : ""
-                            }`}
-                            onClick={() => {
-                              setCurrency("USD");
-                              window.location.reload();
-                            }}
-                          >
-                            <p className="font-semibold">
-                              United States dollar
-                            </p>
-                            <p>USD - $</p>
-                          </div>
-                          <div
-                            className={`flex flex-col cursor-pointer hover:bg-gray-100 border border-black rounded-lg p-4 py-3 w-52 ${
-                              currency === "ILS" ? "bg-gray-200" : ""
-                            }`}
-                            onClick={() => {
-                              setCurrency("ILS");
-                              window.location.reload();
-                            }}
-                          >
-                            <p className="font-semibold">Israeli new shekel</p>
-                            <p>ILS - ₪</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </nav>
-              </DialogContent>
-            </Dialog>
-
+            <CurrencySelector />
             <div className="flex items-center border border-grey-300 rounded-full p-3 gap-4 hover:shadow-lg">
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex gap-2">
@@ -285,16 +217,30 @@ function HeaderComponent() {
                   {loggedInUser ? (
                     <>
                       <Link to="/account/messages">
-                        <DropdownMenuItem>Messages</DropdownMenuItem>
+                        <DropdownMenuItem className="font-semibold">
+                          Messages
+                        </DropdownMenuItem>
                       </Link>
                       <Link to="/account/notifications">
-                        <DropdownMenuItem>Notifications</DropdownMenuItem>
+                        <DropdownMenuItem className="font-semibold flex justify-between">
+                          Notifications
+                          {unreadNotifications &&
+                            unreadNotifications.length > 0 && (
+                              <div className="bg-red-500 text-white rounded-full w-4 h-4 flex justify-center items-center text-xs">
+                                {unreadNotifications.length}
+                              </div>
+                            )}
+                        </DropdownMenuItem>
                       </Link>
                       <Link to="/trips">
-                        <DropdownMenuItem>Trips</DropdownMenuItem>
+                        <DropdownMenuItem className="font-semibold">
+                          Trips
+                        </DropdownMenuItem>
                       </Link>
                       <Link to="/wishlists">
-                        <DropdownMenuItem>Wishlists</DropdownMenuItem>
+                        <DropdownMenuItem className="font-semibold">
+                          Wishlists
+                        </DropdownMenuItem>
                       </Link>
                       <DropdownMenuSeparator />
                       <Link to={"/hostPage"}>

@@ -8,9 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Globe, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/providers/user.context";
+import CurrencySelector from "./CurrencySelector";
 
 function TripsHeader() {
   const { loggedInUser, logout } = useAuth();
@@ -25,7 +26,7 @@ function TripsHeader() {
           <Link to="/becomeAhost" className="font-600 text-sm">
             Airbnb your home
           </Link>
-          <Globe className="w-4 h-4" />
+          <CurrencySelector />
           <div className="flex items-center border border-gray-300 rounded-full p-3 gap-4 hover:shadow-lg">
             <DropdownMenu>
               <DropdownMenuTrigger className="flex gap-2">
@@ -62,25 +63,37 @@ function TripsHeader() {
               <DropdownMenuContent className="relative right-12 top-4 w-60 flex flex-col gap-2">
                 {loggedInUser ? (
                   <>
-                    <DropdownMenuItem>Messages</DropdownMenuItem>
+                    <Link to="/account/messages">
+                      <DropdownMenuItem className="font-semibold">
+                        Messages
+                      </DropdownMenuItem>
+                    </Link>
+                    <Link to="/account/notifications">
+                      <DropdownMenuItem className="font-semibold">
+                        Notifications
+                      </DropdownMenuItem>
+                    </Link>
                     <Link to="/trips">
-                      <DropdownMenuItem>Trips</DropdownMenuItem>
+                      <DropdownMenuItem className="font-semibold">
+                        Trips
+                      </DropdownMenuItem>
                     </Link>
                     <Link to="/wishlists">
-                      <DropdownMenuItem>Wishlists</DropdownMenuItem>
+                      <DropdownMenuItem className="font-semibold">
+                        Wishlists
+                      </DropdownMenuItem>
                     </Link>
                     <DropdownMenuSeparator />
                     <Link to={"/hostPage"}>
                       <DropdownMenuItem>Manage listings</DropdownMenuItem>
                     </Link>
                     <DropdownMenuItem>Refer a host</DropdownMenuItem>
-                    <Link to={"/Account"}>
+                    <Link to={"/account"}>
                       <DropdownMenuItem>Account</DropdownMenuItem>
                     </Link>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Gift cars</DropdownMenuItem>
+                    <DropdownMenuItem>Gift cards</DropdownMenuItem>
                     <DropdownMenuItem>Help center</DropdownMenuItem>
-
                     <DropdownMenuItem
                       onClick={() => {
                         logout();

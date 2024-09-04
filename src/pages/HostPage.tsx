@@ -3,6 +3,7 @@ import PendingReservation from "@/components/host/PendingReservation";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import {
+  createUserNotification,
   deleteReservation,
   getAllHostReservations,
   queryClient,
@@ -96,32 +97,56 @@ function HostPage() {
 
   //update reservation status using react query
   const updateMutation = useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       reservationId,
       status,
     }: {
       reservationId: string;
       status: string;
-    }) => updateReservationStatus(reservationId, status),
-    onSuccess: (_, variables) => {
-      let descriptionMessage = "";
+    }) => {
+      const reservation = reservations.find((r) => r._id === reservationId);
+      if (!reservation) throw new Error("Reservation not found");
 
-      switch (variables.status) {
+      // Update reservation status
+      await updateReservationStatus(reservationId, status);
+
+      return { reservation, status };
+    },
+    onSuccess: async ({ reservation, status }) => {
+      let descriptionMessage = "";
+      let userNotificationMessage = "";
+
+      switch (status) {
         case "confirmed":
           descriptionMessage =
             "The reservation has been successfully confirmed!";
+          userNotificationMessage = `Your reservation to ${reservation.home.name} has been confirmed! Enjoy your stay :)`;
           break;
         case "canceled":
           descriptionMessage = "The reservation has been canceled.";
+          userNotificationMessage = `Your reservation to ${reservation.home.name} has been canceled.`;
           break;
         default:
           descriptionMessage = "The reservation status has been updated.";
+          userNotificationMessage = "Your reservation status has been updated.";
       }
 
+      // Display toast notification
       toast({
         title: "Reservation status",
         description: descriptionMessage,
       });
+
+      try {
+        // Send user notification
+        await createUserNotification(
+          reservation.user._id,
+          userNotificationMessage,
+          reservation._id
+        );
+      } catch (error) {
+        console.error("Error sending user notification:", error);
+      }
 
       // Invalidate the specific query by its key
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
@@ -162,7 +187,7 @@ function HostPage() {
     reservationId: string,
     status: string
   ) {
-    updateMutation.mutate({ reservationId: reservationId, status: status });
+    updateMutation.mutate({ reservationId, status });
   }
 
   function handleDeleteReservation(reservationId: string) {

@@ -1,5 +1,4 @@
 import {
-  createHostNotification,
   createUserNotification,
   fetchHomeById,
   fetchHomeReservations,
@@ -115,7 +114,7 @@ function Reservation() {
       // Send notification to the user who made the reservation
       const userId = loggedInUser?.user._id; // Adjust this based on your response data
       const reservationId = data.reservation._id;
-      const message = `Your reservation has been successfully created. Enjoy your stay in: ${home?.name}`;
+      const message = `Your reservation to: ${home?.name} has been successfully sended.`;
 
       try {
         await createUserNotification(userId, message, reservationId);
@@ -124,10 +123,10 @@ function Reservation() {
         console.error("Error sending notification:", error);
       }
       const hostId = home?.host._id;
-      const hostMessage = `A new reservation has been created for your property: ${home?.name}`;
+      const hostMessage = `A new reservation has been created for your Airbnb: ${home?.name}`;
 
       try {
-        await createHostNotification(hostId, hostMessage, reservationId);
+        await createUserNotification(hostId, hostMessage, reservationId);
         console.log("Host notification sent successfully");
       } catch (error) {
         console.error("Error sending host notification:", error);

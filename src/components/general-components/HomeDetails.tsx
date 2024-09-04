@@ -864,13 +864,17 @@ function HomeDetails() {
           isDialogOpen={isReviewDialogOpen}
           onDialogOpenChange={handleReviewDialogChange}
         />
-        <div className="w-full flex justify-center items-center">
+
+        <div id="location" className=" w-full flex flex-col gap-4 items-center">
+          <p className="text-2xl font-semibold self-start">Where you’ll be</p>
+          <p className="text-md self-start">{home.loc.city}</p>
           {position && (
             <GoogleMap
               homes={[home]}
               position={position}
               zoom={17}
-              width="80%"
+              width="100%"
+              scroll="none"
             />
           )}
         </div>

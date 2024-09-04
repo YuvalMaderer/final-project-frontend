@@ -62,8 +62,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="flex flex-col items-center text-xs ">
-      <div className="flex justify-center items-center border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500">
-        <div className="p-3 px-6 flex-1 text-left hover:bg-gray-200 rounded-full">
+      <div className="flex justify-center  items-center border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500">
+        <div className="p-3 px-6 flex-1 text-left hover:bg-gray-200 rounded-full ">
           <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <div className="flex flex-col ">
               <DropdownMenuTrigger asChild>
