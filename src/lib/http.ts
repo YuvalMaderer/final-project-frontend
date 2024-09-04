@@ -209,6 +209,18 @@ export async function updateReservationStatus(
   }
 }
 
+export async function deleteReservation(reservationId: string) {
+  try {
+    const response = await api.delete(`/reservation/delete/${reservationId}`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error delete reservation:", error);
+    // Handle the error, e.g., show an error message to the user
+    throw error; // Optionally re-throw the error to be handled by the caller
+  }
+}
+
 export const findOrCreateChatroom = async (userId1: string | undefined, userId2: string | undefined, senderId: string | undefined, message: string) => {
   const response = await api.post(`/chat/chatroom`, { userId1, userId2, senderId, message });
   return response.data;

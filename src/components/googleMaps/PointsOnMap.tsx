@@ -4,10 +4,12 @@ import { AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
 import { Star } from "lucide-react";
 import { useState } from "react";
 import HomeCarousel from "../general-components/HomeCarousel";
+import { useCurrency } from "@/providers/CurrencyContext";
 
 export type Props = { points: IHome[] | undefined };
 
 function HomesOnMap({ points }: Props) {
+  const { currency, setCurrency } = useCurrency();
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
@@ -31,7 +33,9 @@ function HomesOnMap({ points }: Props) {
                     : "bg-white text-black"
                 }`}
               >
-                ${point.price}
+                {currency === "USD"
+                  ? `$${point.price}`
+                  : `₪${Math.round(point.price * 3.7)}`}{" "}
               </div>
             </AdvancedMarker>
             {openId === point._id && (
@@ -57,7 +61,13 @@ function HomesOnMap({ points }: Props) {
                     </div>
                   </div>
                   <p className="font-400">
-                    <span className="font-500">${point.price}</span> night
+                    <span className="font-500">
+                      {" "}
+                      {currency === "USD"
+                        ? `$${point.price}`
+                        : `₪${Math.round(point.price * 3.7)}`}{" "}
+                    </span>{" "}
+                    night
                   </p>
                 </div>
               </InfoWindow>

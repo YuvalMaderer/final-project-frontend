@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LocationForm from "@/components/becomeAhostComponents/LocationForm";
 import LocationMap from "@/components/becomeAhostComponents/LocationMap";
 import { LatLng } from "use-places-autocomplete";
-import { useOutletContext, useSearchParams } from "react-router-dom";
-import { Home } from "@/layouts/BecomeAhostLayout";
+import { useSearchParams } from "react-router-dom";
 
 function SelectLocationPage() {
   const [address, setAddress] = useState<string>("");
@@ -14,8 +13,6 @@ function SelectLocationPage() {
   const [searchParams, setSearchParams] = useSearchParams({ step: "" });
 
   useEffect(() => setSearchParams({ step: "" }), []);
-
-
 
   const setLocationData = (address: string, locationData: any) => {
     setAddress(address);
@@ -60,7 +57,6 @@ function SelectLocationPage() {
           selected={selected}
           setSelected={setSelected}
           setLocationData={setLocationData}
-          
         />
       </div>
     </div>

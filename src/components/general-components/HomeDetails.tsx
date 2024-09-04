@@ -34,6 +34,7 @@ import { Link as ScrollLink } from "react-scroll";
 import { useGuestContext } from "@/providers/Guest-Context";
 import { useDate } from "@/hooks/useDate";
 import GoogleMap from "../googleMaps/GoogleMap";
+import { useCurrency } from "@/providers/CurrencyContext";
 
 const monthNames = [
   "Jan",
@@ -51,6 +52,7 @@ const monthNames = [
 ];
 
 function HomeDetails() {
+  const { currency, setCurrency } = useCurrency();
   const { guestCounts } = useGuestContext();
   const { id } = useParams<{ id: string }>();
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
@@ -201,10 +203,33 @@ function HomeDetails() {
     return diffInDays;
   };
 
+  const homePrice =
+    currency === "USD" ? `$${home.price}` : `₪${Math.round(home.price * 3.7)}`;
+
+  const numericalPrice =
+    currency === "USD" ? home.price : Math.round(home.price * 3.7);
+
+  const totalNights = calculateNights(checkDates);
+  const totalPrice = numericalPrice * totalNights;
+
+  const formattedTotalPrice =
+    currency === "USD" ? `$${totalPrice}` : `₪${totalPrice}`;
+
   const CleaningFee = 35;
   const AirbnbServiceFee = 67;
   const Texas = 12;
 
+  const numericFormattedTotalPrice = parseFloat(
+    formattedTotalPrice.replace(/[^0-9.-]+/g, "")
+  );
+  const totalPriceUSD =
+    numericFormattedTotalPrice + CleaningFee + AirbnbServiceFee + Texas;
+
+  const totalPriceILS =
+    Math.round(numericalPrice * totalNights) +
+    Math.round(CleaningFee * 3.7) +
+    Math.round(AirbnbServiceFee * 3.7) +
+    Math.round(Texas * 3.7);
   // Calculate the overall rating
   const calculateOverallAverageRating = (reviews: IReview[]) => {
     if (reviews.length === 0) return 0;
@@ -299,7 +324,7 @@ function HomeDetails() {
                   <div className="flex gap-4 items-center">
                     <div className="flex flex-col">
                       <p className="flex justify-center items-center gap-1">
-                        <span className="font-semibold">${home.price}</span>{" "}
+                        <span className="font-semibold">{homePrice}</span>{" "}
                         <span className="text-xs">night</span>
                       </p>
                       <p>
@@ -636,9 +661,7 @@ function HomeDetails() {
               <Card className="w-[23rem] shadow-xl">
                 <CardHeader>
                   <CardTitle className="font-400 text-xl">
-                    {checkDates
-                      ? `$${home.price} night`
-                      : "Add dates for prices"}
+                    {checkDates ? `${homePrice} night` : "Add dates for prices"}
                   </CardTitle>
                 </CardHeader>
 
@@ -735,31 +758,37 @@ function HomeDetails() {
                       </p>
                       <div className="flex justify-between">
                         <p className="underline">
-                          ${home.price} x {calculateNights(checkDates)} nights
+                          {homePrice} x {calculateNights(checkDates)} nights
                         </p>
-                        <p>${home.price * calculateNights(checkDates)}</p>
+                        <p>{formattedTotalPrice}</p>
                       </div>
                       <div className="flex justify-between">
                         <p className="underline">Cleaning fee</p>
-                        <p>${CleaningFee}</p>
+                        <p>
+                          {currency === "USD"
+                            ? `$${CleaningFee}`
+                            : `₪${Math.round(CleaningFee * 3.7)}`}
+                        </p>
                       </div>
                       <div className="flex justify-between">
                         <p className="underline">Airbnb service fee</p>
-                        <p>${AirbnbServiceFee}</p>
+                        {currency === "USD"
+                          ? `$${AirbnbServiceFee}`
+                          : `₪${Math.round(AirbnbServiceFee * 3.7)}`}
                       </div>
                       <div className="flex justify-between">
                         <p className="underline">Taxes</p>
-                        <p>${Texas}</p>
+                        {currency === "USD"
+                          ? `$${Texas}`
+                          : `₪${Math.round(Texas * 3.7)}`}
                       </div>
                       <hr className="mt-2" />
                       <div className="flex justify-between font-semibold mt-2">
                         <p>Total</p>
                         <p>
-                          $
-                          {home.price * calculateNights(checkDates) +
-                            CleaningFee +
-                            AirbnbServiceFee +
-                            Texas}
+                          {currency === "USD"
+                            ? `$${totalPriceUSD}`
+                            : `₪${totalPriceILS}`}
                         </p>
                       </div>
                     </div>
