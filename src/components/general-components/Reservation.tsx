@@ -1,4 +1,9 @@
-import { fetchHomeById, fetchHomeReservations } from "@/lib/http";
+import {
+  createHostNotification,
+  createUserNotification,
+  fetchHomeById,
+  fetchHomeReservations,
+} from "@/lib/http";
 import { DateRange, IHome, IReservation, IReservationRequest } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -103,9 +108,30 @@ function Reservation() {
     error: reservationError,
   } = useMutation({
     mutationFn: createNewReservation,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       console.log("Reservation created:", data);
       setIsDialogOpenPay(true); // Open dialog on success
+
+      // Send notification to the user who made the reservation
+      const userId = loggedInUser?.user._id; // Adjust this based on your response data
+      const reservationId = data.reservation._id;
+      const message = `Your reservation has been successfully created. Enjoy your stay in: ${home?.name}`;
+
+      try {
+        await createUserNotification(userId, message, reservationId);
+        console.log("Notification sent successfully");
+      } catch (error) {
+        console.error("Error sending notification:", error);
+      }
+      const hostId = home?.host._id;
+      const hostMessage = `A new reservation has been created for your property: ${home?.name}`;
+
+      try {
+        await createHostNotification(hostId, hostMessage, reservationId);
+        console.log("Host notification sent successfully");
+      } catch (error) {
+        console.error("Error sending host notification:", error);
+      }
     },
     onError: (error) => {
       console.error("Error creating reservation:", error);

@@ -126,3 +126,11 @@ export interface IReservation {
   totalPrice: number;
   status: "pending" | "confirmed" | "cancelled";
 }
+
+export interface INotification {
+  _id: string;
+  userId: string;
+  message: string;
+  read: boolean;
+  createdAt: Date;
+}

@@ -287,6 +287,9 @@ function HeaderComponent() {
                       <Link to="/account/messages">
                         <DropdownMenuItem>Messages</DropdownMenuItem>
                       </Link>
+                      <Link to="/account/notifications">
+                        <DropdownMenuItem>Notifications</DropdownMenuItem>
+                      </Link>
                       <Link to="/trips">
                         <DropdownMenuItem>Trips</DropdownMenuItem>
                       </Link>

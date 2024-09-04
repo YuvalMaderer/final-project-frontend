@@ -2,6 +2,7 @@ import { Home } from "@/layouts/BecomeAhostLayout";
 import api from "@/services/api.service";
 import {
   IHome,
+  INotification,
   IReservation,
   IReservationRequest,
   IReservationResponse,
@@ -278,3 +279,42 @@ export const getChatroomDetailsById = async (roomId: string | undefined) => {
   const response = await api.get(`/chat/chatroom/room/${roomId}`);
   return response.data;
 };
+
+
+export async function createUserNotification(userId: string, message: string,reservationId: string): Promise<void> {
+  try {
+    await api.post('/notification', { userId, message,reservationId });
+  } catch (err) {
+    console.error('Error creating user notification:', err);
+    throw err;
+  }
+}
+
+export async function createHostNotification(hostId: string, message: string, reservationId: string): Promise<void> {
+  try {
+    await api.post(`/notification/${hostId}`, {hostId,message, reservationId });
+  } catch (err) {
+    console.error('Error creating host notification:', err);
+    throw err;
+  }
+}
+
+
+export async function fetchNotifications(userId: string): Promise<INotification[]> {
+  try {
+    const response = await api.get(`/notification/${userId}`);
+    return response.data; // Return the data property which should contain the array of notifications
+  } catch (err) {
+    console.error('Error fetching notifications:', err);
+    throw err; // Optionally rethrow the error to handle it in the caller
+  }
+}
+
+export async function deleteNotification(notificationId: string): Promise<void> {
+  try {
+    await api.delete(`/notification/${notificationId}`);
+  } catch (err) {
+    console.error("Error deleting notification:", err);
+    throw err; // Optionally rethrow the error to handle it in the caller
+  }
+}

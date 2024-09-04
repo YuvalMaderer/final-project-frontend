@@ -37,6 +37,7 @@ import ChatRoomPage from "./pages/ChatRoomPage";
 import MessagePage from "./pages/MessagePage";
 import HostListingPage from "./pages/HostListingPage";
 import EditHomeLayout from "./layouts/EditHomeLayout";
+import NotificationPage from "./pages/NotificationPage";
 
 function App() {
   return (
@@ -53,6 +54,8 @@ function App() {
           <Route path="account" element={<TripsLayout />}>
             <Route index element={<AccountPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="notifications" element={<NotificationPage />} />
+
             <Route path="messages" element={<MessagesLayout />}>
               <Route index element={<MessagePage />} />
               <Route path=":roomId" element={<ChatRoomPage />} />
