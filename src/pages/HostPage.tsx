@@ -3,6 +3,7 @@ import PendingReservation from "@/components/host/PendingReservation";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import {
+  deleteReservation,
   getAllHostReservations,
   queryClient,
   updateReservationStatus,
@@ -94,7 +95,7 @@ function HostPage() {
   });
 
   //update reservation status using react query
-  const mutation = useMutation({
+  const updateMutation = useMutation({
     mutationFn: ({
       reservationId,
       status,
@@ -134,12 +135,38 @@ function HostPage() {
       });
     },
   });
+  //delete canceld reservation
+  const deleteMutation = useMutation({
+    mutationFn: ({ reservationId }: { reservationId: string }) =>
+      deleteReservation(reservationId),
+    onSuccess: () => {
+      toast({
+        title: "Delete Reservation",
+        description: "The reservation has been deleted.",
+      });
+
+      // Invalidate the specific query by its key
+      queryClient.invalidateQueries({ queryKey: ["reservations"] });
+    },
+    onError: (error) => {
+      console.error("Error while deleting reservation:", error);
+      toast({
+        title: "Error",
+        description:
+          "There was an issue deleting the reservation. Please try again.",
+      });
+    },
+  });
 
   function handleReservationStatusUpdate(
     reservationId: string,
     status: string
   ) {
-    mutation.mutate({ reservationId: reservationId, status: status });
+    updateMutation.mutate({ reservationId: reservationId, status: status });
+  }
+
+  function handleDeleteReservation(reservationId: string) {
+    deleteMutation.mutate({ reservationId: reservationId });
   }
 
   if (reservationsLoading) {
@@ -171,7 +198,12 @@ function HostPage() {
       />
     );
   } else if (reservations && selected === "Canceled") {
-    content = <CanceledReservations reservations={reservations} />;
+    content = (
+      <CanceledReservations
+        reservations={reservations}
+        handleDeleteReservation={handleDeleteReservation}
+      />
+    );
   } else if (reservations && selected === "Upcoming") {
     // Filter confirmed reservations
     const confirmedReservations = reservations.filter(
