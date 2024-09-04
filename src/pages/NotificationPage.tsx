@@ -17,11 +17,7 @@ const NotificationPage: React.FC = () => {
   const userId = loggedInUser?.user._id;
 
   // Fetch notifications using the object format for useQuery
-  const {
-    data: notifications,
-    isLoading,
-    error,
-  } = useQuery<INotification[], Error>({
+  const { data: notifications, isLoading } = useQuery<INotification[], Error>({
     queryKey: ["notifications", userId],
     queryFn: () => fetchNotifications(userId as string),
     enabled: !!userId,
@@ -40,13 +36,6 @@ const NotificationPage: React.FC = () => {
 
   if (isLoading)
     return <div className="text-center">Loading notifications...</div>;
-
-  if (error)
-    return (
-      <div className="text-center">
-        Error loading notifications: {error?.message}
-      </div>
-    );
 
   return (
     <div className="flex justify-center items-center  p-4">
@@ -84,7 +73,7 @@ const NotificationPage: React.FC = () => {
             ))}
           </ul>
         ) : (
-          <p>No notifications found.</p>
+          <p>You're all caught up</p>
         )}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useCurrency } from "@/providers/CurrencyContext";
-import { Globe } from "lucide-react";
 import React from "react";
+import CurrencySelector from "./CurrencySelector";
 
 const Footer: React.FC = () => {
   const { currency, setCurrency } = useCurrency();
@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
       </div>
       <div className="flex items-center justify-center space-x-2 text-[0.9rem] gap-6">
         <span className="flex justify-center items-center gap-1">
-          <Globe className="w-4 h-4" />
+          <CurrencySelector />
           <p className="">English (US)</p>
         </span>
         <span>{currency === "USD" ? "$USD" : "₪ILS"}</span>

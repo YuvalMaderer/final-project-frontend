@@ -10,6 +10,7 @@ interface GoogleMapProps {
   position: { lat: number; lng: number };
   zoom?: number;
   width?: string;
+  scroll?: string;
 }
 
 export default function GoogleMap({
@@ -17,6 +18,7 @@ export default function GoogleMap({
   position,
   zoom = 11,
   width = "60%",
+  scroll = "greedy",
 }: GoogleMapProps) {
   const [open, setOpen] = useState(false);
 
@@ -33,7 +35,7 @@ export default function GoogleMap({
           defaultCenter={position}
           mapId={"aa21e74a7cd52a60"}
           fullscreenControl={false}
-          gestureHandling="greedy"
+          gestureHandling={scroll}
         >
           {open && (
             <InfoWindow

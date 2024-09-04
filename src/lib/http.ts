@@ -255,20 +255,11 @@ export const getChatroomDetailsById = async (roomId: string | undefined) => {
 };
 
 
-export async function createUserNotification(userId: string, message: string,reservationId: string): Promise<void> {
+export async function createUserNotification(userId: string|undefined, message: string,reservationId: string): Promise<void> {
   try {
     await api.post('/notification', { userId, message,reservationId });
   } catch (err) {
     console.error('Error creating user notification:', err);
-    throw err;
-  }
-}
-
-export async function createHostNotification(hostId: string, message: string, reservationId: string): Promise<void> {
-  try {
-    await api.post(`/notification/${hostId}`, {hostId,message, reservationId });
-  } catch (err) {
-    console.error('Error creating host notification:', err);
     throw err;
   }
 }

@@ -127,7 +127,7 @@ function Reservation() {
       const hostMessage = `A new reservation has been created for your property: ${home?.name}`;
 
       try {
-        await createHostNotification(hostId, hostMessage, reservationId);
+        await createUserNotification(hostId, hostMessage, reservationId);
         console.log("Host notification sent successfully");
       } catch (error) {
         console.error("Error sending host notification:", error);

@@ -83,6 +83,12 @@ function HostHeader() {
             <DropdownMenuContent className="relative right-12 top-4 w-60 flex flex-col gap-2">
               {loggedInUser ? (
                 <>
+                  <Link to="/account/messages">
+                    <DropdownMenuItem>Messages</DropdownMenuItem>
+                  </Link>
+                  <Link to="/account/notifications">
+                    <DropdownMenuItem>Notifications</DropdownMenuItem>
+                  </Link>
                   <Link to="/trips">
                     <DropdownMenuItem>Trips</DropdownMenuItem>
                   </Link>
@@ -94,11 +100,11 @@ function HostHeader() {
                     <DropdownMenuItem>Manage listings</DropdownMenuItem>
                   </Link>
                   <DropdownMenuItem>Refer a host</DropdownMenuItem>
-                  <Link to={"/Account"}>
+                  <Link to={"/account"}>
                     <DropdownMenuItem>Account</DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Gift cars</DropdownMenuItem>
+                  <DropdownMenuItem>Gift cards</DropdownMenuItem>
                   <DropdownMenuItem>Help center</DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
