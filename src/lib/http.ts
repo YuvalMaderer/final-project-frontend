@@ -236,3 +236,45 @@ export async function getHostListing() {
     throw error;
   }
 }
+
+export const findOrCreateChatroom = async (
+  userId1: string | undefined,
+  userId2: string | undefined,
+  senderId: string | undefined,
+  message: string
+) => {
+  const response = await api.post(`/chat/chatroom`, {
+    userId1,
+    userId2,
+    senderId,
+    message,
+  });
+  return response.data;
+};
+
+export const sendMessage = async (
+  roomId: string | undefined,
+  senderId: string | undefined,
+  message: string
+) => {
+  const response = await api.post(`/chat/chatroom/${roomId}/message`, {
+    senderId,
+    message,
+  });
+  return response.data;
+};
+
+export const getChatHistory = async (roomId: string | undefined) => {
+  const response = await api.get(`/chat/chatroom/${roomId}`);
+  return response.data;
+};
+
+export const getChatroomByUserId = async (userId: string | undefined) => {
+  const response = await api.get(`/chat/chatroom/user/${userId}`);
+  return response.data;
+};
+
+export const getChatroomDetailsById = async (roomId: string | undefined) => {
+  const response = await api.get(`/chat/chatroom/room/${roomId}`);
+  return response.data;
+};

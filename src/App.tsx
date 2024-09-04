@@ -35,6 +35,8 @@ import ProfilePage from "./pages/ProfilePage";
 import MessagesLayout from "./pages/MessagesLayout";
 import ChatRoomPage from "./pages/ChatRoomPage";
 import MessagePage from "./pages/MessagePage";
+import HostListingPage from "./pages/HostListingPage";
+import EditHomeLayout from "./layouts/EditHomeLayout";
 
 function App() {
   return (
