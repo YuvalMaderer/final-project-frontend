@@ -23,10 +23,12 @@ import { Card as GuestCard } from "./GuestCard";
 import { useMutation } from "@tanstack/react-query";
 import { createNewReservation } from "@/lib/http";
 import confetti from "canvas-confetti";
+import { useCurrency } from "@/providers/CurrencyContext";
 
 type GuestType = "adults" | "children" | "infants" | "pets";
 
 function Reservation() {
+  const { currency, setCurrency } = useCurrency();
   const { id } = useParams<{ id: string }>();
   const { checkDates, setCheckDates } = useDate();
   const [tempDates, setTempDates] = useState<DateRange | undefined>(checkDates);
@@ -265,6 +267,30 @@ function Reservation() {
   const handleGoBack = () => {
     navigate(-1); // This will navigate back to the previous page
   };
+
+  const homePrice =
+    currency === "USD" ? `$${home.price}` : `₪${Math.round(home.price * 3.7)}`;
+
+  const numericalPrice =
+    currency === "USD" ? home.price : Math.round(home.price * 3.7);
+
+  const totalNights = calculateNights(checkDates);
+  const totalPrice = numericalPrice * totalNights;
+
+  const formattedTotalPrice =
+    currency === "USD" ? `$${totalPrice}` : `₪${totalPrice}`;
+
+  const numericFormattedTotalPrice = parseFloat(
+    formattedTotalPrice.replace(/[^0-9.-]+/g, "")
+  );
+  const totalPriceUSD =
+    numericFormattedTotalPrice + CleaningFee + AirbnbServiceFee + Texas;
+
+  const totalPriceILS =
+    Math.round(numericalPrice * totalNights) +
+    Math.round(CleaningFee * 3.7) +
+    Math.round(AirbnbServiceFee * 3.7) +
+    Math.round(Texas * 3.7);
 
   return (
     <div>
@@ -518,31 +544,42 @@ function Reservation() {
                   <p className="text-xl font-semibold">Price details</p>
                   <div className="flex justify-between">
                     <p className="">
-                      ${home.price} x {calculateNights(checkDates)} nights
+                      {homePrice} x {calculateNights(checkDates)} nights
                     </p>
-                    <p>${home.price * calculateNights(checkDates)}</p>
+                    <p>{formattedTotalPrice}</p>
                   </div>
                   <div className="flex justify-between">
                     <p className="underline">Cleaning fee</p>
-                    <p>${CleaningFee}</p>
+                    <p>
+                      {currency === "USD"
+                        ? `$${CleaningFee}`
+                        : `₪${Math.round(CleaningFee * 3.7)}`}
+                    </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="underline">Airbnb service fee</p>
-                    <p>${AirbnbServiceFee}</p>
+                    <p>
+                      {" "}
+                      {currency === "USD"
+                        ? `$${AirbnbServiceFee}`
+                        : `₪${Math.round(AirbnbServiceFee * 3.7)}`}
+                    </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="underline">Taxes</p>
-                    <p>${Texas}</p>
+                    <p>
+                      {currency === "USD"
+                        ? `$${Texas}`
+                        : `₪${Math.round(Texas * 3.7)}`}
+                    </p>
                   </div>
                   <hr className="mt-2" />
                   <div className="flex justify-between font-semibold mt-2">
                     <p>Total</p>
                     <p>
-                      $
-                      {home.price * calculateNights(checkDates) +
-                        CleaningFee +
-                        AirbnbServiceFee +
-                        Texas}
+                      {currency === "USD"
+                        ? `$${totalPriceUSD}`
+                        : `₪${totalPriceILS}`}
                     </p>
                   </div>
                 </div>

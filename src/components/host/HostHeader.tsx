@@ -42,13 +42,17 @@ function HostHeader() {
         </Link>
 
         <div className="space-x-4 flex">
-          <Button variant={"ghost"} className="rounded-full">
-            Today
-          </Button>
+          <Link to={"/hostPage"}>
+            <Button variant={"ghost"} className="rounded-full">
+              Today
+            </Button>
+          </Link>
 
-          <Button variant={"ghost"} className="rounded-full">
-            Listings
-          </Button>
+          <Link to={"/hostPage/listing"}>
+            <Button variant={"ghost"} className="rounded-full">
+              Listings
+            </Button>
+          </Link>
         </div>
 
         <div className="flex items-center border border-gray-300 rounded-full p-3 gap-4 hover:shadow-lg">
@@ -107,7 +111,7 @@ function HostHeader() {
                   </DropdownMenuItem>
                 </>
               ) : (
-                <> 
+                <>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Gift cards</DropdownMenuItem>
                   <DropdownMenuItem>Airbnb your home</DropdownMenuItem>

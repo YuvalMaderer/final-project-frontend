@@ -221,13 +221,51 @@ export async function deleteReservation(reservationId: string) {
   }
 }
 
+<<<<<<< HEAD
 export const findOrCreateChatroom = async (userId1: string | undefined, userId2: string | undefined, senderId: string | undefined, message: string) => {
   const response = await api.post(`/chat/chatroom/?userId1=${userId1}&userId2=${userId2}&senderId=${senderId}&message=${message}`);
+=======
+export async function getHostListing() {
+  try {
+    const response = await api.get(`/homes/host`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching host homes:", error);
+
+    // Attach the response status to the error
+    if (error.response) {
+      error.status = error.response.status;
+    }
+
+    throw error;
+  }
+}
+
+export const findOrCreateChatroom = async (
+  userId1: string | undefined,
+  userId2: string | undefined,
+  senderId: string | undefined,
+  message: string
+) => {
+  const response = await api.post(`/chat/chatroom`, {
+    userId1,
+    userId2,
+    senderId,
+    message,
+  });
+>>>>>>> b443907e80f82f5cbcbb762fa617893a0596d8ea
   return response.data;
 };
 
-export const sendMessage = async (roomId: string | undefined, senderId: string | undefined, message: string) => {
-  const response = await api.post(`/chat/chatroom/${roomId}/message`, { senderId, message });
+export const sendMessage = async (
+  roomId: string | undefined,
+  senderId: string | undefined,
+  message: string
+) => {
+  const response = await api.post(`/chat/chatroom/${roomId}/message`, {
+    senderId,
+    message,
+  });
   return response.data;
 };
 
