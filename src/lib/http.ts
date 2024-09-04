@@ -221,13 +221,46 @@ export async function deleteReservation(reservationId: string) {
   }
 }
 
-export const findOrCreateChatroom = async (userId1: string | undefined, userId2: string | undefined, senderId: string | undefined, message: string) => {
-  const response = await api.post(`/chat/chatroom`, { userId1, userId2, senderId, message });
+export async function getHostListing() {
+  try {
+    const response = await api.get(`/homes/host`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching host homes:", error);
+
+    // Attach the response status to the error
+    if (error.response) {
+      error.status = error.response.status;
+    }
+
+    throw error;
+  }
+}
+
+export const findOrCreateChatroom = async (
+  userId1: string | undefined,
+  userId2: string | undefined,
+  senderId: string | undefined,
+  message: string
+) => {
+  const response = await api.post(`/chat/chatroom`, {
+    userId1,
+    userId2,
+    senderId,
+    message,
+  });
   return response.data;
 };
 
-export const sendMessage = async (roomId: string | undefined, senderId: string | undefined, message: string) => {
-  const response = await api.post(`/chat/chatroom/${roomId}/message`, { senderId, message });
+export const sendMessage = async (
+  roomId: string | undefined,
+  senderId: string | undefined,
+  message: string
+) => {
+  const response = await api.post(`/chat/chatroom/${roomId}/message`, {
+    senderId,
+    message,
+  });
   return response.data;
 };
 

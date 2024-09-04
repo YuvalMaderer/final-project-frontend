@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import LocationForm from "@/components/becomeAhostComponents/LocationForm";
 import LocationMap from "@/components/becomeAhostComponents/LocationMap";
 import { LatLng } from "use-places-autocomplete";
-import { useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
+import { Home } from "@/layouts/BecomeAhostLayout";
 
 function SelectLocationPage() {
   const [address, setAddress] = useState<string>("");

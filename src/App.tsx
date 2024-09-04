@@ -35,6 +35,8 @@ import ProfilePage from "./pages/ProfilePage";
 import MessagesLayout from "./pages/MessagesLayout";
 import ChatRoomPage from "./pages/ChatRoomPage";
 import MessagePage from "./pages/MessagePage";
+import HostListingPage from "./pages/HostListingPage";
+import EditHomeLayout from "./layouts/EditHomeLayout";
 
 function App() {
   return (
@@ -83,6 +85,19 @@ function App() {
 
         <Route path="/hostPage" element={<HostLayout />}>
           <Route index element={<HostPage />} />
+          <Route path="listing" element={<HostListingPage />} />
+          <Route path="editHome/:id" element={<EditHomeLayout />}>
+            <Route path="selectType" element={<SelectTypePage />} />
+            <Route path="selectRoomType" element={<SelectRoomTypePage />} />
+            <Route path="selectLocation" element={<SelectLocationPage />} />
+            <Route path="floorPlan" element={<FloorPlan />} />
+            <Route path="amenities" element={<SelectAmenities />} />
+            <Route path="addPhotos" element={<AddPhotosPage />} />
+            <Route path="addTitle" element={<AddTitlePage />} />
+            <Route path="addDescription" element={<AddDescriptionPage />} />
+            <Route path="bookType" element={<SelectBookType />} />
+            <Route path="addPrice" element={<AddPricePage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
