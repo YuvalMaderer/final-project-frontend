@@ -1,17 +1,16 @@
 import BookType from "@/components/becomeAhostComponents/BookType";
-import RoomType from "@/components/becomeAhostComponents/RoomType";
 import { Home } from "@/layouts/BecomeAhostLayout";
-import { Book, MessageSquareText, Zap } from "lucide-react";
+import { MessageSquareText, Zap } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 
-interface BookType {
+interface BookTypeData {
   icon: JSX.Element;
   name: selection;
   description: string;
 }
 
-const roomType: BookType[] = [
+const roomType: BookTypeData[] = [
   {
     icon: <Zap size={"40px"} strokeWidth={1} />,
     name: "Use Instant Book",
@@ -33,37 +32,39 @@ function SelectBookType() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
-  const [selected, setSelected] = useState<selection>(undefined);
-  const [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => {
-    setSearchParams({ step: "" });
-  }, []);
+  // Initialize selected booking option from localStorage if it exists
+  const [selected, setSelected] = useState<selection>(() => {
+    const localStorageHome = localStorage.getItem("newHome");
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+    return homeObject?.bookingOptions?.InstantBook
+      ? "Use Instant Book"
+      : "Approve or decline requests";
+  });
 
-  function handleNewHomeUpdate(selection :string) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearchParams({ step: "bookType" });
+  }, [setSearchParams]);
+
+  useEffect(() => {
+    // When selected changes, update localStorage and newHome state
+    handleNewHomeUpdate(selected);
+  }, [selected]);
+
+  function handleNewHomeUpdate(selection: selection) {
     const localStorageHome = localStorage.getItem("newHome");
 
     // Check if localStorageHome exists and parse it to an object
     const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
 
-    let updatedHome;
-    // Update the homeObject with the new roomType
-    if (selection === "Use Instant Book") {
-      updatedHome = {
-        ...homeObject,
-        bookingOptions: {
-          ...homeObject.bookingOptions, // Ensure the previous bookingOptions are preserved
-          InstantBook: true,
-        },
-      };
-    } else {
-      updatedHome = {
-        ...homeObject,
-        bookingOptions: {
-          ...homeObject.bookingOptions, // Ensure the previous bookingOptions are preserved
-          InstantBook: false,
-        },
-      };
-    }
+    let updatedHome = {
+      ...homeObject,
+      bookingOptions: {
+        ...homeObject.bookingOptions, // Ensure the previous bookingOptions are preserved
+        InstantBook: selection === "Use Instant Book",
+      },
+    };
 
     // Update the state and localStorage
     setNewHome(updatedHome);

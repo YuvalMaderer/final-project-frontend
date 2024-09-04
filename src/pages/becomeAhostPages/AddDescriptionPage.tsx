@@ -7,8 +7,15 @@ function AddDescriptionPage() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
-  const [text, setText] = useState("");
+  // Initialize description with the summary from localStorage if it exists
+  const [text, setText] = useState(() => {
+    const localStorageHome = localStorage.getItem("newHome");
+    const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
+    return homeObject?.summary || ""; // Start with the summary from localStorage, or an empty string if it doesn't exist
+  });
+
   const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
     if (text.length > 0) {
       setSearchParams({ step: "addDescription" });
@@ -24,7 +31,7 @@ function AddDescriptionPage() {
     // Check if localStorageHome exists and parse it to an object
     const homeObject = localStorageHome ? JSON.parse(localStorageHome) : {};
 
-    // Update the homeObject with the new roomType
+    // Update the homeObject with the new description (summary)
     const updatedHome = {
       ...homeObject,
       summary: text,
@@ -34,6 +41,7 @@ function AddDescriptionPage() {
     setNewHome(updatedHome);
     localStorage.setItem("newHome", JSON.stringify(updatedHome));
   }
+
   return (
     <div className="h-screen flex justify-center mt-40">
       <div className="max-w-[700px] w-full space-y-6">
@@ -49,7 +57,7 @@ function AddDescriptionPage() {
           maxLength={500}
           className="w-full"
         />
-        <div className=" text-sm text-gray-500 font-600">{text.length}/500</div>
+        <div className="text-sm text-gray-500 font-600">{text.length}/500</div>
       </div>
     </div>
   );
