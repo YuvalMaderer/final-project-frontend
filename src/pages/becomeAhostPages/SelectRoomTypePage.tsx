@@ -42,7 +42,22 @@ function SelectRoomTypePage() {
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [selected, setSelected] = useState<selection>(undefined);
   const [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => setSearchParams({ step: "" }), []);
+  useEffect(() => {
+    setSearchParams({ step: "" });
+    // Retrieve the stored newHome from localStorage
+    const localStorageHome = localStorage.getItem("newHome");
+
+    if (localStorageHome) {
+      // Parse the localStorageHome string into a JavaScript object
+      const updetedHome = JSON.parse(localStorageHome) as Home;
+
+      // Check if there is a type already selected in the stored home object
+      if (updetedHome && updetedHome.type) {
+        setSelected(updetedHome.roomType as selection); // Assuming 'type' is the property for home type
+        setSearchParams({ step: "selectRoomType" });
+      }
+    }
+  }, []);
   return (
     <div className="flex justify-center h-screen pt-40">
       <div className="space-y-10">

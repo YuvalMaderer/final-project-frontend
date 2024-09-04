@@ -220,3 +220,19 @@ export async function deleteReservation(reservationId: string) {
     throw error; // Optionally re-throw the error to be handled by the caller
   }
 }
+
+export async function getHostListing() {
+  try {
+    const response = await api.get(`/homes/host`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching host homes:", error);
+
+    // Attach the response status to the error
+    if (error.response) {
+      error.status = error.response.status;
+    }
+
+    throw error;
+  }
+}
