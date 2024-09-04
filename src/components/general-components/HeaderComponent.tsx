@@ -85,7 +85,11 @@ function HeaderComponent() {
 
   return (
     <>
-      <div className={`bg-white z-30 ${isHomePage ? "sticky top-0" : ""}`}>
+      <div
+        className={`bg-white z-10 ${isReplacementClicked ? "z-50" : ""} ${
+          isHomePage ? "sticky top-0" : ""
+        }`}
+      >
         <nav className="flex justify-between items-center p-3 px-20">
           <Link to="/">
             <img src={logo} alt="logo" className="w-[105px] h-[60px]" />
@@ -95,7 +99,7 @@ function HeaderComponent() {
             <div
               className={`flex relative left-64 items-center transition-all duration-300 ${
                 isScrolled && !isReplacementClicked
-                  ? "opacity-0 translate-y-[-20px]"
+                  ? "opacity-0 translate-y-[-20px] "
                   : "opacity-100 translate-y-0"
               }`}
             >
@@ -114,7 +118,7 @@ function HeaderComponent() {
               }`}
             >
               <div
-                className="flex items-center border border-gray-300 rounded-full py-2 shadow-sm text-sm cursor-pointer"
+                className="flex items-center border  border-gray-300 rounded-full py-2 shadow-sm text-sm cursor-pointer"
                 onClick={handleReplacementClick}
               >
                 <div className="px-3 ml-4 border-r border-gray-300 font-semibold">
