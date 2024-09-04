@@ -16,9 +16,13 @@ import { Separator } from "../ui/separator";
 
 interface CancelReservationProps {
   reservations: PopulateReservationResponse[];
+  handleDeleteReservation: (reservationId: string) => void;
 }
 
-function CanceledReservations({ reservations }: CancelReservationProps) {
+function CanceledReservations({
+  reservations,
+  handleDeleteReservation,
+}: CancelReservationProps) {
   const filteredReservations = reservations!.filter(
     (reservation) => reservation.status === "cancelled"
   );
@@ -63,7 +67,14 @@ function CanceledReservations({ reservations }: CancelReservationProps) {
                     <Separator />
                     <div className=" flex justify-between py-4 px-6 items-center">
                       <div>
-                        <Button variant="outline">Delete</Button>
+                        <Button
+                          onClick={() =>
+                            handleDeleteReservation(filteredReservation._id)
+                          }
+                          variant="outline"
+                        >
+                          Delete
+                        </Button>
                       </div>
                     </div>
                   </CardFooter>
