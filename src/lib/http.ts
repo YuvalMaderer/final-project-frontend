@@ -222,7 +222,7 @@ export async function deleteReservation(reservationId: string) {
 }
 
 export const findOrCreateChatroom = async (userId1: string | undefined, userId2: string | undefined, senderId: string | undefined, message: string) => {
-  const response = await api.post(`/chat/chatroom`, { userId1, userId2, senderId, message });
+  const response = await api.post(`/chat/chatroom/?userId1=${userId1}&userId2=${userId2}&senderId=${senderId}&message=${message}`);
   return response.data;
 };
 

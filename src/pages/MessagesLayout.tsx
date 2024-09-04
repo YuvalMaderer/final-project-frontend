@@ -5,8 +5,8 @@ function MessagesLayout() {
   return (
     <>
       <div className="flex font-montserrat">
-        <div className="h-full p-8 text-xl font-600 pl-10 w-1/4">
-          <h1>Messages</h1>
+        <div className="h-full text-xl font-600 w-1/4 p-8 pl-12">
+          <h1 className="pb-4">Messages</h1>
           <ChatRoom />
         </div>
         <div className="w-3/4">

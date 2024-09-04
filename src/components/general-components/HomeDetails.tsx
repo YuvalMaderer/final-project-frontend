@@ -1,6 +1,10 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchHomeById, fetchHomeReservations } from "@/lib/http";
+import {
+  fetchHomeById,
+  fetchHomeReservations,
+  findOrCreateChatroom,
+} from "@/lib/http";
 import { DateRange, IHome, IReservation } from "@/types";
 import { RiShare2Line } from "react-icons/ri";
 import { IReview } from "@/types";
@@ -35,6 +39,8 @@ import { useGuestContext } from "@/providers/Guest-Context";
 import { useDate } from "@/hooks/useDate";
 import GoogleMap from "../googleMaps/GoogleMap";
 import { useCurrency } from "@/providers/CurrencyContext";
+import { Textarea } from "../ui/textarea";
+import { useAuth } from "@/providers/user.context";
 
 const monthNames = [
   "Jan",
@@ -62,6 +68,10 @@ function HomeDetails() {
   const { checkDates, setCheckDates } = useDate();
   const priceCardRef = useRef<HTMLDivElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [newMessage, setNewMessage] = useState("");
+  const { loggedInUser } = useAuth();
+  const userId = loggedInUser?.user._id;
+  const Navigate = useNavigate();
 
   const {
     data: home,
@@ -71,6 +81,8 @@ function HomeDetails() {
     queryKey: ["home", id],
     queryFn: () => fetchHomeById(id as string),
   });
+
+  const hostId = home?.host._id;
 
   const position: { lat: number; lng: number } = {
     lat: home?.loc.lat,
@@ -246,6 +258,18 @@ function HomeDetails() {
     });
     return (totalRating / (numCategories * reviews.length)).toFixed(1);
   };
+
+  function handleSendNewNessage(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    event.preventDefault();
+    try {
+      findOrCreateChatroom(userId, hostId, userId, newMessage);
+      Navigate("../account/messages");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div id="photos">
@@ -457,23 +481,51 @@ function HomeDetails() {
             </div>
             <hr className="mt-6" />
             {/* Host Details */}
-            <div className="mt-4 flex items-center gap-4">
-              <img
-                src={home.host.imgUrl}
-                alt={home.host.fullname}
-                className="w-10 h-10 rounded-full mt-2"
-              />
+            <div className="flex items-center justify-between mt-5">
+              <div className="flex items-center gap-4">
+                <img
+                  src={home.host.imgUrl}
+                  alt={home.host.fullname}
+                  className="w-10 h-10 rounded-full mt-2"
+                />
+                <div>
+                  <h2 className="font-semibold ">
+                    Hosted by {home.host.fullname}
+                  </h2>
+                  {home.host.isSuperhost && (
+                    <div className="flex items-center gap-1 text-xs">
+                      <p>Superhost</p>
+                      <span className="text-black">•</span>
+                      <p>10 years hosting</p>
+                    </div>
+                  )}
+                </div>
+              </div>
               <div>
-                <h2 className="font-semibold ">
-                  Hosted by {home.host.fullname}
-                </h2>
-                {home.host.isSuperhost && (
-                  <div className="flex items-center gap-1 text-xs">
-                    <p>Superhost</p>
-                    <span className="text-black">•</span>
-                    <p>10 years hosting</p>
-                  </div>
-                )}
+                <Dialog>
+                  <DialogTrigger>
+                    <Button variant="new" className="flex justify-end">
+                      Message Host
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className=" mb-10 max-h-[40rem] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-semibold mt-8">
+                        Message Host
+                      </DialogTitle>
+                    </DialogHeader>
+                    <Textarea
+                      placeholder="Write a message..."
+                      onChange={(e) => setNewMessage(e.target.value)}
+                    ></Textarea>
+                    <Button
+                      variant="secondary"
+                      onClick={(e) => handleSendNewNessage(e)}
+                    >
+                      Submit
+                    </Button>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
             <hr className="mt-6" />
