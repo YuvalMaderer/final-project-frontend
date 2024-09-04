@@ -84,16 +84,24 @@ function HostHeader() {
               {loggedInUser ? (
                 <>
                   <Link to="/account/messages">
-                    <DropdownMenuItem>Messages</DropdownMenuItem>
+                    <DropdownMenuItem className="font-semibold">
+                      Messages
+                    </DropdownMenuItem>
                   </Link>
                   <Link to="/account/notifications">
-                    <DropdownMenuItem>Notifications</DropdownMenuItem>
+                    <DropdownMenuItem className="font-semibold">
+                      Notifications
+                    </DropdownMenuItem>
                   </Link>
                   <Link to="/trips">
-                    <DropdownMenuItem>Trips</DropdownMenuItem>
+                    <DropdownMenuItem className="font-semibold">
+                      Trips
+                    </DropdownMenuItem>
                   </Link>
                   <Link to="/wishlists">
-                    <DropdownMenuItem>Wishlists</DropdownMenuItem>
+                    <DropdownMenuItem className="font-semibold">
+                      Wishlists
+                    </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
                   <Link to={"/hostPage"}>

@@ -18,6 +18,9 @@ import { Button } from "../ui/button";
 import { useDate } from "@/hooks/useDate";
 import { useGuestContext } from "@/providers/Guest-Context";
 import CurrencySelector from "./CurrencySelector";
+import { fetchNotifications } from "@/lib/http";
+import { INotification } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 
 function HeaderComponent() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -29,6 +32,16 @@ function HeaderComponent() {
   const { checkDates, setCheckDates } = useDate();
   const { guestCounts, setGuestCounts } = useGuestContext();
   const [selectedDestination, setSelectedDestination] = useState<string>("");
+
+  const { data: notifications } = useQuery<INotification[], Error>({
+    queryKey: ["notifications", loggedInUser?.user._id],
+    queryFn: () => fetchNotifications(loggedInUser?.user._id as string),
+    enabled: !!loggedInUser?.user._id,
+  });
+
+  const unreadNotifications = notifications?.filter(
+    (notification) => !notification.read
+  );
 
   const isHomePage = location.pathname === "/";
 
@@ -204,16 +217,30 @@ function HeaderComponent() {
                   {loggedInUser ? (
                     <>
                       <Link to="/account/messages">
-                        <DropdownMenuItem>Messages</DropdownMenuItem>
+                        <DropdownMenuItem className="font-semibold">
+                          Messages
+                        </DropdownMenuItem>
                       </Link>
                       <Link to="/account/notifications">
-                        <DropdownMenuItem>Notifications</DropdownMenuItem>
+                        <DropdownMenuItem className="font-semibold flex justify-between">
+                          Notifications
+                          {unreadNotifications &&
+                            unreadNotifications.length > 0 && (
+                              <div className="bg-red-500 text-white rounded-full w-4 h-4 flex justify-center items-center text-xs">
+                                {unreadNotifications.length}
+                              </div>
+                            )}
+                        </DropdownMenuItem>
                       </Link>
                       <Link to="/trips">
-                        <DropdownMenuItem>Trips</DropdownMenuItem>
+                        <DropdownMenuItem className="font-semibold">
+                          Trips
+                        </DropdownMenuItem>
                       </Link>
                       <Link to="/wishlists">
-                        <DropdownMenuItem>Wishlists</DropdownMenuItem>
+                        <DropdownMenuItem className="font-semibold">
+                          Wishlists
+                        </DropdownMenuItem>
                       </Link>
                       <DropdownMenuSeparator />
                       <Link to={"/hostPage"}>
