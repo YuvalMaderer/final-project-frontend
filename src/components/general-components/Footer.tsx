@@ -1,7 +1,9 @@
+import { useCurrency } from "@/providers/CurrencyContext";
 import { Globe } from "lucide-react";
 import React from "react";
 
 const Footer: React.FC = () => {
+  const { currency, setCurrency } = useCurrency();
   return (
     <footer className="px-24 flex justify-between items-center p-4 bg-gray-50 border-t border-gray-300 text-[0.95rem] h-16 font-500 mt-6">
       <div className="flex items-center space-x-2">
@@ -49,7 +51,7 @@ const Footer: React.FC = () => {
           <Globe className="w-4 h-4" />
           <p className="">English (US)</p>
         </span>
-        <span>$USD</span>
+        <span>{currency === "USD" ? "$USD" : "₪ILS"}</span>
         <div className="flex gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"

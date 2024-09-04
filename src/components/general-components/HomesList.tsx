@@ -6,6 +6,7 @@ import { Skeleton } from "../ui/skeleton";
 import Pagination from "./Pagination";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useCurrency } from "@/providers/CurrencyContext";
 
 type HomesListProps = {
   homes: IHome[] | undefined; // Define homes as an array of IHome objects
@@ -22,6 +23,7 @@ function HomesList({
   isHomePage,
   wishlistName,
 }: HomesListProps) {
+  const { currency, setCurrency } = useCurrency();
   const [currentPage, setCurrentPage] = useState(1);
   const homesPerPage = 18;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,7 +83,12 @@ function HomesList({
             <p className="font-500 text-[14px] text-gray-500 pb-2">
               {home.bedrooms} bedrooms
             </p>
-            <p className="font-600">${home.price} night</p>
+            <p className="font-600">
+              {currency === "USD"
+                ? `$${home.price}`
+                : `₪${Math.round(home.price * 3.7)}`}{" "}
+              night
+            </p>
           </div>
         ))}
       </div>
