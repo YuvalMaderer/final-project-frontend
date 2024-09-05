@@ -24,6 +24,28 @@ type ChatroomDetails = {
   lastMessage: LastMessage;
 };
 
+// Utility function to generate random colors
+const getRandomColor = () => {
+  const colors = [
+    "#F44336",
+    "#E91E63",
+    "#9C27B0",
+    "#673AB7",
+    "#3F51B5",
+    "#2196F3",
+    "#03A9F4",
+    "#00BCD4",
+    "#009688",
+    "#4CAF50",
+    "#8BC34A",
+    "#CDDC39",
+    "#FFC107",
+    "#FF9800",
+    "#FF5722",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+
 function ChatRoom() {
   const { loggedInUser } = useAuth();
   const userId = loggedInUser?.user._id;
@@ -40,6 +62,7 @@ function ChatRoom() {
     queryKey: ["chatrooms"],
     queryFn: () => getChatroomByUserId(userId),
     enabled: !!userId,
+    retry: 2,
   });
 
   // Fetch the details for each chatroom ID
@@ -134,7 +157,10 @@ function ChatRoom() {
               <Link to={`${roomId}`}>
                 <div className="flex text-[13px] items-center">
                   <div>
-                    <Avatar className="text-2xl mr-3 bg-[#6A6A6A] text-white flex justify-center items-center">
+                    <Avatar
+                      className="text-2xl mr-3 text-white flex justify-center items-center"
+                      style={{ backgroundColor: getRandomColor() }} // Apply random color
+                    >
                       {otherParticipant.firstName[0]}
                     </Avatar>
                   </div>

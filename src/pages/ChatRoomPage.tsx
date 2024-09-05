@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { getChatHistory, sendMessage } from "@/lib/http";
 import { useAuth } from "@/providers/user.context";
 import { Avatar } from "@radix-ui/react-avatar";
-import { ArrowUp, Loader } from "lucide-react";
+import { ArrowUp, CircleAlert, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import io from "socket.io-client"; // Import Socket.IO client
 
@@ -44,6 +44,7 @@ function ChatRoomPage() {
     queryKey: ["chatroom", roomId],
     queryFn: () => getChatHistory(roomId),
     enabled: !!roomId,
+    retry: 2,
   });
 
   const mutation = useMutation({
@@ -99,7 +100,23 @@ function ChatRoomPage() {
         <Loader />
       </div>
     );
-  if (isError) return <div>Error</div>;
+  if (isError)
+    return (
+      <div className="flex flex-col justify-between h-[550px] overflow-y-auto border-l-[1px] border-gray-200">
+        <div className="sticky top-0 flex bg-white p-6 px-10 gap-4 items-center border-b-[1px] border-gray-200"></div>
+        <div className="flex px-10 items-center">
+          <CircleAlert className="bg-red-500 w-10 h-10 mr-4 p-2 rounded-full text-white" />
+          <div>
+            <h3 className="text-[14px] font-600">
+              We weren't able to find this conversation.
+            </h3>
+            <p className="text-[14px] text-gray-400 font-400">
+              Please select another conversation.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
 
   // Find the other participant
   const otherParticipant = RoomChat?.participants.find(
@@ -112,7 +129,9 @@ function ChatRoomPage() {
         <Avatar className="text-2xl w-8 rounded-full bg-[#6A6A6A] text-white flex justify-center items-center">
           {otherParticipant?.firstName[0]}
         </Avatar>
-        <h1 className="font-600 text-2xl">{otherParticipant?.firstName}</h1>
+        <h1 className="font-600 text-2xl">
+          {otherParticipant?.firstName.toLocaleLowerCase()}
+        </h1>
       </div>
       <div className="flex flex-col px-10 mt-6">
         {messages.map((msg) => (
@@ -133,7 +152,8 @@ function ChatRoomPage() {
               <p className="pl-4 mb-1 font-500 text-xs">
                 {msg.sender !== senderId ? (
                   <>
-                    {otherParticipant?.firstName} {otherParticipant?.lastName} •{" "}
+                    {otherParticipant?.firstName.toLocaleLowerCase()}{" "}
+                    {otherParticipant?.lastName.toLocaleLowerCase()} •{" "}
                     <span className="font-300">
                       {new Date(msg.createdAt).toLocaleTimeString([], {
                         hour: "2-digit",

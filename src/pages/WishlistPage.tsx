@@ -4,6 +4,7 @@ import { useAuth } from "@/providers/user.context";
 import { IWishlist, IHome, IWishlistResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import homeVideo from "../assets/wishlistViedo.mp4";
 
 function WishlistPage() {
   const { loggedInUser } = useAuth();
@@ -51,7 +52,7 @@ function WishlistPage() {
   }
 
   if (!userWishlists || userWishlists.length === 0) {
-    return <div>No wishlists found.</div>;
+    return <div>NO WISHLIST FOUND</div>;
   }
 
   return (
