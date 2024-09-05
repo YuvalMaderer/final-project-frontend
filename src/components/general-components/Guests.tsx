@@ -185,7 +185,7 @@ function Guests({
         <DropdownMenuTrigger asChild>
           <Button
             variant={null}
-            className="mr-14 text-xs flex flex-col justify-center items-start"
+            className="mr-14 text-xs flex flex-col justify-center items-start py-7 "
           >
             <div className={labelClassName}>{label}</div>
             <div className="text-gray-500">{displayText}</div>
