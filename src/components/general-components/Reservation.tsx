@@ -496,7 +496,7 @@ function Reservation() {
                 </Button>
                 {reservationError && (
                   <p className="text-red-500 mt-2">
-                    Error creating reservation: {reservationError.message}
+                    Error creating reservation: Please enter available dates
                   </p>
                 )}
               </div>

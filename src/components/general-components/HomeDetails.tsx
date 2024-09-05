@@ -6,9 +6,8 @@ import {
   findOrCreateChatroom,
 } from "@/lib/http";
 import { DateRange, IHome, IReservation } from "@/types";
-import { RiShare2Line } from "react-icons/ri";
 import { IReview } from "@/types";
-import { Heart, Star, StarIcon } from "lucide-react";
+import { Star, StarIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { iconMap, AmenityKey } from "./AmenityIconMap";
 import ReviewsSection from "./Reviews";
@@ -114,7 +113,7 @@ function HomeDetails() {
         top: 0,
         behavior: "auto",
       });
-    }, 1);
+    }, 0);
 
     // Cleanup function to clear the timeout if the component unmounts before the timeout completes
     return () => clearTimeout(timer);
@@ -165,7 +164,6 @@ function HomeDetails() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        console.log("IntersectionObserver callback:", entry.isIntersecting);
         setIsPriceCardButtonVisible(entry.isIntersecting);
       },
       {
@@ -204,6 +202,10 @@ function HomeDetails() {
 
   const handleReviewDialogChange = (open: boolean) => {
     setIsReviewDialogOpen(open);
+  };
+
+  const handleClear = () => {
+    setCheckDates(undefined);
   };
 
   const calculateNights = (checkDates: DateRange | undefined) => {
@@ -321,13 +323,21 @@ function HomeDetails() {
                         <div className="text-xs flex items-center gap-1">
                           <div className="flex items-center gap-1">
                             <Star fill="black" width="12px" />
-                            <p className="font-semibold">
-                              {calculateOverallAverageRating(home.reviews)}
-                            </p>
+                            {home.reviews.length > 0 ? (
+                              <p className="font-semibold">
+                                {calculateOverallAverageRating(home.reviews)}
+                              </p>
+                            ) : (
+                              <p>New</p>
+                            )}
                           </div>
-                          <span className=" text-black">•</span>
-                          {home.reviews.length} review
-                          {home.reviews.length > 1 ? "s" : ""}
+                          {home.reviews.length > 0 && (
+                            <>
+                              <span className=" text-black">•</span>
+                              {home.reviews.length} review
+                              {home.reviews.length > 1 ? "s" : ""}
+                            </>
+                          )}
                         </div>
                       </p>
                     </div>
@@ -355,13 +365,22 @@ function HomeDetails() {
                         <div className="text-xs flex items-center gap-1">
                           <div className="flex items-center gap-1">
                             <Star fill="black" width="12px" />
-                            <p className="font-semibold">
-                              {calculateOverallAverageRating(home.reviews)}
-                            </p>
+                            {home.reviews.length > 0 ? (
+                              <p className="font-semibold">
+                                {calculateOverallAverageRating(home.reviews)}
+                              </p>
+                            ) : (
+                              <p>New</p>
+                            )}
                           </div>
-                          <span className=" text-black">•</span>
-                          {home.reviews.length} review
-                          {home.reviews.length > 1 ? "s" : ""}
+                          {home.reviews.length > 0 && (
+                            <>
+                              {" "}
+                              <span className=" text-black">•</span>
+                              {home.reviews.length} review
+                              {home.reviews.length > 1 ? "s" : ""}
+                            </>
+                          )}
                         </div>
                       </p>
                     </div>
@@ -701,6 +720,13 @@ function HomeDetails() {
                 numberOfMonths={2}
                 initialFocus
               />
+              <Button
+                variant={null}
+                className="underline hover:bg-gray-100 self-end"
+                onClick={handleClear}
+              >
+                Clear dates
+              </Button>
             </div>
           </div>
           <div className="mt-6">
