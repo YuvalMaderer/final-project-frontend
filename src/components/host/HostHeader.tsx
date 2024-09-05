@@ -107,7 +107,7 @@ function HostHeader() {
                   <Link to={"/hostPage"}>
                     <DropdownMenuItem>Manage listings</DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem>Refer a host</DropdownMenuItem>
+
                   <Link to={"/account"}>
                     <DropdownMenuItem>Account</DropdownMenuItem>
                   </Link>

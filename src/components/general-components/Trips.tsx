@@ -39,10 +39,17 @@ function Trips() {
     refetchOnWindowFocus: false,
     retry: false,
   });
-  console.log(reservations);
+
+  // Filter current (upcoming) and past trips
+  const currentTrips = reservations?.filter(
+    (reservation) => new Date(reservation.endDate) >= new Date()
+  );
+
+  const pastTrips = reservations?.filter(
+    (reservation) => new Date(reservation.endDate) < new Date()
+  );
 
   useEffect(() => {
-    // Function to fetch home details for all reservations
     const fetchHomes = async () => {
       if (reservations) {
         const homePromises = reservations.map((reservation) =>
@@ -65,65 +72,142 @@ function Trips() {
   return (
     <div className="p-8 md:p-16 lg:p-24">
       <h1 className="text-4xl font-semibold mb-8">Trips</h1>
-      {reservations && reservations.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reservations.map((reservation) => {
-            const home = homes[reservation.home._id];
-            const firstImage = home?.imgUrls[0];
-            return (
-              <Card
-                key={reservation._id}
-                className="border-none overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
-              >
-                <div className="relative h-48">
-                  <img
-                    className="w-full h-full object-cover"
-                    src={firstImage || "/api/placeholder/400/300"}
-                    alt={`${home?.loc.city} property`}
-                  />
-                  <div className="absolute top-2 right-2 bg-black text-white px-2 py-1 rounded-full text-sm font-medium">
-                    {reservation.status}
-                  </div>
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="text-xl font-semibold mb-2">
-                    {home?.loc.city}
-                  </h3>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-gray-600">
-                      <User className="w-4 h-4 mr-2" />
-                      <p className="text-sm">{`Hosted by ${home?.host.fullname}`}</p>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <CalendarDays className="w-4 h-4 mr-2" />
-                      <p className="text-sm">
-                        {new Date(reservation.startDate).toLocaleDateString(
-                          "en-US",
-                          { month: "short", day: "numeric" }
-                        )}{" "}
-                        -
-                        {new Date(reservation.endDate).toLocaleDateString(
-                          "en-US",
-                          { month: "short", day: "numeric", year: "numeric" }
-                        )}
-                      </p>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      <p className="text-sm">{home?.loc.address}</p>
+
+      {/* Current trips section */}
+      {currentTrips && currentTrips.length > 0 ? (
+        <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {currentTrips.map((reservation) => {
+              const home = homes[reservation.home._id];
+              const firstImage = home?.imgUrls[0];
+              return (
+                <Card
+                  key={reservation._id}
+                  className="border-none overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                >
+                  <div className="relative h-48">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={firstImage || "/api/placeholder/400/300"}
+                      alt={`${home?.loc.city} property`}
+                    />
+                    <div className="absolute top-2 right-2 bg-black text-white px-2 py-1 rounded-full text-sm font-medium">
+                      {reservation.status}
                     </div>
                   </div>
-                  <div className="mt-4">
-                    <Link to={`/homes/${home?._id}`}>
-                      <Button variant={"outline"} className="w-full">
-                        View Details
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  <CardContent className="p-4">
+                    <h3 className="text-xl font-semibold mb-2">
+                      {home?.loc.city}
+                    </h3>
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center text-gray-600">
+                        <User className="w-4 h-4 mr-2" />
+                        <p className="text-sm">{`Hosted by ${home?.host.fullname}`}</p>
+                      </div>
+                      <div className="flex items-center text-gray-600">
+                        <CalendarDays className="w-4 h-4 mr-2" />
+                        <p className="text-sm">
+                          {new Date(reservation.startDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                            }
+                          )}{" "}
+                          -
+                          {new Date(reservation.endDate).toLocaleDateString(
+                            "en-US",
+                            { month: "short", day: "numeric", year: "numeric" }
+                          )}
+                        </p>
+                      </div>
+                      <div className="flex items-center text-gray-600">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        <p className="text-sm">{home?.loc.address}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <Link to={`/homes/${home?._id}`}>
+                        <Button variant={"outline"} className="w-full">
+                          View Details
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Past trips section */}
+          {pastTrips && pastTrips.length > 0 && (
+            <div className="mt-16">
+              <h2 className="text-3xl font-semibold mb-8">Where you've been</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {pastTrips.map((reservation) => {
+                  const home = homes[reservation.home._id];
+                  const firstImage = home?.imgUrls[0];
+                  return (
+                    <Card
+                      key={reservation._id}
+                      className="border-none overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                      style={{ transform: "scale(0.75)" }} // 1/4 size of the original card
+                    >
+                      <div className="relative h-36">
+                        <img
+                          className="w-full h-full object-cover"
+                          src={firstImage || "/api/placeholder/400/300"}
+                          alt={`${home?.loc.city} property`}
+                        />
+                      </div>
+                      <CardContent className="p-4">
+                        <h3 className="text-xl font-semibold mb-2">
+                          {home?.loc.city}
+                        </h3>
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center text-gray-600">
+                            <User className="w-4 h-4 mr-2" />
+                            <p className="text-sm">{`Hosted by ${home?.host.fullname}`}</p>
+                          </div>
+                          <div className="flex items-center text-gray-600">
+                            <CalendarDays className="w-4 h-4 mr-2" />
+                            <p className="text-sm">
+                              {new Date(
+                                reservation.startDate
+                              ).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                              })}{" "}
+                              -
+                              {new Date(reservation.endDate).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                }
+                              )}
+                            </p>
+                          </div>
+                          <div className="flex items-center text-gray-600">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            <p className="text-sm">{home?.loc.address}</p>
+                          </div>
+                        </div>
+                        <div className="mt-4">
+                          <Link to={`/homes/${home?._id}`}>
+                            <Button variant={"outline"} className="w-full">
+                              View Details
+                            </Button>
+                          </Link>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <Card className="overflow-hidden">
