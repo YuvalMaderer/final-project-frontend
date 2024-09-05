@@ -8,9 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Home } from "@/layouts/BecomeAhostLayout";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -37,7 +34,11 @@ function ReceiptDailog({ isOpen, setIsOpen, newHome }: ReceiptDailogProps) {
           <main className="lg:flex gap-12 ">
             {/* image */}
             <section>
-              <img className="rounded-lg lg:h-[550px]" src={newHome.imgUrls[0]} alt="" />
+              <img
+                className="rounded-lg lg:h-[550px]"
+                src={newHome.imgUrls[0]}
+                alt=""
+              />
             </section>
             {/* listing detailes */}
             <ScrollArea className=" h-80 lg:h-[550px] ">

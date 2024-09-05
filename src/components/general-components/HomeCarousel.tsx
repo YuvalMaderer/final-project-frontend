@@ -70,25 +70,45 @@ function HomeCarousel({
   const userWishlists = data?.wishlists || [];
 
   useEffect(() => {
+    let isMounted = true; // Track whether the component is still mounted
+
     // Function to fetch home details for all item IDs
     const fetchHomes = async () => {
       const homes: { [key: string]: IHome } = {};
+      const fetchPromises: Promise<void>[] = [];
+
       for (const wishlist of userWishlists) {
         for (const itemId of wishlist.list) {
           if (!homes[itemId]) {
-            try {
-              const home = await fetchHomeById(itemId);
-              homes[itemId] = home;
-            } catch (err) {
-              console.error(`Failed to fetch home with ID ${itemId}:`, err);
-            }
+            const fetchPromise = (async () => {
+              try {
+                const home = await fetchHomeById(itemId);
+                if (isMounted) {
+                  homes[itemId] = home;
+                  setHomeData((prevHomeData) => ({
+                    ...prevHomeData,
+                    [itemId]: home,
+                  }));
+                }
+              } catch (err) {
+                console.error(`Failed to fetch home with ID ${itemId}:`, err);
+              }
+            })();
+            fetchPromises.push(fetchPromise);
           }
         }
       }
-      setHomeData(homes);
+
+      // Wait for all fetch promises to resolve
+      await Promise.all(fetchPromises);
     };
 
     fetchHomes();
+
+    // Cleanup function to prevent setting state on an unmounted component
+    return () => {
+      isMounted = false;
+    };
   }, [userWishlists]);
 
   const handleSelect = useCallback((index: number) => {
@@ -182,7 +202,7 @@ function HomeCarousel({
   };
 
   return (
-    <div className="relative w-72 pb-2">
+    <div className="relative w-72">
       <Carousel
         opts={{ loop: false }}
         setApi={(api) => setEmblaApi(api as EmblaCarouselApi)}
