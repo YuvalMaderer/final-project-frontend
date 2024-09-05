@@ -397,18 +397,6 @@ function HomeDetails() {
         <div className="flex justify-between items-center">
           {/* Name */}
           <h1 className="text-2xl font-semibold">{home.name}</h1>
-
-          {/* Buttons */}
-          <div className="flex gap-4">
-            <button className="underline text-sm flex items-center gap-2 font-600 hover:bg-gray-100 p-2 rounded-lg">
-              <RiShare2Line className="w-4 h-4" />
-              Share
-            </button>
-            <button className="underline text-sm flex items-center gap-2 font-600 hover:bg-gray-100 p-2 rounded-lg">
-              <Heart className="w-4 h-4 " strokeWidth={1.5} />
-              Save
-            </button>
-          </div>
         </div>
 
         {/* Images */}
