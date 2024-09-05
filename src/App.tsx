@@ -22,7 +22,7 @@ import SelectBookType from "./pages/becomeAhostPages/SelectBookType";
 import AddPricePage from "./pages/becomeAhostPages/AddPricePage";
 import WishlistPage from "./pages/WishlistPage";
 import FooterLayout from "./layouts/FooterLayout";
-import WishlistLayout from "./pages/WishlistLayout";
+
 import WishlistDetailPage from "./pages/WishlistDetailPage";
 import ReceiptPage from "./pages/becomeAhostPages/ReceiptPage";
 import HostPage from "./pages/HostPage";
@@ -38,6 +38,7 @@ import MessagePage from "./pages/MessagePage";
 import HostListingPage from "./pages/HostListingPage";
 import EditHomeLayout from "./layouts/EditHomeLayout";
 import NotificationPage from "./pages/NotificationPage";
+import WishlistLayout from "./layouts/WishlistLayout";
 
 function App() {
   return (
