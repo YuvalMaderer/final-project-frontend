@@ -1,54 +1,122 @@
 import EditHomeSideBar from "@/components/host/EditHomeSideBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Home } from "./BecomeAhostLayout";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useMutation } from "@tanstack/react-query";
+import { toast, useToast } from "@/components/ui/use-toast";
+import { updateListing } from "@/lib/http";
+import { IHome } from "@/types";
+import Loader from "@/components/ui/Loader";
 
 function EditHomeLayout() {
-  const [newHome, setNewHome] = useState<Home>({
-    name: "",
-    type: "string",
-    capacity: 0,
-    imgUrls: [],
-    price: 0,
-    summary: "",
-    amenities: [],
-    bathrooms: 0,
-    bedrooms: 0,
-    beds: 0,
-    roomType: "",
-    host: {
-      _id: "",
-      fullname: "",
-      location: "",
-      about: "",
-      thumbnailUrl: "",
-      imgUrl: "",
-      isSuperhost: false,
-    },
-    loc: {
-      country: "",
-      countryCode: "",
-      city: "",
-      address: "",
-      lat: 0,
-      lan: 0,
-    },
-    reviews: [],
-    likedByUsers: [],
-    bookingOptions: {
-      InstantBook: false,
-      SelfCheckIn: true,
-      AllowsPets: true,
-    },
-    accessibility: [],
+  // Load initial state from localStorage, or fallback to default values
+  const [newHome, setNewHome] = useState<IHome>(() => {
+    const localStorageHome = localStorage.getItem("newHome");
+    return localStorageHome
+      ? JSON.parse(localStorageHome)
+      : {
+          name: "",
+          type: "string",
+          capacity: 0,
+          imgUrls: [],
+          price: 0,
+          summary: "",
+          amenities: [],
+          bathrooms: 0,
+          bedrooms: 0,
+          beds: 0,
+          roomType: "",
+          host: {
+            _id: "",
+            fullname: "",
+            location: "",
+            about: "",
+            thumbnailUrl: "",
+            imgUrl: "",
+            isSuperhost: false,
+          },
+          loc: {
+            country: "",
+            countryCode: "",
+            city: "",
+            address: "",
+            lat: 0,
+            lan: 0,
+          },
+          reviews: [],
+          likedByUsers: [],
+          bookingOptions: {
+            InstantBook: false,
+            SelfCheckIn: true,
+            AllowsPets: true,
+          },
+          accessibility: [],
+        };
   });
+
+  // Whenever newHome changes, update localStorage
+  useEffect(() => {
+    localStorage.setItem("newHome", JSON.stringify(newHome));
+  }, [newHome]);
+
+  const { toast } = useToast();
+
+  // Mutation to handle the update request
+  const { mutate, status } = useMutation({
+    mutationFn: updateListing,
+    onSuccess: () => {
+      toast({
+        title: "Update Listing",
+        description: "Your listing has been successfully updated!",
+      });
+    },
+    onError: (error) => {
+      console.error("Error while updating home:", error);
+      toast({
+        title: "Error",
+        description:
+          "There was an issue updating your listing. Please try again.",
+      });
+    },
+  });
+
+  // Derive the isLoading state from the status
+  const isLoading = status === "pending";
+
+  // Handle the update by triggering the mutation
+  function handleUpdate() {
+    const localStorageHome = localStorage.getItem("newHome");
+    if (localStorageHome) {
+      const updatedHome = JSON.parse(localStorageHome);
+      mutate(updatedHome);
+    }
+  }
+
   return (
-    <div className="flex">
-      <div className="w-[30%]">
+    <div className="flex h-full">
+      <div className="w-[40%] border-r border-r-[#DDDDDD] ml-20">
         <EditHomeSideBar />
       </div>
-      <div className="w-[70%]">
-        <Outlet context={[newHome, setNewHome]} />
+      <div className="w-[60%] flex flex-col">
+        <div className="flex-1 overflow-auto mt-11">
+          <ScrollArea className="h-full w-full">
+            <Outlet context={[newHome, setNewHome]} />
+          </ScrollArea>
+        </div>
+        <footer className="sticky bottom-0 w-full bg-white p-4 border border-[#DDDDDD]">
+          <div className="flex justify-end p-4 mr-32 ">
+            <Button
+              onClick={handleUpdate}
+              className="p-7 text-md rounded-xl"
+              variant={"new"}
+              disabled={isLoading} // Disable the button while loading
+            >
+              {isLoading ? <Loader /> : "Save"}
+            </Button>
+          </div>
+        </footer>
       </div>
     </div>
   );

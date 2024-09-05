@@ -222,8 +222,15 @@ export async function deleteReservation(reservationId: string) {
   }
 }
 
-export const findOrCreateChatroom = async (userId1: string | undefined, userId2: string | undefined, senderId: string | undefined, message: string) => {
-  const response = await api.post(`/chat/chatroom/?userId1=${userId1}&userId2=${userId2}&senderId=${senderId}&message=${message}`);
+export const findOrCreateChatroom = async (
+  userId1: string | undefined,
+  userId2: string | undefined,
+  senderId: string | undefined,
+  message: string
+) => {
+  const response = await api.post(
+    `/chat/chatroom/?userId1=${userId1}&userId2=${userId2}&senderId=${senderId}&message=${message}`
+  );
   return response.data;
 };
 
@@ -254,28 +261,34 @@ export const getChatroomDetailsById = async (roomId: string | undefined) => {
   return response.data;
 };
 
-
-export async function createUserNotification(userId: string|undefined, message: string,reservationId: string): Promise<void> {
+export async function createUserNotification(
+  userId: string | undefined,
+  message: string,
+  reservationId: string
+): Promise<void> {
   try {
-    await api.post('/notification', { userId, message,reservationId });
+    await api.post("/notification", { userId, message, reservationId });
   } catch (err) {
-    console.error('Error creating user notification:', err);
+    console.error("Error creating user notification:", err);
     throw err;
   }
 }
 
-
-export async function fetchNotifications(userId: string): Promise<INotification[]> {
+export async function fetchNotifications(
+  userId: string
+): Promise<INotification[]> {
   try {
     const response = await api.get(`/notification/${userId}`);
     return response.data; // Return the data property which should contain the array of notifications
   } catch (err) {
-    console.error('Error fetching notifications:', err);
+    console.error("Error fetching notifications:", err);
     throw err; // Optionally rethrow the error to handle it in the caller
   }
 }
 
-export async function deleteNotification(notificationId: string): Promise<void> {
+export async function deleteNotification(
+  notificationId: string
+): Promise<void> {
   try {
     await api.delete(`/notification/${notificationId}`);
   } catch (err) {
@@ -289,15 +302,15 @@ export async function updateNotificationReadStatus(
   read: boolean
 ): Promise<INotification> {
   try {
-    const response = await api.patch(`/notification/read/${notificationId}`, { read });
+    const response = await api.patch(`/notification/read/${notificationId}`, {
+      read,
+    });
     return response.data;
   } catch (err) {
     console.error("Error updating notification read status:", err);
     throw err;
   }
 }
-
-
 
 export async function getHostListing() {
   try {
@@ -312,5 +325,18 @@ export async function getHostListing() {
     }
 
     throw error;
-  }}
+  }
+}
 
+export async function updateListing(updatedHome: IHome) {
+  try {
+    const response = await api.patch(`/homes/update/${updatedHome._id}`, {
+      updatedHome,
+    });
+
+    return response.data;
+  } catch (err) {
+    console.error("updateListing: Error updating Home:", err);
+    throw err;
+  }
+}
