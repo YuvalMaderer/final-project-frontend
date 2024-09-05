@@ -276,7 +276,9 @@ function HeaderComponent() {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>Gift cards</DropdownMenuItem>
-                      <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
+                      <Link to="/becomeAhost" className="text-sm">
+                        <DropdownMenuItem>Airbnb your home</DropdownMenuItem>
+                      </Link>
                       <DropdownMenuItem>Help center</DropdownMenuItem>
                     </>
                   )}
