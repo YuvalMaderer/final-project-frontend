@@ -80,7 +80,11 @@ function WishlistPage() {
                       <div>No images available</div>
                     )}
                   </div>
-                  <h2 className="font-500 mt-2">{wishlist.title}</h2>
+                  <h2 className="font-500 mt-2">
+                    {wishlist.title.length > 20
+                      ? `${wishlist.title.slice(0, 20)}...`
+                      : wishlist.title}
+                  </h2>
                   <h2 className="font-500 mt-1 text-gray-500 text-xs">
                     {wishlist.list.length} saved
                   </h2>
