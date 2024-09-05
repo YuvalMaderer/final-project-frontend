@@ -23,7 +23,7 @@ function HostHeader() {
   }, [loggedInUser]);
   return (
     <>
-      <header className="flex justify-between border-b h-20 items-center px-8 pt-6 sticky top-0 z-20 bg-white pb-7">
+      <header className="flex justify-between border-b  h-20 items-center px-8 pt-6 sticky top-0 z-20 bg-white pb-7">
         <Link to={"/"}>
           <svg
             className="mt-4"
