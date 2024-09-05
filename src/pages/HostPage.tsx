@@ -5,6 +5,7 @@ import { toast } from "@/components/ui/use-toast";
 import {
   createUserNotification,
   deleteReservation,
+  findOrCreateChatroom,
   getAllHostReservations,
   queryClient,
   updateReservationStatus,
@@ -143,6 +144,15 @@ function HostPage() {
           reservation.user._id,
           userNotificationMessage,
           reservation._id
+        );
+
+        await findOrCreateChatroom(
+          reservation.user._id,
+          reservation.host,
+          reservation.host,
+          `Hi ${reservation.user.firstName},\n
+          \n
+          Thank you for booking ${reservation.home.name}! We're thrilled to host you and want to ensure you have a wonderful stay. 😊`
         );
       } catch (error) {
         console.error("Error sending user notification:", error);

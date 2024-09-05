@@ -182,16 +182,14 @@ function Guests({
       )}
     >
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <div className="flex p-2 flex-1 text-left rounded-full ">
-            <Button
-              variant={null}
-              className="mr-14 text-xs flex flex-col justify-center items-start"
-            >
-              <div className={labelClassName}>{label}</div>
-              <div className="text-gray-500">{displayText}</div>
-            </Button>
-          </div>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant={null}
+            className="mr-14 text-xs flex flex-col justify-center items-start"
+          >
+            <div className={labelClassName}>{label}</div>
+            <div className="text-gray-500">{displayText}</div>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className={cn("w-96 rounded-lg", dropdownClassName)}
