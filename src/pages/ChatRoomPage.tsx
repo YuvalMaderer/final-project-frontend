@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 import { getChatHistory, sendMessage } from "@/lib/http";
 import { useAuth } from "@/providers/user.context";
 import { Avatar } from "@radix-ui/react-avatar";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import io from "socket.io-client"; // Import Socket.IO client
 
 const socket = io("http://localhost:3000"); // Replace with your server URL
 
-interface ChatMessage {
+export interface ChatMessage {
   _id: string;
   sender: string;
   message: string;
@@ -93,7 +93,12 @@ function ChatRoomPage() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center mt-10">
+        <Loader />
+      </div>
+    );
   if (isError) return <div>Error</div>;
 
   // Find the other participant

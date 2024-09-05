@@ -4,6 +4,7 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { Avatar } from "../ui/avatar";
 import { useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 // Define types if using TypeScript
 type Participant = {
@@ -50,14 +51,56 @@ function ChatRoom() {
     })),
   });
 
-  if (isLoadingChatrooms) return <div>Loading chatrooms...</div>;
+  if (isLoadingChatrooms)
+    return (
+      <div>
+        <Skeleton className="h-20 rounded-xl mb-2" />
+        <Skeleton className="h-20 rounded-xl mb-2" />
+        <Skeleton className="h-20 rounded-xl mb-2" />
+        <Skeleton className="h-20 rounded-xl mb-2" />
+        <Skeleton className="h-20 rounded-xl mb-2" />
+      </div>
+    );
   if (isErrorChatrooms)
-    return <div>Error loading chatrooms: {isErrorChatrooms}</div>;
+    return (
+      <div className="flex flex-col justify-center items-center font-montserrat space-y-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+          role="presentation"
+          focusable="false"
+          style={{
+            display: "block",
+            height: "32px",
+            width: "32px",
+            fill: "currentColor",
+          }}
+        >
+          <path d="M26 1a5 5 0 0 1 5 4.78v10.9a5 5 0 0 1-4.78 5H26a5 5 0 0 1-4.78 5h-4l-3.72 4.36-3.72-4.36H6a5 5 0 0 1-4.98-4.56L1 21.9 1 21.68V11a5 5 0 0 1 4.78-5H6a5 5 0 0 1 4.78-5H26zm-5 7H6a3 3 0 0 0-3 2.82v10.86a3 3 0 0 0 2.82 3h4.88l2.8 3.28 2.8-3.28H21a3 3 0 0 0 3-2.82V11a3 3 0 0 0-3-3zm-1 10v2H6v-2h14zm6-15H11a3 3 0 0 0-3 2.82V6h13a5 5 0 0 1 5 4.78v8.9a3 3 0 0 0 3-2.82V6a3 3 0 0 0-2.82-3H26zM15 13v2H6v-2h9z"></path>
+        </svg>
+        <h3 className="font-600 flex justify-center items-center text-center text-[14px]">
+          You don’t have any messages
+        </h3>
+        <p className="font-400 flex justify-center items-center text-center text-[14px]">
+          When you receive a new message, it will appear here.
+        </p>
+      </div>
+    );
 
   const isLoadingDetails = chatroomQueries.some((query) => query.isLoading);
   const isErrorDetails = chatroomQueries.some((query) => query.isError);
 
-  if (isLoadingDetails) return <div>Loading chatroom details...</div>;
+  if (isLoadingDetails)
+    return (
+      <div>
+        <Skeleton className="h-20 rounded-xl mb-2" />
+        <Skeleton className="h-20 rounded-xl mb-2" />
+        <Skeleton className="h-20 rounded-xl mb-2" />
+        <Skeleton className="h-20 rounded-xl mb-2" />
+        <Skeleton className="h-20 rounded-xl mb-2" />
+      </div>
+    );
   if (isErrorDetails) return <div>Error loading chatroom details</div>;
 
   return (

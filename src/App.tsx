@@ -32,7 +32,7 @@ import TripsPage from "./pages/TripsPage";
 import TripsLayout from "./layouts/TripsLayout";
 import AccountPage from "./pages/AccountPage";
 import ProfilePage from "./pages/ProfilePage";
-import MessagesLayout from "./pages/MessagesLayout";
+import MessagesLayout from "./layouts/MessagesLayout";
 import ChatRoomPage from "./pages/ChatRoomPage";
 import MessagePage from "./pages/MessagePage";
 import HostListingPage from "./pages/HostListingPage";
