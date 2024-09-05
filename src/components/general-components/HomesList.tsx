@@ -75,9 +75,13 @@ function HomesList({
               <p className="font-600 text-[14px]">{home.loc.address}</p>
               <div className="flex items-center gap-1">
                 <Star fill="black" width="14px" />
-                <p className="text-xs font-500">
-                  {calculateOverallAverageRating(home.reviews)}
-                </p>
+                {home.reviews.length > 0 ? (
+                  <p className="text-xs font-500">
+                    {calculateOverallAverageRating(home.reviews)}
+                  </p>
+                ) : (
+                  <p className="">New</p>
+                )}
               </div>
             </div>
             <p className="font-500 text-[14px] text-gray-500 pb-2">

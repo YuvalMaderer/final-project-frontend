@@ -8,7 +8,7 @@ import {
 import { DateRange, IHome, IReservation } from "@/types";
 import { RiShare2Line } from "react-icons/ri";
 import { IReview } from "@/types";
-import { Heart, Star } from "lucide-react";
+import { Heart, Star, StarIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { iconMap, AmenityKey } from "./AmenityIconMap";
 import ReviewsSection from "./Reviews";
@@ -466,18 +466,27 @@ function HomeDetails() {
             <div className="flex items-center gap-2 mt-2">
               <div className="flex items-center gap-1">
                 <Star fill="black" width="16px" />
-                <p className="text-lg font-semibold">
-                  {calculateOverallAverageRating(home.reviews)}
-                </p>
+                {home.reviews.length > 0 ? (
+                  <p className="text-lg font-semibold">
+                    {calculateOverallAverageRating(home.reviews)}
+                  </p>
+                ) : (
+                  <p className="font-semibold text-lg">New</p>
+                )}
               </div>
-              <span className=" text-black">•</span>
-              <Button
-                variant={null}
-                className="text-sm px-0 underline font-semibold"
-                onClick={() => setIsReviewDialogOpen(true)}
-              >
-                {home.reviews.length} review{home.reviews.length > 1 ? "s" : ""}
-              </Button>
+              {home.reviews.length > 0 && (
+                <>
+                  <span className=" text-black">•</span>
+                  <Button
+                    variant={null}
+                    className="text-sm px-0 underline font-semibold"
+                    onClick={() => setIsReviewDialogOpen(true)}
+                  >
+                    {home.reviews.length} review
+                    {home.reviews.length > 1 ? "s" : ""}
+                  </Button>
+                </>
+              )}
             </div>
             <hr className="mt-6" />
             {/* Host Details */}
@@ -854,18 +863,33 @@ function HomeDetails() {
 
         {/* Rating Breakdown */}
 
-        <RatingBreakdown reviews={home.reviews} />
-
-        <hr className="mt-10" />
+        {home.reviews.length > 0 ? (
+          <>
+            <RatingBreakdown reviews={home.reviews} />
+            <hr className="mt-10" />
+            <ReviewsSection
+              reviews={home.reviews}
+              isDialogOpen={isReviewDialogOpen}
+              onDialogOpenChange={handleReviewDialogChange}
+            />
+          </>
+        ) : (
+          <div className="flex flex-col gap-6 mt-10">
+            <p className="text-2xl font-semibold">No reviews (yet)</p>
+            <p className="w-[30%] font-semibold flex gap-4">
+              <StarIcon className="w-8 h-8" /> This host has reviews for other
+              places to stay.
+            </p>
+            <hr className="mt-10" />
+          </div>
+        )}
 
         {/* Reviews */}
-        <ReviewsSection
-          reviews={home.reviews}
-          isDialogOpen={isReviewDialogOpen}
-          onDialogOpenChange={handleReviewDialogChange}
-        />
 
-        <div id="location" className=" w-full flex flex-col gap-4 items-center">
+        <div
+          id="location"
+          className=" w-full flex flex-col gap-4 items-center mt-6"
+        >
           <p className="text-2xl font-semibold self-start">Where you’ll be</p>
           <p className="text-md self-start">{home.loc.city}</p>
           {position && (
