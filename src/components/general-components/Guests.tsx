@@ -177,7 +177,7 @@ function Guests({
   return (
     <div
       className={cn(
-        "flex items-center hover:bg-gray-200 rounded-full",
+        "flex items-center hover:bg-gray-200 rounded-full py-2",
         className
       )}
     >
