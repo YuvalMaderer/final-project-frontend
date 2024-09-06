@@ -12,7 +12,7 @@ function ListingCard({ listing }: ListingCardProps) {
   return (
     <div
       onClick={() => {
-        navigate(`/hostPage/editHome/${listing._id}`);
+        navigate(`/hostPage/editHome/${listing._id}/addPhotos`);
         localStorage.setItem("newHome", JSON.stringify(listing));
       }}
     >

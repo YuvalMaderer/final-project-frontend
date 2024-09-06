@@ -91,15 +91,16 @@ function EditHomeLayout() {
     if (localStorageHome) {
       const updatedHome = JSON.parse(localStorageHome);
       mutate(updatedHome);
+      setNewHome(updatedHome);
     }
   }
 
   return (
     <div className="flex h-full">
-      <div className="w-[40%] border-r border-r-[#DDDDDD] ml-20">
-        <EditHomeSideBar />
+      <div className="w-[30%] border-r border-r-[#DDDDDD] ml-20">
+        <EditHomeSideBar newHome={newHome} />
       </div>
-      <div className="w-[60%] flex flex-col">
+      <div className="w-[70%] flex flex-col">
         <div className="flex-1 overflow-auto mt-11">
           <ScrollArea className="h-full w-full">
             <Outlet context={[newHome, setNewHome]} />
