@@ -32,7 +32,7 @@ function BecomeAhostHeader() {
             onClick={() => navigate("/")}
             className="bg-white border-[1.5px] border-gray-300 rounded-full hover:border-black hover:bg-white"
           >
-            exit
+            Save & exit
           </Button>
         </div>
       </header>
