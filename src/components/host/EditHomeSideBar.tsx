@@ -5,22 +5,25 @@ import { Button } from "../ui/button";
 import { useState, useEffect } from "react";
 import { IHome } from "@/types";
 import { AmenityKey, iconMap } from "../general-components/AmenityIconMap";
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useMutation } from "@tanstack/react-query";
+import { useToast } from "../ui/use-toast";
+import { deleteHomeById } from "@/lib/http";
 function EditHomeSideBar({ newHome }: { newHome: IHome }) {
   const navigate = useNavigate();
 
-  // Step 1: Define the state to store newHome data
-  // const [newHome, setNewHome] = useState<IHome | null>(null);
   const [selected, setSelected] = useState<string | null>(null); // State to track selected item
-
-  // Step 2: Load the newHome data from localStorage when the component mounts
-  // useEffect(() => {
-  //   const localStorageHome = localStorage.getItem("newHome");
-  //   if (localStorageHome) {
-  //     setNewHome(JSON.parse(localStorageHome));
-  //   }
-  // }, []);
-
+  const { toast } = useToast();
   const handleGoBack = () => {
     localStorage.removeItem("newHome");
     navigate("/hostPage/listing"); // This will navigate back to the previous page
@@ -29,6 +32,30 @@ function EditHomeSideBar({ newHome }: { newHome: IHome }) {
   const handleSelect = (item: string) => {
     setSelected(item); // Update the selected item
   };
+
+  // Mutation to handle the update request
+  const { mutate } = useMutation({
+    mutationFn: deleteHomeById,
+    onSuccess: () => {
+      toast({
+        title: "Update Listing",
+        description: "Your listing has been successfully deleted!",
+      });
+      handleGoBack();
+    },
+    onError: (error) => {
+      console.error("Error while deleting home:", error);
+      toast({
+        title: "Error",
+        description:
+          "There was an issue deleting your listing. Please try again.",
+      });
+    },
+  });
+
+  function handleDeleteHome(homeId: string) {
+    mutate(homeId);
+  }
 
   return (
     <div className="flex flex-col gap-20">
@@ -252,6 +279,45 @@ function EditHomeSideBar({ newHome }: { newHome: IHome }) {
               </p>
             </li>
           </Link>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <li
+                className={`rounded-2xl shadow-xl p-6 flex flex-col gap-2 hover:bg-[#F7F7F7] ${
+                  selected === "selectType"
+                    ? "ring-2 ring-black"
+                    : "focus-within:ring-2 focus-within:ring-black focus:outline-none"
+                }`}
+                onClick={() => handleSelect("selectType")}
+              >
+                <p className="text-lg font-500">Remove listing</p>
+                <p className="text-md text-red-600">
+                  Permanently remove your listing
+                </p>
+              </li>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure you want to delete this listing?
+                </AlertDialogTitle>
+                <AlertDialogDescription className="mb-4">
+                  Deleting this listing will permanently remove it from our
+                  platform. This action cannot be undone, and you will lose all
+                  data associated with this listing, including reviews and
+                  bookings. Are you absolutely sure you want to proceed?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleDeleteHome(newHome._id)}
+                  className="text-white"
+                >
+                  Delete Listing
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </ul>
       </ScrollArea>
     </div>

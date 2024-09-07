@@ -1,3 +1,4 @@
+import HostListingSkeleton from "@/components/host/HostListingSkeleton";
 import ListingCard from "@/components/host/ListingCard";
 import { Button } from "@/components/ui/button";
 import { getHostListing } from "@/lib/http";
@@ -20,7 +21,11 @@ function HostListingPage() {
   });
 
   if (listingLoading) {
-    content = <div>loading...</div>;
+    content = (
+      <div>
+        <HostListingSkeleton />
+      </div>
+    );
   }
   if (listingError) {
     content = <div>Error</div>;

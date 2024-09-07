@@ -340,3 +340,16 @@ export async function updateListing(updatedHome: IHome) {
     throw err;
   }
 }
+
+export async function deleteHomeById(homeId: string) {
+  try {
+    const response = await api.patch(`/homes/delete/${homeId}`, {
+      homeId,
+    });
+
+    return response.data;
+  } catch (err) {
+    console.error("deleteHomeById: Error deleting Home:", err);
+    throw err;
+  }
+}
