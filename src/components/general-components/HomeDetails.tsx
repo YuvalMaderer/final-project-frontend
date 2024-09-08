@@ -87,6 +87,7 @@ function HomeDetails() {
     lat: home?.loc.lat,
     lng: home?.loc.lan,
   };
+
   const getReservedDates = (reservations: IReservation[]): Date[] => {
     return reservations.flatMap((reservation) => {
       const dates: Date[] = [];

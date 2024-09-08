@@ -124,7 +124,7 @@ function ChatRoomPage() {
   );
 
   return (
-    <div className="flex flex-col justify-between h-[550px] overflow-y-auto border-l-[1px] border-gray-200">
+    <div className="flex flex-col justify-between h-full overflow-y-auto border-l-[1px] border-gray-200">
       <div className="sticky top-0 flex bg-white p-6 px-10 gap-4 items-center border-b-[1px] border-gray-200">
         <Avatar className="text-2xl w-8 rounded-full bg-[#6A6A6A] text-white flex justify-center items-center">
           {otherParticipant?.firstName[0]}
