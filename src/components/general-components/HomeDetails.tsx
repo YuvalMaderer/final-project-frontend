@@ -84,9 +84,10 @@ function HomeDetails() {
   const hostId = home?.host._id;
 
   const position: { lat: number; lng: number } = {
-    lat: home!.loc.lat,
-    lng: home!.loc.lan,
+    lat: home?.loc.lat,
+    lng: home?.loc.lan,
   };
+
   const getReservedDates = (reservations: IReservation[]): Date[] => {
     return reservations.flatMap((reservation) => {
       const dates: Date[] = [];
