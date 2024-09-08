@@ -9,7 +9,7 @@ function MessagesLayout() {
           <h1 className="pb-4">Messages</h1>
           <ChatRoom />
         </div>
-        <div className="w-3/4 h-screen">
+        <div className="w-3/4 h-full">
           <Outlet />
         </div>
       </div>
