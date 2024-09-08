@@ -102,7 +102,7 @@ function ChatRoomPage() {
     );
   if (isError)
     return (
-      <div className="flex flex-col justify-between h-[550px] overflow-y-auto border-l-[1px] border-gray-200">
+      <div className="flex flex-col justify-between h-[700px] overflow-y-auto border-l-[1px] border-gray-200">
         <div className="sticky top-0 flex bg-white p-6 px-10 gap-4 items-center border-b-[1px] border-gray-200"></div>
         <div className="flex px-10 items-center">
           <CircleAlert className="bg-red-500 w-10 h-10 mr-4 p-2 rounded-full text-white" />
