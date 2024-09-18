@@ -6,9 +6,11 @@ import { IHome } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function HostListingPage() {
   let content;
+  const navigate = useNavigate();
 
   //get all host reservations using react query
   const {
@@ -40,10 +42,10 @@ function HostListingPage() {
     );
   }
   return (
-    <div className="p-20">
+    <div className="p-10 sm:p-16 md:p-20">
       <header className="flex items-center justify-between">
         <h2 className="text-4xl font-500 py-8">Your listings</h2>
-        <Button variant={"ghost"}>
+        <Button onClick={() => navigate("/becomeAhost")} variant={"ghost"}>
           <Plus />
         </Button>
       </header>
