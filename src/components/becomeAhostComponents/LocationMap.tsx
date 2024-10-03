@@ -4,13 +4,7 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox";
+
 import "@reach/combobox/styles.css";
 import { useOutletContext } from "react-router-dom";
 import { Home } from "@/layouts/BecomeAhostLayout";
@@ -132,10 +126,12 @@ const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
     clearSuggestions,
   } = usePlacesAutocomplete();
   const [currentLocation, setCurrentLocation] = useState<LatLng | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSelect = async (address: string) => {
     setValue(address, false);
     clearSuggestions();
+    setIsDropdownOpen(false);
 
     if (address === "Use current location" && currentLocation) {
       setSelected(currentLocation, "Current Location");
@@ -163,35 +159,50 @@ const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
     handleGetCurrentLocation();
   }, []);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    if (!isDropdownOpen) {
+      setIsDropdownOpen(true);
+    }
+  };
+
+  const handleOptionClick = (address: string) => {
+    handleSelect(address);
+  };
+
   return (
-    <Combobox onSelect={handleSelect}>
-      <ComboboxInput
+    <div className="relative">
+      <input
         value={value}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setValue(e.target.value)
-        }
+        onChange={handleInputChange}
         disabled={!ready}
-        className=" rounded-full shadow-sm p-5 text-lg focus:outline-none focus:ring-2 focus:ring-black w-full"
+        className="rounded-full shadow-sm p-5 text-lg focus:outline-none focus:ring-2 focus:ring-black w-full"
         placeholder="Enter your address"
+        onFocus={() => setIsDropdownOpen(true)}
       />
-      <ComboboxPopover className="border-none rounded-3xl mt-4">
-        <ComboboxList className="bg-white rounded-3xl shadow-lg p-2 font-montserrat ">
+
+      {isDropdownOpen && (
+        <ul className="absolute w-full bg-white rounded-3xl shadow-lg mt-2 p-2 max-h-60 overflow-y-auto font-montserrat">
           {currentLocation && (
-            <ComboboxOption
-              value="Use current location"
+            <li
               className="p-2 hover:bg-gray-100 cursor-pointer"
-            />
+              onClick={() => handleOptionClick("Use current location")}
+            >
+              Use current location
+            </li>
           )}
           {status === "OK" &&
             data.map(({ place_id, description }) => (
-              <ComboboxOption
+              <li
                 key={place_id}
-                value={description}
                 className="p-2 hover:bg-gray-100 cursor-pointer"
-              />
+                onClick={() => handleOptionClick(description)}
+              >
+                {description}
+              </li>
             ))}
-        </ComboboxList>
-      </ComboboxPopover>
-    </Combobox>
+        </ul>
+      )}
+    </div>
   );
 };
