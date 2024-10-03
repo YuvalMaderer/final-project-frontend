@@ -72,7 +72,7 @@ function SelectBookType() {
   }
 
   return (
-    <div className="flex justify-center h-screen pt-40">
+    <div className="flex justify-center h-screen pt-20 px-8">
       <div className="space-y-10">
         <h1 className="text-left text-3xl font-[600]">
           Decide how you’ll confirm reservations

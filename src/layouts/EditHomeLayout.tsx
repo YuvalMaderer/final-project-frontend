@@ -9,6 +9,9 @@ import { toast, useToast } from "@/components/ui/use-toast";
 import { updateListing } from "@/lib/http";
 import { IHome } from "@/types";
 import Loader from "@/components/ui/Loader";
+import { useMediaQuery } from "react-responsive"; // For detecting screen size
+import { Sheet, SheetTrigger, SheetContent } from "../components/ui/sheet"; // Import ShadCN Sheet
+import { Menu } from "lucide-react";
 
 function EditHomeLayout() {
   // Load initial state from localStorage, or fallback to default values
@@ -95,12 +98,28 @@ function EditHomeLayout() {
     }
   }
 
+  // Use media query to check for large screens
+  const isLargeScreen = useMediaQuery({ query: "(min-width: 1024px)" });
+
   return (
     <div className="flex h-full">
-      <div className="w-[30%] border-r border-r-[#DDDDDD] ml-20">
-        <EditHomeSideBar newHome={newHome} />
-      </div>
-      <div className="w-[70%] flex flex-col">
+      {isLargeScreen ? (
+        <div className="w-[30%] border-r border-r-[#DDDDDD] ml-20">
+          <EditHomeSideBar newHome={newHome} />
+        </div>
+      ) : (
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" className="ml-4 mt-4 absolute">
+              <Menu />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-4">
+            <EditHomeSideBar newHome={newHome} />
+          </SheetContent>
+        </Sheet>
+      )}
+      <div className="w-full lg:w-[70%] flex flex-col">
         <div className="flex-1 overflow-auto mt-11">
           <ScrollArea className="h-full w-full">
             <Outlet context={[newHome, setNewHome]} />

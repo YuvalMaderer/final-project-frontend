@@ -71,7 +71,7 @@ function EditHomeSideBar({ newHome }: { newHome: IHome }) {
       </header>
 
       <ScrollArea className="h-screen">
-        <ul className="pl-16 pr-8 pt-4 pb-32 flex flex-col gap-6">
+        <ul className=" px-4 lg:pl-16  lg:pr-8 pt-4 pb-32 flex flex-col gap-6">
           <Link to="addPhotos">
             <li
               className={`rounded-2xl shadow-xl p-10 flex flex-col overflow-hidden hover:bg-[#F7F7F7] ${

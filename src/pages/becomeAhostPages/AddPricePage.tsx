@@ -56,12 +56,14 @@ function AddPricePage() {
   }
 
   return (
-    <div className="h-screen overflow-hidden flex flex-col items-center pt-10">
-      <div className="space-y-2 mb-8 w-[30%]">
-        <h1 className="text-4xl font-[500]">Now, set your price</h1>
+    <div className="h-screen overflow-hidden flex flex-col items-center pt-10 px-8">
+      <div className="space-y-2 mb-8 md:w-[30%]">
+        <h1 className="text-4xl font-[500] ">Now, set your price</h1>
         <p className="text-lg text-[#9d9d9d]">You can change it anytime.</p>
       </div>
-      <div className={`flex justify-center items-center space-x-2 text-9xl font-bold`}>
+      <div
+        className={`flex justify-center items-center space-x-2 text-9xl font-bold`}
+      >
         <span>$</span>
         <Input
           id="price"
@@ -70,7 +72,7 @@ function AddPricePage() {
           onChange={handlePriceChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className="text-9xl h-44 font-bold border-none outline-none focus:ring-0 focus:border-none w-[30%]"
+          className="text-9xl h-44 font-bold border-none outline-none focus:ring-0 focus:border-none md:w-[30%]"
         />
         {!isFocused && (
           <Label
@@ -81,7 +83,7 @@ function AddPricePage() {
           </Label>
         )}
       </div>
-      <div className="w-[40%] space-y-4">
+      <div className="md:w-[40%] w-full space-y-4">
         <div
           onClick={() => {
             setYouEarnOpen(false);
@@ -101,13 +103,19 @@ function AddPricePage() {
                 <span>
                   $
                   {price && !isNaN(Number(price.replace(/,/g, "")))
-                    ? (parseFloat(price.replace(/,/g, "")) * 0.14).toLocaleString()
+                    ? (
+                        parseFloat(price.replace(/,/g, "")) * 0.14
+                      ).toLocaleString()
                     : "0"}
                 </span>
               </div>
             </div>
           )}
-          <div className="flex justify-between text-lg font-[500]">
+          <div
+            className={`flex justify-between text-lg font-[500] ${
+              !guestPriceOpen && "cursor-pointer"
+            }`}
+          >
             <span>Guest Price</span>
             <span>
               {price && !isNaN(Number(price.replace(/,/g, "")))
@@ -125,7 +133,7 @@ function AddPricePage() {
           tabIndex={0}
         >
           {youEarnOpen && (
-            <div className="border-b pb-4 space-y-3">
+            <div className="border-b pb-4 space-y-3 ">
               <div className="flex justify-between text-lg">
                 <span>Base Price</span>
                 <span>${price}</span>
@@ -135,13 +143,19 @@ function AddPricePage() {
                 <span>
                   -$
                   {price && !isNaN(Number(price.replace(/,/g, "")))
-                    ? (parseFloat(price.replace(/,/g, "")) * 0.03).toLocaleString()
+                    ? (
+                        parseFloat(price.replace(/,/g, "")) * 0.03
+                      ).toLocaleString()
                     : "0"}
                 </span>
               </div>
             </div>
           )}
-          <div className="flex justify-between text-lg font-[500]">
+          <div
+            className={`flex justify-between text-lg font-[500] ${
+              !youEarnOpen && "cursor-pointer"
+            }`}
+          >
             <span>You earn</span>
             <span>
               {price && !isNaN(Number(price.replace(/,/g, "")))

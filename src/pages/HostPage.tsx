@@ -299,7 +299,7 @@ function HostPage() {
     content = <ReservationsList reservations={checkingOutTodayReservations} />;
   }
   return (
-    <div className="p-28">
+    <div className=" p-10 sm:p-20 md:p-28">
       <h1 className="text-3xl font-500 mb-10 ">
         Welcome back, {loggedInUser?.user.firstName}
       </h1>

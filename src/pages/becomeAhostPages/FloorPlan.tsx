@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-
-import { Search } from "lucide-react";
-import { updateSearchParams } from "@/lib/utils";
 import { useOutletContext, useSearchParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import Card from "@/components/general-components/GuestCard";
 import { Home } from "@/layouts/BecomeAhostLayout";
 
@@ -74,7 +70,7 @@ function FloorPlan() {
   };
 
   return (
-    <div className="flex flex-col justify-center  h-screen max-w-[740px] mx-auto pb-[400px]">
+    <div className="flex flex-col justify-center  h-screen max-w-[740px] mx-auto pb-[400px] p-6">
       <div className="pl-3 space-y-2">
         <h1 className="text-3xl font-[500]">
           Share some basics about your place
