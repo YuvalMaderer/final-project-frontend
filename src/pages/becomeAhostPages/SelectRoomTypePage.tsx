@@ -59,7 +59,7 @@ function SelectRoomTypePage() {
     }
   }, []);
   return (
-    <div className="flex justify-center h-screen pt-40">
+    <div className="flex justify-center h-screen pt-10 px-8">
       <div className="space-y-10">
         <h1 className="text-left text-3xl font-[600]">
           What type of place will guests have?

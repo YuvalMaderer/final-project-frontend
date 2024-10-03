@@ -43,7 +43,7 @@ function AddDescriptionPage() {
   }
 
   return (
-    <div className="h-screen flex justify-center mt-40">
+    <div className="h-screen flex justify-center mt-20 px-8">
       <div className="max-w-[700px] w-full space-y-6">
         <div className="pl-2 space-y-2">
           <h1 className="text-4xl font-[500]">Create your description</h1>

@@ -151,7 +151,7 @@ function AddPhotosPage() {
   };
 
   return (
-    <div className="h-screen flex justify-center mt-8">
+    <div className="h-screen flex justify-center mt-8 px-8">
       <div className="max-w-[680px] w-full space-y-6">
         <div className="pl-2 space-y-2 mb-8">
           <h1 className="text-4xl font-[500]">

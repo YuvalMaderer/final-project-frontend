@@ -3,12 +3,8 @@ import LocationForm from "@/components/becomeAhostComponents/LocationForm";
 import LocationMap from "@/components/becomeAhostComponents/LocationMap";
 import { LatLng } from "use-places-autocomplete";
 import {
-  useLocation,
-  useOutletContext,
   useSearchParams,
-} from "react-router-dom";
-import { Home } from "@/layouts/BecomeAhostLayout";
-
+} from "react-router-dom"
 function SelectLocationPage() {
   const [address, setAddress] = useState<string>("");
   const [country, setCountry] = useState<string>("US");
@@ -37,7 +33,7 @@ function SelectLocationPage() {
   };
 
   return (
-    <div className="h-screen grid place-items-center pb-[400px] mb-[200px]">
+    <div className="h-screen grid place-items-center pb-[400px] mb-[200px] p-8">
       <div className=" space-y-10 w-full h-full max-w-[660px] max-h-[600px] ">
         <div>
           <h1 className="text-3xl font-[500]">Where's your place located?</h1>

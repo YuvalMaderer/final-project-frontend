@@ -151,7 +151,7 @@ function SelectTypePage() {
   console.log(selected);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center px-8 pb-2">
       <div className="space-y-10">
         <h1 className="text-center text-3xl font-[600]">
           Which of these best describes your place?

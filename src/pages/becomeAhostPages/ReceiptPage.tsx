@@ -20,8 +20,8 @@ function ReceiptPage() {
   }, []);
 
   return (
-    <div className="h-screen flex mt-20 justify-center p-4">
-      <div className="max-w-[60%] w-full">
+    <div className="sm:h-screen flex mt-10 justify-center px-8 pb-8">
+      <div className="lg:max-w-[60%]">
         <div className="space-y-4 mb-8">
           <h1 className="text-5xl font-semibold">Review your listing</h1>
           <p className="font-medium text-lg text-gray-500">
@@ -57,7 +57,7 @@ function ReceiptPage() {
               <span className="text-lg font-medium">night</span>
             </div>
           </div>
-          <div className="flex flex-col gap-10 mt-8 sm:mt-0">
+          <div className="flex flex-col gap-10 mt-8">
             <h2 className="text-2xl font-500">What's next?</h2>
             <div className="flex gap-6">
               <svg

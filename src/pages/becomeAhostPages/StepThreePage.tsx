@@ -6,8 +6,8 @@ function StepThreePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => setSearchParams({ step: "stepThree" }), []);
   return (
-    <main className="h-screen  px-20 items-center justify-center">
-      <div className="flex items-center justify-center mx-auto ">
+    <main className="h-screen px-10 sm:px-20 items-center justify-center">
+      <div className="flex items-center justify-center mx-auto flex-col lg:flex-row ">
         <section className="space-y-8 max-w-[700px]">
           <p className="text-lg font-[500]">Step 3</p>
           <h1 className="text-5xl font-[500]">Finish up and publish</h1>
