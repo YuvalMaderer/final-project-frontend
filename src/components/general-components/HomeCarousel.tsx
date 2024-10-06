@@ -202,7 +202,7 @@ function HomeCarousel({
   };
 
   return (
-    <div className="relative w-72">
+    <div className="relative ">
       <Carousel
         opts={{ loop: false }}
         setApi={(api) => setEmblaApi(api as EmblaCarouselApi)}
@@ -215,7 +215,7 @@ function HomeCarousel({
                   <img
                     src={img}
                     alt={`${name} - Image ${index + 1}`}
-                    className="w-[270px] h-[270px] rounded-lg cursor-pointer"
+                    className="w-full xl:h-[270px] lg:h-[340px] md:h-[400px] sm:h-[400px] h-[440px] rounded-lg cursor-pointer"
                   />
                   {isHomePage ? (
                     <Dialog open={isDialogOpen}>
@@ -411,8 +411,8 @@ function HomeCarousel({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-6 top-1/2 transform -translate-y-1/2" />
-        <CarouselNext className="absolute right-8 top-1/2 transform -translate-y-1/2" />
+        <CarouselPrevious className="absolute left-3 top-1/2 transform -translate-y-1/2" />
+        <CarouselNext className="absolute right-3 top-1/2 transform -translate-y-1/2" />
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {images.map((_, index) => (
             <button

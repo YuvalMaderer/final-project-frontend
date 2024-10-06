@@ -176,10 +176,10 @@ function SearchComponent({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center text-[#6A6A6A] pb-4 mt-2">
+    <div className="flex flex-col justify-center items-center text-[#6A6A6A] pb-4 mt-2 max-w-[90%]">
       <Carousel
         opts={{ align: "start" }}
-        className="w-full max-w-[78rem] flex justify-center items-center"
+        className="max-w-[90%] flex justify-center items-center"
       >
         <CarouselContent>
           {types.map((type, index) => (
@@ -205,8 +205,8 @@ function SearchComponent({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="invisible md:visible" />
+        <CarouselNext className="invisible md:visible" />
       </Carousel>
     </div>
   );

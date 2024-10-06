@@ -103,12 +103,12 @@ function HeaderComponent() {
           isHomePage ? "sticky top-0" : ""
         }`}
       >
-        <nav className="flex justify-between items-center p-3 px-20">
+        <nav className="flex justify-between items-center p-3 md:px-20">
           <Link to="/">
             <img src={logo} alt="logo" className="w-[105px] h-[60px]" />
           </Link>
 
-          <div className="flex gap-6 items-center">
+          <div className="md:flex gap-6 items-center hidden">
             <div
               className={`flex relative left-64 items-center transition-all duration-300 ${
                 isScrolled && !isReplacementClicked
@@ -176,7 +176,7 @@ function HeaderComponent() {
           </div>
 
           <div className="flex items-center gap-6">
-            <Link to="/becomeAhost" className="font-600 text-sm">
+            <Link to="/becomeAhost" className="font-600 text-sm invisible md:visible">
               Airbnb your home
             </Link>
             <CurrencySelector />

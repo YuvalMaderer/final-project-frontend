@@ -63,7 +63,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div className="flex flex-col items-center text-xs ">
       <div className="flex justify-center  items-center border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500">
-        <div className="p-3 px-6 flex-1 text-left hover:bg-gray-200 rounded-full ">
+        <div className="p-3 md:px-6 flex-1 text-left hover:bg-gray-200 rounded-full ">
           <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <div className="flex flex-col ">
               <DropdownMenuTrigger asChild>
@@ -183,7 +183,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 !checkDates && "text-muted-foreground"
               )}
             >
-              <div className="hover:bg-gray-200 rounded-full p-3 pr-10 flex justify-center text-left flex-col">
+              <div className="hover:bg-gray-200 rounded-full p-3 md:pr-10 flex justify-center text-left flex-col">
                 <div className="text-black font-600  text-xs">Check in</div>
 
                 <div className="text-gray-500 font-500">
@@ -194,7 +194,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     : "Add dates"}
                 </div>
               </div>
-              <div className="hover:bg-gray-200 rounded-full p-3 pr-10 flex justify-center text-left flex-col">
+              <div className="hover:bg-gray-200 rounded-full p-3 md:pr-10 flex justify-center text-left flex-col">
                 <div className="text-black font-600">Check out</div>
                 <div className="text-gray-500  font-500">
                   {checkDates && checkDates.to
