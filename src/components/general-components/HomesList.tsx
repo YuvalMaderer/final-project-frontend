@@ -60,10 +60,10 @@ function HomesList({
   }
 
   return (
-    <div className="w-full flex flex-col items-center justify-evenly">
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-12">
+    <div className="w-full flex flex-col items-center justify-evenly mx-8 lg:ml-8 lg:mr-0">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 ">
         {homes?.map((home) => (
-          <div key={home._id} className="w-64">
+          <div key={home._id} className="">
             <HomeCarousel
               images={home.imgUrls}
               name={home.name}

@@ -5,7 +5,7 @@ import CurrencySelector from "./CurrencySelector";
 const Footer: React.FC = () => {
   const { currency, setCurrency } = useCurrency();
   return (
-    <footer className="px-24 flex justify-between items-center p-4 bg-gray-50 border-t border-gray-300 text-[0.95rem] h-16 font-500 mt-6">
+    <footer className="px-24 flex justify-between items-center flex-wrap p-4 bg-gray-50 border-t border-gray-300 text-[0.95rem] h-16 font-500 mt-6">
       <div className="flex items-center space-x-2">
         <span>© 2024 Airbnb, Inc.</span>
         <span>·</span>
