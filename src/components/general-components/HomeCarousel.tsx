@@ -215,7 +215,7 @@ function HomeCarousel({
                   <img
                     src={img}
                     alt={`${name} - Image ${index + 1}`}
-                    className="w-full xl:h-[270px] lg:h-[340px] md:h-[400px] sm:h-[400px] h-[440px] rounded-lg cursor-pointer"
+                    className="w-full xl:h-[270px] lg:h-[340px] md:h-[400px] sm:h-[400px]  h-[350px] rounded-lg cursor-pointer"
                   />
                   {isHomePage ? (
                     <Dialog open={isDialogOpen}>

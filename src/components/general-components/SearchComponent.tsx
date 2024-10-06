@@ -186,7 +186,7 @@ function SearchComponent({
             <CarouselItem
               key={index}
               onClick={() => handleTypeClick(type.name)}
-              className={`flex flex-col items-center basis-1/13 p-0 mx-4 cursor-pointer transition duration-150 ease-in-out ${
+              className={`flex flex-col items-center basis-1/13 p-0 px-4 cursor-pointer transition duration-150 ease-in-out ${
                 isActiveType(type.name)
                   ? "text-black border-b-2 border-black"
                   : "hover:text-black hover:border-b-2"
