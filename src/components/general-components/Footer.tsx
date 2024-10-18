@@ -4,19 +4,27 @@ import CurrencySelector from "./CurrencySelector";
 
 const Footer: React.FC = () => {
   const { currency, setCurrency } = useCurrency();
+
   return (
-    <footer className="px-24 flex justify-between items-center flex-wrap p-4 bg-gray-50 border-t border-gray-300 text-[0.95rem] h-16 font-500 mt-6">
-      <div className="flex items-center space-x-2">
-        <span>© 2024 Airbnb, Inc.</span>
-        <span>·</span>
-        <p className="hover:underline">Terms</p>
-        <span>·</span>
-        <p className="hover:underline">Sitemap</p>
-        <span>·</span>
-        <p className="hover:underline">Privacy</p>
-        <span>·</span>
-        <p className="hover:underline">Your Privacy Choices</p>
-        <svg width="26" height="12" fill="none">
+    <footer className="px-4 sm:px-6 md:px-8 lg:px-24 flex flex-col sm:flex-row justify-between items-center flex-wrap p-4 bg-gray-50 border-t border-gray-300 text-xs sm:text-sm md:text-base font-medium mt-6">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-2 sm:space-y-0 sm:space-x-2 mb-4 sm:mb-0">
+        <span className="text-center sm:text-left">© 2024 Airbnb, Inc.</span>
+        <div className="hidden sm:flex items-center space-x-2">
+          <span>·</span>
+          <p className="hover:underline cursor-pointer">Terms</p>
+          <span>·</span>
+          <p className="hover:underline cursor-pointer">Sitemap</p>
+          <span>·</span>
+          <p className="hover:underline cursor-pointer">Privacy</p>
+          <span>·</span>
+          <p className="hover:underline cursor-pointer">Your Privacy Choices</p>
+        </div>
+        <div className="flex sm:hidden space-x-2">
+          <p className="hover:underline cursor-pointer">Terms</p>
+          <span>·</span>
+          <p className="hover:underline cursor-pointer">Privacy</p>
+        </div>
+        <svg width="26" height="12" fill="none" className="mt-2 sm:mt-0">
           <rect
             x="0.5"
             y="0.5"
@@ -46,33 +54,25 @@ const Footer: React.FC = () => {
           ></rect>
         </svg>
       </div>
-      <div className="flex items-center justify-center space-x-2 text-[0.9rem] gap-6">
+      <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4 text-xs sm:text-sm">
         <span className="flex justify-center items-center gap-1">
           <CurrencySelector />
           <p className="">English (US)</p>
         </span>
         <span>{currency === "USD" ? "$USD" : "₪ILS"}</span>
-        <div className="flex gap-4">
+        <div className="flex gap-4 mt-2 sm:mt-0">
           <a
             href="https://www.facebook.com/profile.php?id=100000412891557&locale=he_IL"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Navigate to Facebook"
-            role="link"
-            style={{ display: "inline-block" }}
+            className="text-gray-500 hover:text-gray-700"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 32 32"
-              style={{
-                display: "block",
-                height: "20px",
-                width: "20px",
-                fill: "currentColor",
-              }}
-              aria-label="Navigate to Facebook"
-              role="img"
-              focusable="false"
+              className="w-5 h-5 sm:w-6 sm:h-6"
+              aria-hidden="true"
             >
               <path d="M30 0a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"></path>
               <path
@@ -81,47 +81,36 @@ const Footer: React.FC = () => {
               ></path>
             </svg>
           </a>
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 32 32"
-            style={{
-              display: "block",
-              height: "20px",
-              width: "20px",
-              fill: "currentColor",
-            }}
+          <a
+            href="#"
             aria-label="Navigate to Twitter"
-            role="img"
-            focusable="false"
+            className="text-gray-500 hover:text-gray-700"
           >
-            <path d="M32 4v24a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4h24a4 4 0 0 1 4 4z"></path>
-            <path
-              fill="#fff"
-              d="M18.66 7.99a4.5 4.5 0 0 0-2.28 4.88A12.31 12.31 0 0 1 7.3 8.25a4.25 4.25 0 0 0 1.38 5.88c-.69 0-1.38-.13-2-.44a4.54 4.54 0 0 0 3.5 4.31 4.3 4.3 0 0 1-2 .06 4.64 4.64 0 0 0 4.19 3.13A8.33 8.33 0 0 1 5.8 23a12.44 12.44 0 0 0 19.32-11.19A7.72 7.72 0 0 0 27.3 9.5a8.3 8.3 0 0 1-2.5.75 4.7 4.7 0 0 0 2-2.5c-.87.5-1.81.87-2.81 1.06a4.5 4.5 0 0 0-5.34-.83z"
-            ></path>
-          </svg>
-
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+              className="w-5 h-5 sm:w-6 sm:h-6"
+              aria-hidden="true"
+            >
+              <path d="M32 4v24a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4h24a4 4 0 0 1 4 4z"></path>
+              <path
+                fill="#fff"
+                d="M18.66 7.99a4.5 4.5 0 0 0-2.28 4.88A12.31 12.31 0 0 1 7.3 8.25a4.25 4.25 0 0 0 1.38 5.88c-.69 0-1.38-.13-2-.44a4.54 4.54 0 0 0 3.5 4.31 4.3 4.3 0 0 1-2 .06 4.64 4.64 0 0 0 4.19 3.13A8.33 8.33 0 0 1 5.8 23a12.44 12.44 0 0 0 19.32-11.19A7.72 7.72 0 0 0 27.3 9.5a8.3 8.3 0 0 1-2.5.75 4.7 4.7 0 0 0 2-2.5c-.87.5-1.81.87-2.81 1.06a4.5 4.5 0 0 0-5.34-.83z"
+              ></path>
+            </svg>
+          </a>
           <a
             href="https://www.instagram.com/yuvalmaderer/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Navigate to Instagram"
-            role="link"
-            style={{ display: "inline-block" }}
+            className="text-gray-500 hover:text-gray-700"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 32 32"
-              style={{
-                display: "block",
-                height: "20px",
-                width: "20px",
-                fill: "currentColor",
-              }}
-              aria-label="Navigate to Instagram"
-              role="img"
-              focusable="false"
+              className="w-5 h-5 sm:w-6 sm:h-6"
+              aria-hidden="true"
             >
               <path d="M30 0H2a2 2 0 0 0-2 2v28c0 1.1.9 2 2 2h28a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"></path>
               <path
