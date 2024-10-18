@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Menu, Search } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import {
   DropdownMenu,
@@ -11,9 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Modal from "./LoginModalComponent";
 import { useAuth } from "@/providers/user.context";
-import { useLocation } from "react-router-dom";
-
-import logo from "../../assets/airbnb-logo.webp";
+import logo from "../../assets/airbnb-logo.webp"; // Original logo
 import { Button } from "../ui/button";
 import { useDate } from "@/hooks/useDate";
 import { useGuestContext } from "@/providers/Guest-Context";
@@ -26,6 +24,7 @@ function HeaderComponent() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isReplacementClicked, setIsReplacementClicked] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth); // Track window width
   const [isScrollListenerActive, setIsScrollListenerActive] = useState(true);
   const { loggedInUser, logout } = useAuth();
   const location = useLocation();
@@ -81,6 +80,16 @@ function HeaderComponent() {
     }
   }, [isScrollListenerActive]);
 
+  // Track window resize to update screen width
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -105,14 +114,18 @@ function HeaderComponent() {
       >
         <nav className="flex justify-between items-center p-3 md:px-20">
           <Link to="/">
-            <img src={logo} alt="logo" className="w-[105px] h-[60px]" />
+            <img
+              src={logo} // Change logo based on screen size
+              alt="logo"
+              className="w-[105px] h-[60px]" // Keep size consistent
+            />
           </Link>
 
           <div className="md:flex gap-6 items-center hidden">
             <div
               className={`flex relative left-64 items-center transition-all duration-300 ${
                 isScrolled && !isReplacementClicked
-                  ? "opacity-0 translate-y-[-20px] "
+                  ? "opacity-0 translate-y-[-20px]"
                   : "opacity-100 translate-y-0"
               }`}
             >
@@ -124,14 +137,14 @@ function HeaderComponent() {
               </NavLink>
             </div>
             <div
-              className={`relative left-10 transition-all duration-300 mt-2 ${
+              className={`relative right-6 transition-all duration-300 mt-2 ${
                 isScrolled && !isReplacementClicked
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-[20px] pointer-events-none"
               }`}
             >
               <div
-                className="flex items-center border  border-gray-300 rounded-full py-2 shadow-sm text-sm cursor-pointer"
+                className="flex items-center border border-gray-300 rounded-full py-2 shadow-sm text-sm cursor-pointer  md:ml-28 lg:w-auto lg:ml-0" // Adjust width based on screen size
                 onClick={handleReplacementClick}
               >
                 <div className="px-3 ml-4 border-r border-gray-300 font-semibold">
@@ -176,9 +189,14 @@ function HeaderComponent() {
           </div>
 
           <div className="flex items-center gap-6">
-            <Link to="/becomeAhost" className="font-600 text-sm invisible md:visible">
-              Airbnb your home
-            </Link>
+            <div className="hidden md:block">
+              <Link
+                to="/becomeAhost"
+                className="font-600 text-sm invisible md:invisible lg:visible"
+              >
+                Airbnb your home
+              </Link>
+            </div>
             <CurrencySelector />
             <div className="flex items-center border border-grey-300 rounded-full p-3 gap-4 hover:shadow-lg">
               <DropdownMenu>
@@ -288,10 +306,12 @@ function HeaderComponent() {
           </div>
         </nav>
 
-        {/* Conditionally render the SearchBar with visibility */}
+        {/* Conditionally render the SearchBar */}
         <div
           className={`transition-all duration-300 ${
-            isScrolled && !isReplacementClicked ? "hidden" : "block"
+            isScrolled && !isReplacementClicked && windowWidth >= 768
+              ? "hidden"
+              : "block"
           }`}
         >
           <SearchBar

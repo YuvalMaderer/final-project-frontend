@@ -62,7 +62,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex justify-center items-center gap-2 bg-white sticky top-[110px] pt-3 mt-0 z-40 border-b-[1px] border-gray-200 mx-4">
+      <div className="flex justify-center items-center gap-2 bg-white sticky top-[170px] md:top-[110px] pt-3 mt-0 z-40 border-b-[1px] border-gray-200 mx-4">
         <SearchComponent
           searchParams={searchParams}
           setSearchParams={setSearchParams}
