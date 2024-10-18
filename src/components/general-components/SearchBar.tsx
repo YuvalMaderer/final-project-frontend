@@ -63,7 +63,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div className="flex flex-col items-center text-xs ">
       <div className="flex justify-center  items-center border border-gray-300 rounded-full shadow-md shadow-gray-300 font-500">
-        <div className="p-3 md:px-6 flex-1 text-left hover:bg-gray-200 rounded-full ">
+        <div className="p-0 sm:p-3 md:px-6 flex-1 text-left hover:bg-gray-200 rounded-full ">
           <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <div className="flex flex-col ">
               <DropdownMenuTrigger asChild>
@@ -79,7 +79,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               <input
                 type="text"
                 ref={inputRef}
-                className="ml-4 border-none outline-none bg-transparent focus:ring-0 focus:border-none focus-visible:ring-0 focus-visible:border-none focus:outline-none focus:shadow-none"
+                className="ml-4 w-16 sm:w-full border-none outline-none bg-transparent focus:ring-0 focus:border-none focus-visible:ring-0 focus-visible:border-none focus:outline-none focus:shadow-none"
                 style={{ boxShadow: "none", border: "none", outline: "none" }}
                 placeholder={selectedDestination || "Search destinations"}
                 onClick={(e: React.MouseEvent<HTMLInputElement>) => {
@@ -98,9 +98,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 value={inputValue} // Show the current input value in the input field
               />
             </div>
-            <DropdownMenuContent className="rounded-3xl relative left-28 top-4 p-6">
+            <DropdownMenuContent className="rounded-3xl relative  top-4 p-6">
               <DropdownMenuLabel>Search by region</DropdownMenuLabel>
-              <div className="flex">
+              <div className="grid grid-cols-2 sm:grid-cols-3">
                 <DropdownMenuItem
                   onClick={() => handleSelection("I'm flexible")}
                 >
@@ -133,8 +133,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     <p className="font-500">London</p>
                   </div>
                 </DropdownMenuItem>
-              </div>
-              <div className="flex">
+
                 <DropdownMenuItem
                   onClick={() => handleSelection("United States")}
                 >
@@ -183,7 +182,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 !checkDates && "text-muted-foreground"
               )}
             >
-              <div className="hover:bg-gray-200 rounded-full p-3 md:pr-10 flex justify-center text-left flex-col">
+              <div className="hover:bg-gray-200 rounded-full p-0 sm:p-3 md:pr-10 flex justify-center text-left flex-col">
                 <div className="text-black font-600  text-xs">Check in</div>
 
                 <div className="text-gray-500 font-500">
