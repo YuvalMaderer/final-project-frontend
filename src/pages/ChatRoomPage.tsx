@@ -8,7 +8,8 @@ import { ArrowUp, CircleAlert, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import io from "socket.io-client"; // Import Socket.IO client
 
-const socket = io("http://localhost:3000"); // Replace with your server URL
+const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+const socket = io(BASE_URL); // Replace with your server URL
 
 export interface ChatMessage {
   _id: string;
