@@ -41,7 +41,7 @@ function SelectRoomTypePage() {
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [selected, setSelected] = useState<selection>(undefined);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   useEffect(() => {
     setSearchParams({ step: "" });
     // Retrieve the stored newHome from localStorage

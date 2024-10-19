@@ -169,7 +169,7 @@ const NotificationPage: React.FC = () => {
                       deleteNotificationMutation.mutate(notification._id)
                     }
                     className="ml-4"
-                    disabled={deleteNotificationMutation.isLoading}
+                    disabled={deleteNotificationMutation.isPending}
                   >
                     <X className="w-5 h-5 text-gray-500 hover:text-gray-700" />
                   </button>

@@ -1,5 +1,5 @@
 import { selection } from "@/pages/becomeAhostPages/SelectBookType";
-import React, { useState } from "react";
+import React from "react";
 import { useSearchParams } from "react-router-dom";
 
 interface BookTypeProps {
@@ -19,8 +19,8 @@ function BookType({
   description,
   handleNewHomeUpdate,
 }: BookTypeProps) {
-  const [isClicked, setIsClicked] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [, setSearchParams] = useSearchParams();
 
   const handleClick = () => {
     setSelected(name);

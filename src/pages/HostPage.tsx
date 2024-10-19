@@ -105,7 +105,7 @@ function HostPage() {
       reservationId: string;
       status: string;
     }) => {
-      const reservation = reservations.find((r) => r._id === reservationId);
+      const reservation = reservations?.find((r) => r._id === reservationId);
       if (!reservation) throw new Error("Reservation not found");
 
       // Update reservation status

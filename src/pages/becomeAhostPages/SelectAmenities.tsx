@@ -197,10 +197,10 @@ export type AmenityName =
   | "Ceiling or mobile hoist";
 
 function SelectAmenities() {
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   // Initialize selected amenities with values from localStorage or default to an empty array
   const [selected, setSelected] = useState<AmenityName[]>(() => {

@@ -41,7 +41,7 @@ export default function LocationMap({
 }
 
 function Map({ setSelected, selected, setLocationData }: LocationMapProps) {
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
   const [center, setCenter] = useState<LatLng>({ lat: 43.45, lng: -80.49 });
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function AddDescriptionPage() {
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
   // Initialize description with the summary from localStorage if it exists
@@ -14,7 +14,7 @@ function AddDescriptionPage() {
     return homeObject?.summary || ""; // Start with the summary from localStorage, or an empty string if it doesn't exist
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     if (text.length > 0) {

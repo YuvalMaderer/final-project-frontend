@@ -57,7 +57,7 @@ const monthNames = [
 ];
 
 function HomeDetails() {
-  const { currency, setCurrency } = useCurrency();
+  const { currency, } = useCurrency();
   const { guestCounts } = useGuestContext();
   const { id } = useParams<{ id: string }>();
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
@@ -84,8 +84,8 @@ function HomeDetails() {
   const hostId = home?.host._id;
 
   const position: { lat: number; lng: number } = {
-    lat: home?.loc.lat,
-    lng: home?.loc.lan,
+    lat: home?.loc.lat ?? 0,
+    lng: home?.loc.lan ?? 0,
   };
 
   const getReservedDates = (reservations: IReservation[]): Date[] => {

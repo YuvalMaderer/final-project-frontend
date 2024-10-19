@@ -3,7 +3,7 @@ import React from "react";
 import CurrencySelector from "./CurrencySelector";
 
 const Footer: React.FC = () => {
-  const { currency, setCurrency } = useCurrency();
+  const { currency,  } = useCurrency();
 
   return (
     <footer className="px-4 sm:px-6 md:px-8 lg:px-24 flex flex-col sm:flex-row justify-between items-center flex-wrap p-4 bg-gray-50 border-t border-gray-300 text-xs sm:text-sm md:text-base font-medium mt-6">

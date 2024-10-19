@@ -2,7 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { ScrollArea } from "../ui/scroll-area";
 import { Button } from "../ui/button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { IHome } from "@/types";
 import { AmenityKey, iconMap } from "../general-components/AmenityIconMap";
 import {

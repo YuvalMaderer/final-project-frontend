@@ -23,7 +23,7 @@ function HomesList({
   isHomePage,
   wishlistName,
 }: HomesListProps) {
-  const { currency, setCurrency } = useCurrency();
+  const { currency,  } = useCurrency();
   const [currentPage, setCurrentPage] = useState(1);
   const homesPerPage = 18;
   const [searchParams, setSearchParams] = useSearchParams();

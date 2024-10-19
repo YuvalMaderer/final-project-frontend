@@ -3,7 +3,7 @@ import homeVideo from "../../assets/add-listing-video-2.mp4";
 import { useEffect } from "react";
 
 function StepTwoPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   useEffect(() => setSearchParams({ step: "stepTwo" }), []);
   return (
     <main className="h-screen p-10 sm:px-20 items-center justify-center">

@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { Home } from "@/layouts/BecomeAhostLayout";
 import { createNewHome } from "@/lib/http";
-import { toast, useToast } from "../ui/use-toast";
+import { useToast } from "../ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 
 function BecomeAhostFooter() {

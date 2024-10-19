@@ -3,7 +3,7 @@ import homeVideo from "../../assets/add-listing-video-1.mp4";
 import { useEffect } from "react";
 
 function StepOnePage() {
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [, setSearchParams] = useSearchParams();
 
   useEffect(() => setSearchParams({ step: "stepOne" }), []);
 

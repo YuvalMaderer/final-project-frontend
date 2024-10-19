@@ -15,7 +15,7 @@ import CurrencySelector from "./CurrencySelector";
 
 function TripsHeader() {
   const { loggedInUser, logout } = useAuth();
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [, setModalOpen] = useState(false);
   return (
     <>
       <header className="flex justify-between items-center px-24 pt-9 sticky top-0 z-20 bg-white pb-7 h-20 border-b">

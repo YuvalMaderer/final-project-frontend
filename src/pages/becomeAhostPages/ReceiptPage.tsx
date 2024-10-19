@@ -6,7 +6,7 @@ import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function ReceiptPage() {
   const [isOpne, setIsOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const [newHome, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 

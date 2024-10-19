@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function AddTitlePage() {
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
   // Initialize title with the name from localStorage if it exists
@@ -14,7 +14,7 @@ function AddTitlePage() {
     return homeObject?.name || ""; // Start with the name from localStorage, or an empty string if it doesn't exist
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     if (text.length > 0) {

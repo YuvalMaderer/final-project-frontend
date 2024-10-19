@@ -11,7 +11,7 @@ function SelectLocationPage() {
   const [street, setStreet] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [selected, setSelected] = useState<LatLng | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams({ step: "" });
+  const [, setSearchParams] = useSearchParams({ step: "" });
 
   useEffect(() => setSearchParams({ step: "" }), []);
 

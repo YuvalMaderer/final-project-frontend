@@ -6,9 +6,9 @@ import { Home } from "@/layouts/BecomeAhostLayout";
 type FloorPlan = "Guests" | "Bedrooms" | "Beds" | "Bathrooms";
 
 function FloorPlan() {
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   // Initialize guestCounts with values from localStorage or default values
   const [guestCounts, setGuestCounts] = useState(() => {

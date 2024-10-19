@@ -130,7 +130,7 @@ function SelectTypePage() {
 
   const [selected, setSelected] = useState<section | undefined>(undefined);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   useEffect(() => {
     setSearchParams({ step: "" });
 

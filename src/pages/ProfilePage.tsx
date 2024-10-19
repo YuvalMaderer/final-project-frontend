@@ -31,7 +31,7 @@ const ProfilePage = () => {
     if (!loggedInUser?.user) return [];
 
     const formattedBirthday = loggedInUser.user.birthday
-      ? formatDate(loggedInUser.user.birthday)
+      ? formatDate(loggedInUser.user.birthday.toString())
       : "N/A";
 
     const wishlistsTitles =

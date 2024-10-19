@@ -1,6 +1,4 @@
 import { PopulateReservationResponse } from "@/pages/HostPage";
-
-import React from "react";
 import {
   Card,
   CardContent,

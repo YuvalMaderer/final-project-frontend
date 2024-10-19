@@ -1,11 +1,10 @@
 import EditHomeSideBar from "@/components/host/EditHomeSideBar";
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { Home } from "./BecomeAhostLayout";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useMutation } from "@tanstack/react-query";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { updateListing } from "@/lib/http";
 import { IHome } from "@/types";
 import Loader from "@/components/ui/Loader";

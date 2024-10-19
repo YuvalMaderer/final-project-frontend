@@ -28,8 +28,8 @@ function HeaderComponent() {
   const [isScrollListenerActive, setIsScrollListenerActive] = useState(true);
   const { loggedInUser, logout } = useAuth();
   const location = useLocation();
-  const { checkDates, setCheckDates } = useDate();
-  const { guestCounts, setGuestCounts } = useGuestContext();
+  const { checkDates } = useDate();
+  const { guestCounts } = useGuestContext();
   const [selectedDestination, setSelectedDestination] = useState<string>("");
 
   const { data: notifications } = useQuery<INotification[], Error>({

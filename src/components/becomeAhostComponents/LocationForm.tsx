@@ -224,13 +224,11 @@ function LocationForm({
   setStreet,
   country,
   setCountry,
-
-  setAddress,
 }: LocationFormProp) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [countryCode, setCountryCode] = useState("");
+  const [, setSearchParams] = useSearchParams();
+  const [, setCountryCode] = useState("");
 
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
   useEffect(() => {

@@ -32,7 +32,7 @@ import { useCurrency } from "@/providers/CurrencyContext";
 type GuestType = "adults" | "children" | "infants" | "pets";
 
 function Reservation() {
-  const { currency, setCurrency } = useCurrency();
+  const { currency,  } = useCurrency();
   const { id } = useParams<{ id: string }>();
   const { checkDates, setCheckDates } = useDate();
   const [tempDates, setTempDates] = useState<DateRange | undefined>(checkDates);

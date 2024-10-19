@@ -13,7 +13,6 @@ import {
 import { Plus, Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import {
-  useNavigate,
   useOutletContext,
   useSearchParams,
 } from "react-router-dom";
@@ -23,7 +22,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Loader from "@/components/ui/Loader";
 
 function AddPhotosPage() {
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
   const { toast } = useToast();
@@ -39,16 +38,16 @@ function AddPhotosPage() {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const [isDisabled, setIsDisabled] = useState(true);
-  const navigate = useNavigate();
+ 
 
   useEffect(() => {
     if (selectedImages.length + imageUrls.length >= 5) {
       setSearchParams({ step: "addPhotos" });
       setIsDisabled(false);
     } else {
-      setSearchParams((prev) => ({ step: "" }));
+      setSearchParams(() => ({ step: "" }));
     }
     // Handle new home update after images are uploaded
     handleNewHomeUpdate();

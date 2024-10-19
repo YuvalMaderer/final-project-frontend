@@ -1,6 +1,6 @@
 import { Home } from "@/layouts/BecomeAhostLayout";
 import { selection } from "@/pages/becomeAhostPages/SelectRoomTypePage";
-import React, { useState } from "react";
+import React from "react";
 import { useSearchParams } from "react-router-dom";
 
 interface RoomTypeProps {
@@ -22,8 +22,8 @@ function RoomType({
   setNewHome,
   newHome,
 }: RoomTypeProps) {
-  const [isClicked, setIsClicked] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [, setSearchParams] = useSearchParams();
 
   const handleClick = () => {
     setSelected(name);

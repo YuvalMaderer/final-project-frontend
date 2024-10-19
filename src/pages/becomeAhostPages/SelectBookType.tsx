@@ -29,7 +29,7 @@ export type selection =
   | undefined;
 
 function SelectBookType() {
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
   // Initialize selected booking option from localStorage if it exists
@@ -41,7 +41,7 @@ function SelectBookType() {
       : "Approve or decline requests";
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setSearchParams({ step: "bookType" });

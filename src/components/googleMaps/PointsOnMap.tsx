@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 export type Props = { points: IHome[] | undefined };
 
 function HomesOnMap({ points }: Props) {
-  const { currency, setCurrency } = useCurrency();
+  const { currency,  } = useCurrency();
   const [openId, setOpenId] = useState<string | null>(null);
   const location = useLocation();
 

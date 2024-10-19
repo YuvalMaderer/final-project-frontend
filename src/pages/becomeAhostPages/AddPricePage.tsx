@@ -6,7 +6,7 @@ import { Home } from "@/layouts/BecomeAhostLayout";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function AddPricePage() {
-  const [newHome, setNewHome] =
+  const [, setNewHome] =
     useOutletContext<[Home, React.Dispatch<React.SetStateAction<Home>>]>();
 
   // Initialize price with the value from localStorage if it exists, or set it to "0"
@@ -19,7 +19,7 @@ function AddPricePage() {
   const [isFocused, setIsFocused] = useState(false);
   const [guestPriceOpen, setGuestPriceOpen] = useState(true);
   const [youEarnOpen, setYouEarnOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setSearchParams({ step: "addPrice" });

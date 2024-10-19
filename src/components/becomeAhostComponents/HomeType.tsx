@@ -3,7 +3,7 @@ import { section } from "@/pages/becomeAhostPages/SelectTypePage";
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/providers/user.context"; // Assuming you have a user context
-import { log } from "console";
+
 
 interface HomeTypeProps {
   icon: string;
@@ -23,7 +23,7 @@ function HomeType({
   newHome,
 }: HomeTypeProps) {
   const [isClicked, setIsClicked] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const { loggedInUser } = useAuth(); // Access loggedInUser from context
 
   const handleClick = () => {
